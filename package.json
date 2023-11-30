@@ -20,5 +20,8 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "volta": {
+    "node": "21.3.0"
+  }
 }
