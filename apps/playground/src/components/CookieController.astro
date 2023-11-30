@@ -1,0 +1,76 @@
+---
+
+---
+
+<div
+  data-cookie-modal="true"
+  class="fixed top-0 left-0 bottom-0 bg-red-500 w-[300px] hidden data-[cookie-modal=true]:block data-[cookie-modal=false]:hidden"
+>
+  <div>
+    <button data-cookie-close class="p-2 border-white border rounded-md"
+      >Close</button
+    >
+    <button
+      data-cookie-accept-recommended
+      class="p-2 border-white border rounded-md">Accept Recommended</button
+    >
+
+    <button data-cookie-reject class="p-2 border-white border rounded-md"
+      >Reject</button
+    >
+  </div>
+
+  <a data-cookie-policy>Cookie Policy</a>
+  <ul data-cookie-essential></ul>
+
+  <ul data-cookie-groups></ul>
+</div>
+
+<div class="w-96 bg-black rounded-md p-5 text-white fixed bottom-5 left-5">
+  <h2 class="text-2xl font-bold">Cookie Policy</h2>
+  <button data-cookie-close class="underline absolute top-5 right-5"
+    >Close</button
+  >
+
+  <div class="mt-5 gap-4 flex">
+    <button data-cookie-accept-all class="p-2 border-white border rounded-md"
+      >Accept All</button
+    >
+    <button data-cookie-reject class="p-2 border-white border rounded-md"
+      >Reject</button
+    >
+    <button data-cookie-details class="p-2 border-white border rounded-md"
+      >Details</button
+    >
+  </div>
+</div>
+
+<button data-cookie-details> Open Cookie Modal</button>
+
+<script>
+  import CookieController from "@protodigital/cookie-controller";
+
+  new CookieController({
+    policyUrl: "https://protodigital.co.uk/cookie-policy",
+    essentialCookies: ["ExampleEssentialCookie"],
+    cookieCategories: [
+      {
+        label: "Analytics",
+        cookies: [],
+      },
+      {
+        label: "Marketing",
+        cookies: [],
+      },
+      {
+        label: "Functional",
+        cookies: [],
+      },
+    ],
+    onConsentChange: () => {},
+    versioning: {
+      current: "1.0.0",
+      onNewVersion: () => {},
+    },
+  });
+</script>
