@@ -1,6 +1,24 @@
 # Proto Cookie Controller
 
-Welcome to the Proto Cookie Controller library, designed to assist with managing website cookies in a user-centric and privacy-aware manner.
+Welcome to the Proto Cookie Controller library. Initalising this library will insert a cookie consent component into the DOM, which can be used to collect user consent for cookies. It offers a range of features to support GDPR compliance and is highly customisable, enabling you to tailor the consent experience to your specific requirements.
+
+## Features
+
+- **Flexible Display Options:** Choose from different display types like modal, bar, and toast to best fit your website’s design and user experience.
+
+- **Customisable Consent Options:** Configure consent options for various cookie types, such as analytics, allowing for a granular consent process.
+
+- **Granular Callbacks:** Execute custom actions based on user consent, either globally or on a per-cookie basis. These callbacks can be configured to trigger specific functions on consent acceptance or rejection.
+
+- **Multilingual Support:** Includes translation capabilities to ensure that the consent interface communicates effectively with a diverse user base.
+
+- **Predefined Essential Cookies:** Define a set of essential cookies that are exempt from user consent, such as ccDismissed, ensuring that necessary website functionalities are maintained.
+
+- **Cookie Duration Management:** Control the duration for which each type of cookie is stored, providing clear information to users and aligning with GDPR’s data minimisation principle.
+
+- **Recommended and Default States:** Set certain cookies as recommended or default, guiding users while still leaving the final choice in their hands.
+
+- **Consent Recording:** Generate a unique identifier (uuid) for each consent instance, enabling a record of user preferences without storing personal data.
 
 ## Getting Started
 
@@ -19,9 +37,11 @@ To use the Proto Cookie Controller library, import the `CookieController` class 
 ```typescript
 import CookieController from "@protodigital/cookie-controller";
 
-new CookieController({
+const ccInstance = new CookieController({
+  type: "bar", // modal, bar and toast
   website: {
     name: "Proto Digital",
+    privacyPolicyUrl: "https://protodigital.com/privacy-policy",
   },
   translations: {
     websiteName: "Proto Digital",
@@ -41,6 +61,8 @@ new CookieController({
       onReject: () => {},
     },
   ],
+  onAccept: (uuid: string) => {},
+  onReject: (uuid: string) => {},
 });
 ```
 
