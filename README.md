@@ -4,7 +4,7 @@ Welcome to the Proto Primitives repository. This repository contains the source 
 
 ## Libraries
 
-- Cookie Controller
+- [Cookie Controller](https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/cookie-controller)
 - Sticky Header
 - Forms
 - Toggler

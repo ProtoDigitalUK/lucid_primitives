@@ -1,24 +1,23 @@
 # Proto Cookie Controller
 
-Welcome to the Proto Cookie Controller library. Initalising this library will insert a cookie consent component into the DOM, which can be used to collect user consent for cookies. It offers a range of features to support GDPR compliance and is highly customisable, enabling you to tailor the consent experience to your specific requirements.
+The Proto Cookie Controller is a lightweight, dependency-free JavaScript library that enables you to easily implement a cookie consent solution on your website. It offers a range of features that enable you to support GDPR compliance.
+
+Similar to other Proto libraries, there is a focus of config in HTML and the library avoids inserting any HTML into the DOM and requires no CSS. This means you can easily customise the look and feel of the cookie controller to match your website's design.
 
 ## Features
 
-- **Flexible Display Options:** Choose from different display types like modal, bar, and toast to best fit your website’s design and user experience.
-
-- **Customisable Consent Options:** Configure consent options for various cookie types, such as analytics, allowing for a granular consent process.
-
-- **Granular Callbacks:** Execute custom actions based on user consent, either globally or on a per-cookie basis. These callbacks can be configured to trigger specific functions on consent acceptance or rejection.
-
-- **Multilingual Support:** Includes translation capabilities to ensure that the consent interface communicates effectively with a diverse user base.
-
-- **Predefined Essential Cookies:** Define a set of essential cookies that are exempt from user consent, such as ccDismissed, ensuring that necessary website functionalities are maintained.
-
-- **Cookie Duration Management:** Control the duration for which each type of cookie is stored, providing clear information to users and aligning with GDPR’s data minimisation principle.
-
-- **Recommended and Default States:** Set certain cookies as recommended or default, guiding users while still leaving the final choice in their hands.
-
+- **Attribute Driven:** Implement using your own HTML and CSS, with the library handling the logic and functionality.
+- **Granular Callbacks:** Execute custom functions on consent acceptance or rejection.
+- **Modes:** Choose between saving cookie preferences on checkbox change, or on save. This is controlled by the `data-cookie-action="save"` attribute - if not present, cookie prefferences will be saved on checkbox change.
+- **Versioning:** Define a version number for your cookie policy, enabling you to update the policy and reset user preferences.
 - **Consent Recording:** Generate a unique identifier (uuid) for each consent instance, enabling a record of user preferences without storing personal data.
+- **Accessibility:** The library is fully accessible and as its attribute driven, you can easily customise the HTML to further meet your accessibility requirements.
+- **Destroy:** Destroy the cookie controller instance and remove all event listeners. Useful for using within SPA's.
+
+## Examples
+
+- [Basic](https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/cookie-controller/examples/basic.html)
+- [Tailwind](https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/cookie-controller/examples/tailwind.html) (WIP - Ugly!)
 
 ## Getting Started
 
@@ -27,67 +26,75 @@ Welcome to the Proto Cookie Controller library. Initalising this library will in
 To install the Proto Cookie Controller library, run the following command:
 
 ```bash
-npm install @protodigital/cookie-controller
+npm install @protodigital/primitives
 ```
 
 ### Usage
 
-To use the Proto Cookie Controller library, import the `CookieController` class from the library and instantiate it with the required configuration options.
+To use the Proto Cookie Controller library, import the `CookieController` class from the library and instantiate.
 
 ```typescript
-import CookieController from "@protodigital/cookie-controller";
+import { CookieController } from "@protodigital/primitives";
 
-const ccInstance = new CookieController({
-  type: "bar", // modal, bar and toast
-  website: {
-    name: "Proto Digital",
-    privacyPolicyUrl: "https://protodigital.com/privacy-policy",
+new CookieController({
+  onConsentChange: (data) => {
+    console.log(data);
   },
-  translations: {
-    websiteName: "Proto Digital",
-  },
-  requiredCookies: ["ccDismissed"],
-  cookies: [
-    {
-      key: "analytics",
-      label: "Analytics",
-      description:
-        "We use analytics cookies to help us understand how users interact with our website. This helps us improve the website and your experience.",
-      requiredCookies: ["_ga", "_gid", "_gat"],
-      duration: 30,
-      recommended: true,
-      default: false,
-      onAccept: () => {},
-      onReject: () => {},
+  versioning: {
+    // optional
+    current: "1.0.1",
+    onNewVersion: (oldVersion, newVersion) => {
+      console.log(oldVersion, newVersion);
     },
-  ],
-  onAccept: (uuid: string) => {},
-  onReject: (uuid: string) => {},
+  },
 });
 ```
 
-## Supporting GDPR-Related Features
+> All config is optional, though you will need to supply a onConsentChange callback and save the data to ensure compliance with the consent recording requirements of GDPR.
 
-Our Cookie Controller is developed with GDPR considerations in mind and includes features that support adherence to GDPR principles. It's important to note that while this tool offers functionalities aligning with GDPR requirements, full compliance depends on how the tool is implemented within your website's broader context and architecture.
+```html
+<div data-cookie-details>
+  <button data-cookie-action="dismiss">Close</button>
+  <button data-cookie-action="accept">Accept Recommended</button>
+  <button data-cookie-action="reject">Reject</button>
+  <a href="https://www.example.com/privacy-policy" target="_blank">
+    Cookie Policy
+  </a>
+  <ul>
+    <li>
+      <input id="analytics" type="checkbox" data-cookie-config="analytics" />
+      <label for="analytics">Analytics</label>
+    </li>
+    <li>
+      <input id="marketing" type="checkbox" data-cookie-config="marketing" />
+      <label for="marketing">Marketing</label>
+    </li>
+  </ul>
 
-### Key Features
+  <!-- If not present, cookie prefferences will be saved on checkbox change -->
+  <button data-cookie-action="save">Save My Preferences</button>
+</div>
 
-- **Explicit Consent Management:** The controller facilitates the collection of explicit user consent for cookies, barring the use of pre-ticked boxes or implied consent strategies.
+<div data-cookie-alert>
+  <button data-cookie-action="accept">Accept All</button>
+  <button data-cookie-action="reject">Reject</button>
+  <button data-cookie-action="details">Details</button>
+  <button data-cookie-action="dismiss">Close</button>
+</div>
 
-- **Granular Consent Options:** Users can provide consent selectively for different types of cookies, such as analytical, functional, or marketing cookies, enabling a more tailored consent experience.
+<button data-cookie-action="details">Open Cookie Modal</button>
+```
 
-- **Easy Consent Withdrawal:** The tool ensures that withdrawing consent is as straightforward as giving it, allowing users to modify their preferences with ease.
+## GDPR Compliance Tips
 
-- **Transparency and Information:** It provides clear information about the use of cookies, helping website owners inform users about what cookies are active, their purpose, and their duration.
+Our cookie controller is developed with GDPR considerations in mind, supporting adherence to GDPR principles. While this tool offers functionalities aligning with GDPR requirements, full compliance depends on how it is implemented within your website's broader context and architecture.
 
-- **Consent Record Keeping:** While the tool does not store personal data, it generates a unique session identifier to record consent details, which helps in maintaining an audit trail without compromising user privacy.
+Here are some tips for achieving compliance:
 
-- **Accessibility and Usability:** Designed with accessibility in mind, ensuring that consent options are easily navigable and understandable.
+- **Cookie Policy Link:** Include a link to your cookie or privacy policy.
+- **Define Cookie Controls:** Clearly define what each checkbox controls, providing details like the name, duration, and purpose of the cookies.
+- **Necessary Cookies:** Inform users about necessary cookies. These should not be connected to a `data-cookie-config` attribute, as they are for informational purposes only.
+- **Equal Prominence:** Ensure 'Accept' and 'Reject' options are equally prominent.
+- **Accessibility:** Make sure the cookie controller is accessible to all users.
 
-### Implementation Note
-
-For effective use, it’s essential that the Proto Cookie Controller is configured and integrated in line with your specific website requirements. The actual GDPR compliance of your website will depend on multiple factors, including how cookies are used and managed beyond just obtaining consent.
-
-### Disclaimer
-
-This tool is provided to assist in aligning with GDPR-related requirements for cookie management. However, it's important to consult with a legal expert in GDPR compliance for comprehensive guidance and to ensure that your website fully meets all regulatory obligations.
+Please note this is not an exhaustive list, and we recommend seeking legal advice to ensure full compliance.
