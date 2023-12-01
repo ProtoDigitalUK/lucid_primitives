@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@repo/typescript-config": "*",
+    "@types/uuid": "^9.0.7",
     "tsup": "^8.0.1",
     "typescript": "^5.3.2"
   },
@@ -27,5 +28,8 @@
   "license": "ISC",
   "volta": {
     "node": "21.3.0"
+  },
+  "dependencies": {
+    "uuid": "^9.0.1"
   }
 }
