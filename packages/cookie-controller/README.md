@@ -96,5 +96,11 @@ Here are some tips for achieving compliance:
 - **Necessary Cookies:** Inform users about necessary cookies. These should not be connected to a `data-cookie-config` attribute, as they are for informational purposes only.
 - **Equal Prominence:** Ensure 'Accept' and 'Reject' options are equally prominent.
 - **Accessibility:** Make sure the cookie controller is accessible to all users.
+- **Consent Recording:** Save the consent data to ensure compliance with the consent recording requirements of GDPR.
 
 Please note this is not an exhaustive list, and we recommend seeking legal advice to ensure full compliance.
+
+## Future Development
+
+- Add a method to check cookie consent status.
+- Update tailwind example with fully styled version and follow compliance tips
