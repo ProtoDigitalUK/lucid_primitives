@@ -85,6 +85,16 @@ new CookieController({
 <button data-cookie-action="details">Open Cookie Modal</button>
 ```
 
+### Methods
+
+#### `destroy()`
+
+Destroy the cookie controller instance and remove all event listeners. Useful for using within SPA's.
+
+#### `getCookieConsent(key)`
+
+Returns the current consent status of a cookie key (true/false).
+
 ## GDPR Compliance Tips
 
 Our cookie controller is developed with GDPR considerations in mind, supporting adherence to GDPR principles. While this tool offers functionalities aligning with GDPR requirements, full compliance depends on how it is implemented within your website's broader context and architecture.
@@ -102,5 +112,4 @@ Please note this is not an exhaustive list, and we recommend seeking legal advic
 
 ## Future Development
 
-- Add a method to check cookie consent status.
 - Update tailwind example with fully styled version and follow compliance tips

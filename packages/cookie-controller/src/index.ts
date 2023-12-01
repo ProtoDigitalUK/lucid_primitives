@@ -4,7 +4,6 @@ const attributes = {
   details: "data-cookie-details",
   alert: "data-cookie-alert",
   cookieConfig: "data-cookie-config",
-
   action: {
     attribute: "data-cookie-action",
     value: {
@@ -60,6 +59,8 @@ export default class CookieController {
       this.state.version = this.options.versioning.current;
       this.cookieState = this.state;
     }
+
+    this.onConsentChange("onload");
   }
   private registerEvents() {
     this.accept = this.accept.bind(this);
@@ -118,7 +119,7 @@ export default class CookieController {
       element.setAttribute("aria-haspopup", "dialog");
     });
   }
-  private getCookie(key: string) {
+  private getCookieHelper(key: string) {
     const cookie = document.cookie
       .split(";")
       .find((cookie) => cookie.trim().startsWith(`${key}=`));
@@ -141,15 +142,25 @@ export default class CookieController {
     this.state.cookies[key] = value;
     this.cookieState = this.state;
 
+    this.onConsentChange("cookie", {
+      key,
+      value,
+    });
+  }
+  private onConsentChange(
+    type: ConsentChangeT["type"],
+    cookie?: {
+      key: string;
+      value: boolean;
+    }
+  ) {
     if (this.options.onConsentChange) {
       this.options.onConsentChange({
-        type: "cookie",
+        type,
         uuid: this.state.uuid,
-        cookie: {
-          key,
-          value,
-        },
+        version: this.state.version,
         cookies: this.state.cookies,
+        cookie,
       });
     }
   }
@@ -188,14 +199,7 @@ export default class CookieController {
       this.state.cookies[key] = mode === "accept" ? true : false;
     });
 
-    if (this.options.onConsentChange) {
-      this.options.onConsentChange({
-        type: mode,
-        uuid: this.state.uuid,
-        cookies: this.state.cookies,
-      });
-    }
-
+    this.onConsentChange(mode);
     this.dismiss();
   }
   dismiss() {
@@ -223,15 +227,11 @@ export default class CookieController {
       this.state.cookies[key] = value;
     });
 
-    if (this.options.onConsentChange) {
-      this.options.onConsentChange({
-        type: "save",
-        uuid: this.state.uuid,
-        cookies: this.state.cookies,
-      });
-    }
-
+    this.onConsentChange("save");
     this.dismiss();
+  }
+  getCookieConsent(key: string) {
+    return this.state.cookies[key];
   }
 
   // ----------------
@@ -288,7 +288,7 @@ export default class CookieController {
     });
 
     try {
-      const value = this.getCookie(cookieController);
+      const value = this.getCookieHelper(cookieController);
       if (value) {
         return JSON.parse(value) as CookieStateT;
       }
@@ -360,8 +360,9 @@ interface CookieControllerOptionsT {
   };
 }
 interface ConsentChangeT {
-  type: "cookie" | "accept" | "reject" | "save";
+  type: "cookie" | "accept" | "reject" | "save" | "onload";
   uuid: string;
+  version?: string;
 
   cookie?: {
     key: string;
