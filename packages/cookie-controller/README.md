@@ -1,6 +1,6 @@
 # Proto Cookie Controller
 
-The Proto Cookie Controller is a lightweight, dependency-free JavaScript library that enables you to easily implement a cookie consent solution on your website. It offers a range of features that enable you to support GDPR compliance.
+The Proto Cookie Controller is a lightweight JavaScript library that enables you to easily implement a cookie consent solution on your website. It offers a range of features that enable you to support GDPR compliance.
 
 Similar to other Proto libraries, there is a focus of config in HTML and the library avoids inserting any HTML into the DOM and requires no CSS. This means you can easily customise the look and feel of the cookie controller to match your website's design.
 
