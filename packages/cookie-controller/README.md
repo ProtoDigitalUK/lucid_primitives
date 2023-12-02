@@ -41,8 +41,7 @@ new CookieController({
     console.log(data);
   },
   versioning: {
-    // optional
-    current: "1.0.1",
+    current: "1.0.0",
     onNewVersion: (oldVersion, newVersion) => {
       console.log(oldVersion, newVersion);
     },
