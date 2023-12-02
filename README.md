@@ -5,7 +5,7 @@ Welcome to the Proto Primitives repository. This repository contains the source 
 ## Installation
 
 ```bash
-npm install @protodigital/headless
+npm install @protodigital/primitives
 ```
 
 ## Libraries
