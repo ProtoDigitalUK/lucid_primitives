@@ -3,43 +3,76 @@
 ---
 
 <div
-  data-cookie-details
-  class="fixed top-0 left-0 bottom-0 bg-red-500 w-[300px] hidden data-[cookie-details=true]:block data-[cookie-details=false]:hidden"
+  data-cookie-details="true"
+  class="fixed top-0 left-0 bottom-0 bg-black w-[500px] hidden data-[cookie-details=true]:block data-[cookie-details=false]:hidden"
 >
-  <div>
-    <button
-      data-cookie-action="dismiss"
-      class="p-2 border-white border rounded-md">Close</button
-    >
-    <button
-      data-cookie-action="accept"
-      class="p-2 border-white border rounded-md">Accept All</button
-    >
+  <div class="overflow-y-auto p-7 text-white divide-y space-y-5 relative">
+    <div class="mb-5 pb-5">
+      <h2 class="font-bold text-2xl mb-2.5">Cookie Policy</h2>
+      <p class="mb-2">
+        This website utilises technologies such as cookies to enable essential
+        site functionality, as well as for analytics, personalisation, and
+        targeted advertising purposes. You may change your settings at any time
+        or accept the default settings.
+      </p>
+      <p>
+        For more detailed information about the cookies we use, see our
+        <a
+          class="text-indigo-500 underline"
+          href="https://protodigital.co.uk/cookie-policy">Cookie Policy</a
+        >.
+      </p>
+      <div class="flex gap-2.5 mt-4">
+        <button
+          data-cookie-action="accept"
+          class="p-2 border-white border rounded-md w-1/2 hover:bg-indigo-500 transition-colors duration-200 hover:border-indigo-500"
+          >Accept all</button
+        >
 
-    <button
-      data-cookie-action="reject"
-      class="p-2 border-white border rounded-md">Reject</button
+        <button
+          data-cookie-action="reject"
+          class="p-2 border-white border rounded-md w-1/2 hover:bg-indigo-500 transition-colors duration-200 hover:border-indigo-500"
+          >Reject all</button
+        >
+      </div>
+      <button
+        data-cookie-action="dismiss"
+        class="absolute top-5 right-5 hover:fill-red-500 fill-white transition-colors duration-200"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="16"
+          width="12"
+          viewBox="0 0 384 512"
+          class="h-6 w-6"
+          ><path
+            d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
+          ></path></svg
+        >
+        <span class="sr-only">close</span>
+      </button>
+    </div>
+
+    <a href="https://protodigital.co.uk/cookie-policy"> Cookie Policy</a>
+    <ul>
+      <li>
+        <input id="essential" type="checkbox" data-cookie-config="essential" />
+        <label for="essential">Essential</label>
+      </li>
+      <li>
+        <input id="analytics" type="checkbox" data-cookie-config="analytics" />
+        <label for="analytics">Analytics</label>
+      </li>
+      <li>
+        <input id="marketing" type="checkbox" data-cookie-config="marketing" />
+        <label for="marketing">Marketing</label>
+      </li>
+    </ul>
+
+    <button data-cookie-action="save" class="p-2 border-white border rounded-md"
+      >Save My Preferences</button
     >
   </div>
-  <a href="https://protodigital.co.uk/cookie-policy"> Cookie Policy</a>
-  <ul>
-    <li>
-      <input id="essential" type="checkbox" data-cookie-config="essential" />
-      <label for="essential">Essential</label>
-    </li>
-    <li>
-      <input id="analytics" type="checkbox" data-cookie-config="analytics" />
-      <label for="analytics">Analytics</label>
-    </li>
-    <li>
-      <input id="marketing" type="checkbox" data-cookie-config="marketing" />
-      <label for="marketing">Marketing</label>
-    </li>
-  </ul>
-
-  <button data-cookie-action="save" class="p-2 border-white border rounded-md"
-    >Save My Preferences</button
-  >
 </div>
 
 <div
