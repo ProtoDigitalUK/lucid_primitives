@@ -4,10 +4,26 @@
 
 <div
   data-cookie-details="true"
-  class="fixed top-0 left-0 bottom-0 bg-black w-[500px] hidden data-[cookie-details=true]:block data-[cookie-details=false]:hidden"
+  class="fixed top-0 left-0 bottom-0 bg-black w-[500px] -translate-x-full data-[cookie-details=true]:translate-x-0 data-[cookie-details=false]:-translate-x-full overflow-y-auto p-7 text-white h-screen flex flex-col justify-between transition-transform duration-200"
 >
-  <div class="overflow-y-auto p-7 text-white divide-y space-y-5 relative">
-    <div class="mb-5 pb-5">
+  <div>
+    <div class="mb-5 pb-5 border-b border-neutral-800">
+      <button
+        data-cookie-action="dismiss"
+        class="absolute top-5 right-5 hover:fill-red-500 fill-white transition-colors duration-200"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="16"
+          width="12"
+          viewBox="0 0 384 512"
+          class="h-6 w-6"
+          ><path
+            d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
+          ></path></svg
+        >
+        <span class="sr-only">close</span>
+      </button>
       <h2 class="font-bold text-2xl mb-2.5">Cookie Policy</h2>
       <p class="mb-2">
         This website utilises technologies such as cookies to enable essential
@@ -35,44 +51,111 @@
           >Reject all</button
         >
       </div>
-      <button
-        data-cookie-action="dismiss"
-        class="absolute top-5 right-5 hover:fill-red-500 fill-white transition-colors duration-200"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="16"
-          width="12"
-          viewBox="0 0 384 512"
-          class="h-6 w-6"
-          ><path
-            d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
-          ></path></svg
-        >
-        <span class="sr-only">close</span>
-      </button>
     </div>
-
-    <a href="https://protodigital.co.uk/cookie-policy"> Cookie Policy</a>
     <ul>
-      <li>
-        <input id="essential" type="checkbox" data-cookie-config="essential" />
-        <label for="essential">Essential</label>
+      <li class="mb-5 pb-5 border-b border-neutral-800">
+        <details open>
+          <summary
+            class="font-bold text-xl flex justify-between items-center flex-wrap transition-all duration-200 cursor-pointer hover:text-indigo-500"
+          >
+            <div class="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="16"
+                width="10"
+                viewBox="0 0 320 512"
+                class="fill-current mr-2.5"
+              >
+                <path
+                  d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"
+                ></path>
+              </svg>
+              <h3 class="">Essential</h3>
+            </div>
+            <span class="text-green-500 text-sm">always active</span>
+          </summary>
+          <div class="bg-neutral-900 rounded-md p-4 mt-2.5">
+            <ul class="text-sm">
+              <li class="flex justify-between items-center flex-wrap mb-1.5">
+                <span class="font-bold">Cookie</span>
+                <span>CookieController</span>
+              </li>
+              <li class="flex justify-between items-center flex-wrap mb-1.5">
+                <span class="font-bold">Duration</span>
+                <span>never expires</span>
+              </li>
+              <li class="flex-col flex">
+                <span class="font-bold mb-1">Purpose</span>
+                <span>
+                  This cookie is used to remember your cookie preferences.
+                </span>
+              </li>
+            </ul>
+          </div>
+        </details>
       </li>
-      <li>
-        <input id="analytics" type="checkbox" data-cookie-config="analytics" />
-        <label for="analytics">Analytics</label>
-      </li>
-      <li>
-        <input id="marketing" type="checkbox" data-cookie-config="marketing" />
-        <label for="marketing">Marketing</label>
+      <li class="mb-5 pb-5">
+        <details>
+          <summary
+            class="font-bold text-xl flex justify-between items-center flex-wrap transition-all duration-200 cursor-pointer hover:text-indigo-500"
+          >
+            <div class="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="16"
+                width="10"
+                viewBox="0 0 320 512"
+                class="fill-current mr-2.5"
+              >
+                <path
+                  d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"
+                ></path>
+              </svg>
+              <label for="analytics">Analytics</label>
+            </div>
+            <div class="">
+              <input
+                class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-indigo-500 checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-white checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
+                role="switch"
+                id="analytics"
+                type="checkbox"
+                data-cookie-config="analytics"
+              />
+            </div>
+          </summary>
+          <div class="bg-neutral-900 rounded-md p-4 mt-2.5">
+            <ul class="text-sm">
+              <li class="flex justify-between items-center flex-wrap mb-1.5">
+                <span class="font-bold">Cookie</span>
+                <span> _ga</span>
+              </li>
+              <li class="flex justify-between items-center flex-wrap mb-1.5">
+                <span class="font-bold">Duration</span>
+                <span>2 years</span>
+              </li>
+              <li class="flex-col flex">
+                <span class="font-bold mb-1">Purpose</span>
+                <span>
+                  This cookie is installed by Google Analytics. The cookie is
+                  used to calculate visitor, session, campaign data and keep
+                  track of site usage for the site's analytics report. The
+                  cookies store information anonymously and assign a randomly
+                  generated number to identify unique visitors.
+                </span>
+              </li>
+            </ul>
+          </div>
+        </details>
       </li>
     </ul>
-
-    <button data-cookie-action="save" class="p-2 border-white border rounded-md"
-      >Save My Preferences</button
-    >
   </div>
+
+  <button
+    data-cookie-action="save"
+    class="p-2 border-white border rounded-md w-full hover:bg-indigo-500 transition-colors duration-200 hover:border-indigo-500"
+  >
+    Save preferences
+  </button>
 </div>
 
 <div
