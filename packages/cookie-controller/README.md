@@ -17,7 +17,7 @@ Similar to other Proto libraries, there is a focus of config in HTML and the lib
 ## Examples
 
 - [Basic](https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/cookie-controller/examples/basic.html)
-- [Tailwind](https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/cookie-controller/examples/tailwind.html) (WIP - Ugly!)
+- [Tailwind](https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/cookie-controller/examples/tailwind.html)
 
 ## Getting Started
 
@@ -26,7 +26,7 @@ Similar to other Proto libraries, there is a focus of config in HTML and the lib
 To install the Proto Cookie Controller library, run the following command:
 
 ```bash
-npm install @protodigital/primitives
+npm install @protodigital/cookie-controller
 ```
 
 ### Usage
@@ -34,7 +34,7 @@ npm install @protodigital/primitives
 To use the Proto Cookie Controller library, import the `CookieController` class from the library and instantiate.
 
 ```typescript
-import { CookieController } from "@protodigital/primitives";
+import CookieController from "@protodigital/cookie-controller";
 
 new CookieController({
   onConsentChange: (data) => {
@@ -84,6 +84,8 @@ new CookieController({
 <button data-cookie-action="details">Open Cookie Modal</button>
 ```
 
+> For a more detailed example, checkout the tailwind.html example.
+
 ### Methods
 
 #### `destroy()`
@@ -108,7 +110,3 @@ Here are some tips for achieving compliance:
 - **Consent Recording:** Save the consent data to ensure compliance with the consent recording requirements of GDPR.
 
 Please note this is not an exhaustive list, and we recommend seeking legal advice to ensure full compliance.
-
-## Future Development
-
-- Update tailwind example with fully styled version and follow compliance tips

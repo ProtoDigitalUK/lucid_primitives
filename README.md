@@ -4,9 +4,7 @@ Welcome to the Proto Primitives repository. This repository contains the source 
 
 ## Installation
 
-```bash
-npm install @protodigital/primitives
-```
+Each library is published as a separate package on NPM. To install a library, find the package name from the readmes below and run the given installation command.
 
 ## Libraries
 

@@ -2,9 +2,60 @@
 
 ---
 
+<!-- Alert -->
 <div
-  data-cookie-details="true"
-  class="fixed top-0 left-0 bottom-0 bg-black w-[500px] -translate-x-full data-[cookie-details=true]:translate-x-0 data-[cookie-details=false]:-translate-x-full overflow-y-auto p-7 text-white h-screen flex flex-col justify-between transition-transform duration-200"
+  data-cookie-alert
+  class="bg-black rounded-md p-5 text-white fixed bottom-2.5 left-2.5 right-2.5 translate-y-[calc(100%+10px)] pointer-events-none data-[cookie-alert=true]:pointer-events-auto data-[cookie-alert=true]:translate-y-0 data-[cookie-alert=true]:flex data-[cookie-alert=false]:hidden z-50 md:items-end justify-between gap-5 transition-transform duration-200 flex-col md:flex-row"
+  aria-labelledby="cookie-details-title-1"
+>
+  <div class="max-w-4xl">
+    <h2 class="text-xl font-bold mb-1" id="cookie-details-title-1">
+      Cookie Policy
+    </h2>
+    <p>
+      Hey there! Our website relies on cookies for essential functions,
+      analytics, personalisation, and targeted ads. Tweak your settings anytime
+      or go with the defaults. Want the full scoop on our cookies? Check out our
+
+
+      <a
+        href="https://protodigital.co.uk/cookie-policy"
+        class="text-indigo-500 underline"
+      >
+        Cookie Policy
+      </a>
+    </p>
+  </div>
+  <div class="gap-4 flex min-w-max md:flex-row flex-col">
+    <button
+      data-cookie-action="details"
+      class="p-2 border-white border rounded-md hover:bg-indigo-500 transition-colors duration-200 hover:border-indigo-500 px-5 w-full md:w-auto"
+    >
+      Settings
+    </button>
+    <button
+      data-cookie-action="accept"
+      class="p-2 border-white border rounded-md hover:bg-indigo-500 transition-colors duration-200 hover:border-indigo-500 px-5 w-full md:w-auto"
+    >
+      Accept
+    </button>
+    <button
+      data-cookie-action="reject"
+      class="p-2 border-white border rounded-md hover:bg-indigo-500 transition-colors duration-200 hover:border-indigo-500 px-5 w-full md:w-auto"
+    >
+      Reject
+    </button>
+  </div>
+  <button data-cookie-action="dismiss" class="underline absolute top-5 right-5">
+    close
+  </button>
+</div>
+
+<!-- Settings -->
+<div
+  data-cookie-details
+  class="fixed top-0 left-0 bottom-0 bg-black w-full md:w-[500px] -translate-x-full data-[cookie-details=true]:translate-x-0 data-[cookie-details=false]:-translate-x-full overflow-y-auto p-7 text-white h-screen flex flex-col justify-between transition-transform duration-200 z-50"
+  aria-labelledby="cookie-details-title-2"
 >
   <div>
     <div class="mb-5 pb-5 border-b border-neutral-800">
@@ -24,37 +75,42 @@
         >
         <span class="sr-only">close</span>
       </button>
-      <h2 class="font-bold text-2xl mb-2.5">Cookie Policy</h2>
+      <h2 class="font-bold text-2xl mb-2.5" id="cookie-details-title-2">
+        Cookie Policy
+      </h2>
       <p class="mb-2">
-        This website utilises technologies such as cookies to enable essential
-        site functionality, as well as for analytics, personalisation, and
-        targeted advertising purposes. You may change your settings at any time
-        or accept the default settings.
+        Welcome to our site! We use cookies to make sure everything works
+        smoothly and to understand how you use our website. You're in control -
+        feel free to customise your settings or stick with the defaults.
       </p>
       <p>
-        For more detailed information about the cookies we use, see our
+        Curious about the cookies we use? Dive into our
         <a
           class="text-indigo-500 underline"
-          href="https://protodigital.co.uk/cookie-policy">Cookie Policy</a
-        >.
+          href="https://protodigital.co.uk/cookie-policy"
+        >
+          Cookie Policy
+        </a>
+         for all the details.
       </p>
       <div class="flex gap-2.5 mt-4">
         <button
           data-cookie-action="accept"
           class="p-2 border-white border rounded-md w-1/2 hover:bg-indigo-500 transition-colors duration-200 hover:border-indigo-500"
-          >Accept all</button
         >
-
+          Accept all
+        </button>
         <button
           data-cookie-action="reject"
           class="p-2 border-white border rounded-md w-1/2 hover:bg-indigo-500 transition-colors duration-200 hover:border-indigo-500"
-          >Reject all</button
         >
+          Reject all
+        </button>
       </div>
     </div>
     <ul>
       <li class="mb-5 pb-5 border-b border-neutral-800">
-        <details open>
+        <details>
           <summary
             class="font-bold text-xl flex justify-between items-center flex-wrap transition-all duration-200 cursor-pointer hover:text-indigo-500"
           >
@@ -94,62 +150,20 @@
           </div>
         </details>
       </li>
-      <li class="mb-5 pb-5">
-        <details>
-          <summary
-            class="font-bold text-xl flex justify-between items-center flex-wrap transition-all duration-200 cursor-pointer hover:text-indigo-500"
-          >
-            <div class="flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="16"
-                width="10"
-                viewBox="0 0 320 512"
-                class="fill-current mr-2.5"
-              >
-                <path
-                  d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"
-                ></path>
-              </svg>
-              <label for="analytics">Analytics</label>
-            </div>
-            <div class="">
-              <input
-                class="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-indigo-500 checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-white checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
-                role="switch"
-                id="analytics"
-                type="checkbox"
-                data-cookie-config="analytics"
-              />
-            </div>
-          </summary>
-          <div class="bg-neutral-900 rounded-md p-4 mt-2.5">
-            <ul class="text-sm">
-              <li class="flex justify-between items-center flex-wrap mb-1.5">
-                <span class="font-bold">Cookie</span>
-                <span> _ga</span>
-              </li>
-              <li class="flex justify-between items-center flex-wrap mb-1.5">
-                <span class="font-bold">Duration</span>
-                <span>2 years</span>
-              </li>
-              <li class="flex-col flex">
-                <span class="font-bold mb-1">Purpose</span>
-                <span>
-                  This cookie is installed by Google Analytics. The cookie is
-                  used to calculate visitor, session, campaign data and keep
-                  track of site usage for the site's analytics report. The
-                  cookies store information anonymously and assign a randomly
-                  generated number to identify unique visitors.
-                </span>
-              </li>
-            </ul>
-          </div>
-        </details>
+      <li
+        class="mb-5 pb-5 font-bold text-xl flex justify-between items-center flex-wrap border-b border-neutral-800"
+      >
+        <label for="analytics">Analytics</label>
+        <input id="analytics" type="checkbox" data-cookie-config="analytics" />
+      </li>
+      <li
+        class="mb-5 pb-5 font-bold text-xl flex justify-between items-center flex-wrap"
+      >
+        <label for="marketing">Marketing</label>
+        <input id="marketing" type="checkbox" data-cookie-config="marketing" />
       </li>
     </ul>
   </div>
-
   <button
     data-cookie-action="save"
     class="p-2 border-white border rounded-md w-full hover:bg-indigo-500 transition-colors duration-200 hover:border-indigo-500"
@@ -158,31 +172,7 @@
   </button>
 </div>
 
-<div
-  data-cookie-alert
-  class="w-96 bg-black rounded-md p-5 text-white fixed bottom-5 left-5 hidden data-[cookie-alert=true]:block data-[cookie-alert=false]:hidden"
->
-  <h2 class="text-2xl font-bold">Cookie Policy</h2>
-  <button data-cookie-action="dismiss" class="underline absolute top-5 right-5">
-    Close
-  </button>
-
-  <div class="mt-5 gap-4 flex">
-    <button
-      data-cookie-action="accept"
-      class="p-2 border-white border rounded-md">Accept All</button
-    >
-    <button
-      data-cookie-action="reject"
-      class="p-2 border-white border rounded-md">Reject</button
-    >
-    <button
-      data-cookie-action="details"
-      class="p-2 border-white border rounded-md">Details</button
-    >
-  </div>
-</div>
-
+<!-- Toggle Btn -->
 <button
   data-cookie-action="details"
   class="flex items-center justify-center fixed bottom-5 right-5 h-14 w-14 rounded-full bg-black"
