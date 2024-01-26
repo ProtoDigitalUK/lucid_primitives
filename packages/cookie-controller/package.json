@@ -1,42 +1,38 @@
 {
-  "name": "@protodigital/cookie-controller",
-  "version": "1.0.1",
-  "private": false,
-  "description": "A lightweight cookie consent solution to help you comply with the EU Cookie Law and GDPR.",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/cookie-controller"
-  },
-  "type": "module",
-  "types": "./dist/index.d.ts",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "files": [
-    "dist"
-  ],
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
-  "scripts": {
-    "build": "tsc && tsup",
-    "dev": "tsup --watch"
-  },
-  "devDependencies": {
-    "@repo/typescript-config": "*",
-    "@types/uuid": "^9.0.7",
-    "tsup": "^8.0.1",
-    "typescript": "^5.3.2"
-  },
-  "author": "",
-  "license": "ISC",
-  "volta": {
-    "node": "21.3.0"
-  },
-  "dependencies": {
-    "uuid": "^9.0.1"
-  }
+	"name": "@protodigital/cookie-controller",
+	"version": "1.0.2",
+	"private": false,
+	"description": "A lightweight cookie consent solution to help you comply with the EU Cookie Law and GDPR.",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/cookie-controller"
+	},
+	"type": "module",
+	"types": "./dist/index.d.ts",
+	"main": "dist/index.cjs",
+	"module": "dist/index.js",
+	"files": ["dist"],
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"scripts": {
+		"build": "tsc && tsup",
+		"dev": "tsup --watch",
+		"lint": "npx @biomejs/biome lint src"
+	},
+	"devDependencies": {
+		"@repo/config": "*",
+		"@types/uuid": "^9.0.7",
+		"tsup": "^8.0.1",
+		"typescript": "^5.3.2"
+	},
+	"author": "",
+	"license": "ISC",
+	"volta": {
+		"node": "21.3.0"
+	}
 }

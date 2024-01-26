@@ -9,6 +9,8 @@ declare class CookieController {
     private getCookieHelper;
     private onCookieChange;
     private onConsentChange;
+    private regEventListenerLoop;
+    private generateUUID;
     destroy(): void;
     accept(): void;
     reject(): void;
@@ -34,7 +36,7 @@ declare class CookieController {
     get cookieState(): CookieStateT;
     get details(): Element | null;
     get alert(): Element | null;
-    get cookieConfig(): HTMLInputElement[];
+    get cookieConfig(): NodeListOf<HTMLInputElement>;
     get actionDismiss(): NodeListOf<Element>;
     get actionAccept(): NodeListOf<Element>;
     get actionReject(): NodeListOf<Element>;

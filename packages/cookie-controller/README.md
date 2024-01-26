@@ -10,7 +10,7 @@ Similar to other Proto libraries, there is a focus of config in HTML and the lib
 - **Granular Callbacks:** Execute custom functions on consent acceptance or rejection.
 - **Modes:** Choose between saving cookie preferences on checkbox change, or on save. This is controlled by the `data-cookie-action="save"` attribute - if not present, cookie prefferences will be saved on checkbox change.
 - **Versioning:** Define a version number for your cookie policy, enabling you to update the policy and reset user preferences.
-- **Consent Recording:** Generate a unique identifier (uuid) for each consent instance, enabling a record of user preferences without storing personal data.
+- **Consent Recording:** Generate a unique identifier for each consent instance, enabling a record of user preferences without storing personal data.
 - **Accessibility:** The library is fully accessible and as its attribute driven, you can easily customise the HTML to further meet your accessibility requirements.
 - **Destroy:** Destroy the cookie controller instance and remove all event listeners. Useful for using within SPA's.
 
@@ -105,7 +105,7 @@ Here are some tips for achieving compliance:
 - **Cookie Policy Link:** Include a link to your cookie or privacy policy.
 - **Define Cookie Controls:** Clearly define what each checkbox controls, providing details like the name, duration, and purpose of the cookies.
 - **Necessary Cookies:** Inform users about necessary cookies. These should not be connected to a `data-cookie-config` attribute, as they are for informational purposes only.
-- **Equal Prominence:** Ensure 'Accept' and 'Reject' options are equally prominent.
+- **Equal Prominence:** Ensure 'Accept' and 'Reject' options are equally prominent in your design.
 - **Accessibility:** Make sure the cookie controller is accessible to all users.
 - **Consent Recording:** Save the consent data to ensure compliance with the consent recording requirements of GDPR.
 
