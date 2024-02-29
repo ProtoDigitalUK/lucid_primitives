@@ -1,22 +1,24 @@
 {
-  "name": "playground",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro check && astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "@astrojs/check": "^0.3.1",
-    "@astrojs/tailwind": "^5.0.2",
-    "astro": "^3.6.4",
-    "tailwindcss": "^3.0.24",
-    "typescript": "^5.3.2"
-  },
-  "volta": {
-    "node": "21.3.0"
-  }
+	"name": "playground",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev",
+		"start": "astro dev",
+		"build": "astro check && astro build",
+		"preview": "astro preview",
+		"astro": "astro"
+	},
+	"dependencies": {
+		"@astrojs/check": "^0.3.1",
+		"@astrojs/tailwind": "^5.0.2",
+		"astro": "^3.6.4",
+		"tailwindcss": "^3.0.24",
+		"typescript": "^5.3.2",
+		"@protodigital/prefetcher": "*",
+		"@protodigital/cookie-controller": "*"
+	},
+	"volta": {
+		"node": "21.3.0"
+	}
 }

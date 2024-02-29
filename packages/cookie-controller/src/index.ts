@@ -30,12 +30,12 @@ export default class CookieController {
 
 	constructor(options?: CookieControllerOptionsT) {
 		if (options) this.userOptions = options;
-		this.initalise();
+		this.initialise();
 	}
 
 	// ----------------
 	// Private methods
-	private initalise() {
+	private initialise() {
 		this.state = this.cookieState;
 		this.registerEvents();
 		this.setStaticAttributes();

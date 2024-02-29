@@ -8,6 +8,7 @@ Each library is published as a separate package on NPM. To install a library, fi
 
 ## Libraries
 
+- [Prefetcher](https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/prefetcher)
 - [Cookie Controller](https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/cookie-controller)
 - Sticky Header
 - Forms

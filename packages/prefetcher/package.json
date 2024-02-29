@@ -1,11 +1,11 @@
 {
-	"name": "@protodigital/cookie-controller",
-	"version": "1.0.2",
+	"name": "@protodigital/prefetcher",
+	"version": "1.0.0",
 	"private": false,
-	"description": "A lightweight cookie consent solution to help you comply with the EU Cookie Law and GDPR.",
+	"description": "A lightweight library to handle prefetching links and data.",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/cookie-controller"
+		"url": "https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/prefetcher"
 	},
 	"type": "module",
 	"types": "./dist/index.d.ts",
@@ -26,7 +26,6 @@
 	},
 	"devDependencies": {
 		"@repo/config": "*",
-		"@types/uuid": "^9.0.7",
 		"tsup": "^8.0.1",
 		"typescript": "^5.3.2"
 	},

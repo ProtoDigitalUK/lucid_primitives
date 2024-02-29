@@ -2,4 +2,18 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Proto Primitives Playground" />
+<Layout title="Proto Primitives Playground">
+  <h1>Proto Primitives Playground</h1>
+  <ul>
+    <li>
+      <a href="/" data-prefetch>Home</a>
+    </li>
+    <li>
+      <a href="/about" data-prefetch>About</a>
+    </li>
+    <li>
+      <button id="load-data-prefetch">Load Data (prefetch)</button>
+      <button id="load-data">Load Data (standard)</button>
+    </li>
+  </ul>
+</Layout>
