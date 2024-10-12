@@ -1,10 +1,10 @@
 # Lucid Prefetcher
 
-A streamlined library designed to enhance anchor elements by prefetching the href content as soon as user intent is detected. Additionally, the library features a `Prefetch.Data` class, enabling asynchronous data fetching based on user interactions with specified targets.
+A streamlined library designed to enhance anchor elements by prefetching the href content as soon as user intent is detected. Additionally, the library features a `PrefetchData` class, enabling asynchronous data fetching based on user interactions with specified targets.
 
 ## Features
 
-- Prefetch link destinations on user intent
+- Prefetch link destinations on user intent (hover, touch, focus)
 - Prefetch data on user intent
 
 ## Getting Started
@@ -39,8 +39,13 @@ new PrefetchDatai({
 ```html
 <a 
     href="/about-me" 
-    data-prefetch
+    rel="prefetch-intent"
 >
     Hover me to prefetch
 </a>
 ```
+
+### Notes
+
+- This library makes use of the <Link rel="prefetch" /> tag, which is not yet supported by all browsers. Mainly Safari and iOS Safari.
+- If you're using [Astro](https://astro.build), you should use the astro:prefetch built in package instead as this has fallbacks for Safari & IOS along with support for prefetching stylesheets.

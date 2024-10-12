@@ -10,6 +10,6 @@ Each library is published as a separate package on NPM. To install a library, fi
 
 ## Libraries
 
-- [Prefetcher]()
+- [Prefetcher](https://github.com/ProtoDigitalUK/lucid_primitives/tree/master/packages/prefetcher)
 - [Elements]()
 - [Cookie Controller]()

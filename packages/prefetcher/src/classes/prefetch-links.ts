@@ -1,11 +1,30 @@
-const attributes = {
-	prefetch: "data-prefetch",
+const C = {
+	events: ["mouseenter", "touchstart", "focus"],
 };
 
 export default class PrefetchLinks {
-	attribute: string;
-	constructor(attribute?: string) {
-		this.attribute = attribute || attributes.prefetch;
+	preloaded: Set<string> = new Set();
+	constructor() {
+		if (!navigator.onLine) {
+			console.error("The device is offline, prefetch is not allowed.");
+			return;
+		}
+		if ("connection" in navigator) {
+			const connection = navigator.connection;
+			// @ts-expect-error
+			if (connection?.saveData) {
+				console.error("Save-Data is enabled, prefetch is not allowed.");
+				return;
+			}
+			// @ts-expect-error
+			if (/(2|3)g/.test(connection?.effectiveType)) {
+				console.error(
+					"2G or 3G connection is detected, prefetch is not allowed.",
+				);
+				return;
+			}
+		}
+
 		this.initialise();
 	}
 	// ----------------
@@ -13,12 +32,14 @@ export default class PrefetchLinks {
 	private initialise() {
 		this.prefetch = this.prefetch.bind(this);
 
-		this.regEventListenerLoop(
-			this.anchorElements,
-			true,
-			"mouseover",
-			this.prefetch,
-		);
+		for (const event of C.events) {
+			this.regEventListenerLoop(
+				this.prefetchIntent,
+				true,
+				event as keyof HTMLElementEventMap,
+				this.prefetch,
+			);
+		}
 	}
 	private regEventListenerLoop<T extends keyof HTMLElementEventMap>(
 		elements: NodeListOf<HTMLElement> | null,
@@ -28,42 +49,82 @@ export default class PrefetchLinks {
 	) {
 		if (!elements) return;
 		for (let i = 0; i < elements.length; i++) {
-			if (register) elements[i]?.addEventListener<T>(event, fn);
-			else elements[i]?.removeEventListener<T>(event, fn);
+			const element = elements[i];
+			if (!element) continue;
+
+			const href = (element as HTMLAnchorElement).href;
+			if (register && !this.preloaded.has(href)) {
+				element.addEventListener(event, fn);
+			} else if (!register || this.preloaded.has(href)) {
+				element.removeEventListener(event, fn);
+			}
 		}
 	}
-	private prefetch(e: MouseEvent) {
-		const href = (e.target as HTMLAnchorElement).href;
+	private removeEventListeners(element: HTMLElement) {
+		for (const event of C.events) {
+			element.removeEventListener(
+				event as keyof HTMLElementEventMap,
+				this.prefetch,
+			);
+		}
+	}
+	private shouldPreload(props: {
+		href: string;
+		target: string;
+	}): boolean {
+		try {
+			const { href, target } = props;
+			if (target === "_blank") return false;
+			if (href.includes("mailto:")) return false;
+			if (href.includes("tel:")) return false;
+			if (href.includes("#")) return false;
 
-		if (!href) return;
-		if (href.includes("mailto:")) return;
-		if (href.includes("tel:")) return;
-		if (href.includes("#")) return;
-		if (href === window.location.href) return;
+			const url = new URL(href);
+			if (url.origin !== window.location.origin) return false;
+			if (url.pathname === window.location.pathname) return false;
+			if (this.preloaded.has(href)) return false;
 
-		const prefetchLink = document.querySelector(`link[href="${href}"]`);
-		if (prefetchLink) return;
+			return true;
+		} catch (_) {
+			return false;
+		}
+	}
+	private prefetch(e: Event) {
+		const target = e.target as HTMLAnchorElement | null;
+		if (!target) return;
+
+		if (!this.shouldPreload({ href: target.href, target: target.target }))
+			return;
 
 		const link = document.createElement("link");
 		link.rel = "prefetch";
-		link.href = href;
+		link.href = target.href;
 		document.head.appendChild(link);
+
+		this.preloaded.add(target.href);
+		for (const element of this.prefetchIntent) {
+			if ((element as HTMLAnchorElement).href === target.href) {
+				this.removeEventListeners(element);
+			}
+		}
 	}
 	// ----------------
 	// Public methods
 	destroy() {
-		this.regEventListenerLoop(
-			this.anchorElements,
-			false,
-			"mouseover",
-			this.prefetch,
-		);
+		for (const event of C.events) {
+			this.regEventListenerLoop(
+				this.prefetchIntent,
+				false,
+				event as keyof HTMLElementEventMap,
+				this.prefetch,
+			);
+		}
 	}
 	// ----------------
 	// getters
-	get anchorElements() {
+	get prefetchIntent() {
 		return document.querySelectorAll(
-			`a[${this.attribute}]`,
+			`a[href][rel~="prefetch-intent"]`,
 		) as NodeListOf<HTMLAnchorElement>;
 	}
 }
