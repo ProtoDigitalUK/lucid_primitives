@@ -3,7 +3,8 @@ const C = {
 };
 
 export default class PrefetchLinks {
-	preloaded: Set<string> = new Set();
+	private preloaded: Set<string> = new Set();
+	private supportsSpeculationRules = false;
 	constructor() {
 		if (!navigator.onLine) {
 			console.error("The device is offline, prefetch is not allowed.");
@@ -25,6 +26,8 @@ export default class PrefetchLinks {
 			}
 		}
 
+		this.supportsSpeculationRules =
+			HTMLScriptElement?.supports("speculationrules");
 		this.initialise();
 	}
 	// ----------------
@@ -54,7 +57,7 @@ export default class PrefetchLinks {
 
 			const href = (element as HTMLAnchorElement).href;
 			if (register && !this.preloaded.has(href)) {
-				element.addEventListener(event, fn);
+				element.addEventListener(event, fn, { passive: true });
 			} else if (!register || this.preloaded.has(href)) {
 				element.removeEventListener(event, fn);
 			}
@@ -92,14 +95,14 @@ export default class PrefetchLinks {
 	private prefetch(e: Event) {
 		const target = e.target as HTMLAnchorElement | null;
 		if (!target) return;
-
 		if (!this.shouldPreload({ href: target.href, target: target.target }))
 			return;
 
-		const link = document.createElement("link");
-		link.rel = "prefetch";
-		link.href = target.href;
-		document.head.appendChild(link);
+		if (this.supportsSpeculationRules) {
+			this.addSpeculationRule(target.href);
+		} else {
+			this.addPrefetchLink(target.href);
+		}
 
 		this.preloaded.add(target.href);
 		for (const element of this.prefetchIntent) {
@@ -107,6 +110,26 @@ export default class PrefetchLinks {
 				this.removeEventListeners(element);
 			}
 		}
+	}
+	private addSpeculationRule(href: string) {
+		const specScript = document.createElement("script");
+		specScript.type = "speculationrules";
+		const specRules = {
+			prefetch: [
+				{
+					source: "list",
+					urls: [href],
+				},
+			],
+		};
+		specScript.textContent = JSON.stringify(specRules);
+		document.head.appendChild(specScript);
+	}
+	private addPrefetchLink(href: string) {
+		const link = document.createElement("link");
+		link.rel = "prefetch";
+		link.href = href;
+		document.head.appendChild(link);
 	}
 	// ----------------
 	// Public methods

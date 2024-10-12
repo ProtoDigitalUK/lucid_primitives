@@ -5,6 +5,7 @@ A streamlined library designed to enhance anchor elements by prefetching the hre
 ## Features
 
 - Prefetch link destinations on user intent (hover, touch, focus)
+- Basic support for [Speculation Rules](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/speculationrules)
 - Prefetch data on user intent
 
 ## Getting Started
