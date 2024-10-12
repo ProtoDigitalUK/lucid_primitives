@@ -210,7 +210,7 @@ export default class CookieController {
 			const element = this.cookieConfig[i];
 			if (!element) continue;
 			const key = element.getAttribute(attributes.cookieConfig) as string;
-			this.state.cookies[key] = mode === "accept" ? true : false;
+			this.state.cookies[key] = mode === "accept";
 		}
 
 		this.onConsentChange(mode);
@@ -230,7 +230,7 @@ export default class CookieController {
 
 			const key = element.getAttribute(attributes.cookieConfig) as string;
 			const value = this.state.cookies[key];
-			element.checked = value ? true : false;
+			element.checked = value ?? false;
 		}
 
 		this.detailsState = !this.detailsState;
@@ -291,14 +291,10 @@ export default class CookieController {
 	}
 	// State
 	get alertState() {
-		return this.alert?.getAttribute("data-cookie-alert") === "true"
-			? true
-			: false;
+		return this.alert?.getAttribute("data-cookie-alert") === "true";
 	}
 	get detailsState() {
-		return this.details?.getAttribute("data-cookie-details") === "true"
-			? true
-			: false;
+		return this.details?.getAttribute("data-cookie-details") === "true";
 	}
 	get cookieState() {
 		const defaultCookies: Record<string, boolean> = {};

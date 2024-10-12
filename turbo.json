@@ -1,16 +1,18 @@
 {
 	"$schema": "https://turbo.build/schema.json",
 	"globalDependencies": ["**/.env.*local"],
-	"pipeline": {
+	"ui": "tui",
+	"tasks": {
 		"build": {
 			"dependsOn": ["^build"]
-		},
-		"lint": {
-			"dependsOn": ["^lint"]
 		},
 		"dev": {
 			"cache": false,
 			"persistent": true
-		}
+		},
+		"lint": {},
+		"lint:fix": {},
+		"format": {},
+		"format:fix": {}
 	}
 }
