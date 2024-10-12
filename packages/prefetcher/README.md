@@ -1,4 +1,4 @@
-# Proto Prefetcher
+# Lucid Prefetcher
 
 A streamlined library designed to enhance anchor elements by prefetching the href content as soon as user intent is detected. Additionally, the library features a `Prefetch.Data` class, enabling asynchronous data fetching based on user interactions with specified targets.
 
@@ -11,16 +11,16 @@ A streamlined library designed to enhance anchor elements by prefetching the hre
 
 ### Installation
 
-To install the Proto Prefetcher library, run the following command:
+To install the Lucid Prefetcher library, run the following command:
 
 ```bash
-npm install @protodigital/prefetcher
+npm install @lucidclient/prefetcher
 ```
 
 ### Usage
 
 ```typescript
-import Prefetcher from "@protodigital/prefetcher";
+import Prefetcher from "@lucidclient/prefetcher";
 
 new Prefetch.Links(); // can pass custom attribute
 

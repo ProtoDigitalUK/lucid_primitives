@@ -1,17 +1,12 @@
 {
-	"name": "@lucidclient/prefetcher",
-	"version": "1.0.0",
+	"name": "@lucidclient/toggler",
+	"version": "0.0.0",
 	"private": false,
-	"description": "A lightweight library to handle prefetching links and data.",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/ProtoDigitalUK/lucid_primitives/tree/master/packages/prefetcher"
-	},
+	"description": "",
 	"type": "module",
 	"types": "./dist/index.d.ts",
 	"main": "dist/index.cjs",
 	"module": "dist/index.js",
-	"files": ["dist"],
 	"exports": {
 		".": {
 			"import": "./dist/index.js",
@@ -21,16 +16,15 @@
 	},
 	"scripts": {
 		"build": "tsc && tsup",
-		"dev": "tsup --watch",
-		"lint": "npx @biomejs/biome lint src"
+		"dev": "tsup --watch"
 	},
 	"devDependencies": {
 		"@repo/config": "*",
 		"tsup": "^8.3.0",
 		"typescript": "^5.6.3"
 	},
-	"author": "William Yallop <hello@williamyallop.com>",
-	"license": "MIT",
+	"author": "",
+	"license": "ISC",
 	"volta": {
 		"node": "20.18.0"
 	}

@@ -1,1 +1,0 @@
-{"version":3,"sources":["../src/index.ts"],"names":["src_default"],"mappings":"AAAA,IAAOA,EAAQ,CACb,MAAO,OACT","sourcesContent":["export default {\r\n  hello: \"world\",\r\n};\r\n"]}

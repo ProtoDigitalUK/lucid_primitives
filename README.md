@@ -1,6 +1,8 @@
-![Proto Primitives](https://github.com/ProtoDigitalUK/proto_primitives/blob/master/banner.png?raw=true)
+# Lucid Primitives
 
-Welcome to the Proto Primitives repository. This repository contains the source code for the Proto Primitives libraries, which is a collection of frontend oriented tools and utilities to develop performant and accessible web applications.
+> All libraries in this repository are yet to be published to NPM. They are currently being developed and will be published once they are ready.
+
+Welcome to the Lucid Primitives repository. This repository contains the source code for the Lucid Primitives libraries, which is a collection of client-side oriented tools and utilities to develop performant and accessible web applications.
 
 ## Installation
 
@@ -8,8 +10,6 @@ Each library is published as a separate package on NPM. To install a library, fi
 
 ## Libraries
 
-- [Prefetcher](https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/prefetcher)
-- [Cookie Controller](https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/cookie-controller)
-- Sticky Header
-- Forms
-- Toggler
+- [Prefetcher]()
+- [Elements]()
+- [Cookie Controller]()

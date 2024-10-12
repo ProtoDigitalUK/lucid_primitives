@@ -5,5 +5,8 @@
   "license": "MIT",
   "publishConfig": {
     "access": "public"
+  },
+  "volta": {
+    "node": "20.18.0"
   }
 }

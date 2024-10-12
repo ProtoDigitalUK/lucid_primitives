@@ -1,11 +1,11 @@
 {
-	"name": "@protodigital/cookie-controller",
+	"name": "@lucidclient/cookie-controller",
 	"version": "1.0.2",
 	"private": false,
 	"description": "A lightweight cookie consent solution to help you comply with the EU Cookie Law and GDPR.",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/cookie-controller"
+		"url": "https://github.com/ProtoDigitalUK/lucid_primitives/tree/master/packages/cookie-controller"
 	},
 	"type": "module",
 	"types": "./dist/index.d.ts",
@@ -26,13 +26,12 @@
 	},
 	"devDependencies": {
 		"@repo/config": "*",
-		"@types/uuid": "^9.0.7",
-		"tsup": "^8.0.1",
-		"typescript": "^5.3.2"
+		"tsup": "^8.3.0",
+		"typescript": "^5.6.3"
 	},
 	"author": "William Yallop <hello@williamyallop.com>",
 	"license": "MIT",
 	"volta": {
-		"node": "21.3.0"
+		"node": "20.18.0"
 	}
 }

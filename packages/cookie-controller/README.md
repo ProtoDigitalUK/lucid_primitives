@@ -1,8 +1,8 @@
-# Proto Cookie Controller
+# Lucid Cookie Controller
 
-The Proto Cookie Controller is a lightweight JavaScript library that enables you to easily implement a cookie consent solution on your website. It offers a range of features that enable you to support GDPR compliance.
+The Lucid Cookie Controller is a lightweight JavaScript library that enables you to easily implement a cookie consent solution on your website. It offers a range of features that enable you to support GDPR compliance.
 
-Similar to other Proto libraries, there is a focus of config in HTML and the library avoids inserting any HTML into the DOM and requires no CSS. This means you can easily customise the look and feel of the cookie controller to match your website's design.
+Similar to other Lucid libraries, there is a focus of config in HTML and the library avoids inserting any HTML into the DOM and requires no CSS. This means you can easily customise the look and feel of the cookie controller to match your website's design.
 
 ## Features
 
@@ -16,25 +16,25 @@ Similar to other Proto libraries, there is a focus of config in HTML and the lib
 
 ## Examples
 
-- [Basic](https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/cookie-controller/examples/basic.html)
-- [Tailwind](https://github.com/ProtoDigitalUK/proto_primitives/tree/master/packages/cookie-controller/examples/tailwind.html)
+- [Basic](https://github.com/ProtoDigitalUK/lucid_primitives/tree/master/packages/cookie-controller/examples/basic.html)
+- [Tailwind](https://github.com/ProtoDigitalUK/lucid_primitives/tree/master/packages/cookie-controller/examples/tailwind.html)
 
 ## Getting Started
 
 ### Installation
 
-To install the Proto Cookie Controller library, run the following command:
+To install the Lucid Cookie Controller library, run the following command:
 
 ```bash
-npm install @protodigital/cookie-controller
+npm install @lucidclient/cookie-controller
 ```
 
 ### Usage
 
-To use the Proto Cookie Controller library, import the `CookieController` class from the library and instantiate.
+To use the Lucid Cookie Controller library, import the `CookieController` class from the library and instantiate.
 
 ```typescript
-import CookieController from "@protodigital/cookie-controller";
+import CookieController from "@lucidclient/cookie-controller";
 
 new CookieController({
   onConsentChange: (data) => {
