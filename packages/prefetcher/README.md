@@ -20,11 +20,11 @@ npm install @lucidclient/prefetcher
 ### Usage
 
 ```typescript
-import Prefetcher from "@lucidclient/prefetcher";
+import { PrefetchLinks, PrefetchData } from "@lucidclient/prefetcher";
 
-new Prefetch.Links(); // can pass custom attribute
+new PrefetchLinks();
 
-new Prefetch.Data({
+new PrefetchDatai({
   target: "#get-user",
   fetch: () => {
     return fetch("/api/users").then((res) => res.json());
@@ -32,10 +32,15 @@ new Prefetch.Data({
   onClick: (data) => {
     console.log(data);
   },
-  staletime: 60000, // not required
+  staletime: 60000, // optional
 });
 ```
 
 ```html
-<a href="/about-me" data-prefetch>Hover me to prefetch </a>
+<a 
+    href="/about-me" 
+    data-prefetch
+>
+    Hover me to prefetch
+</a>
 ```
