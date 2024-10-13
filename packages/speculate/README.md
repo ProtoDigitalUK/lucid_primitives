@@ -73,4 +73,4 @@ new PrefetchData({
 ## Notes
 
 - Speculation Rules are experimental and currently only supported in Chromium-based browsers. See [Can I Use](https://caniuse.com/mdn-html_elements_script_type_speculationrules) for more information.
-- This library makes use of the `<link rel="prefetch">` as a fallback, this is not supported by Safari or iOS Safari. We currently dont have a fetch fallback for this, though we are considering adding one in the future.
+- This library makes use of the `<link rel="prefetch">` as a fallback, this is not supported by Safari or iOS Safari.

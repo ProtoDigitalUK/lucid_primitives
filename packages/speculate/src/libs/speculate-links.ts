@@ -1,20 +1,27 @@
 import type { SpeculationTriggers, SpeculationActions } from "../types.js";
 
 const C: {
-	intentEvents: Array<keyof HTMLElementEventMap>;
+	moderateEvents: Array<keyof HTMLElementEventMap>;
 	fallbackTriggerSupport: Array<SpeculationTriggers>;
 	fallbackTrigger: SpeculationTriggers;
 	fallbackAction: SpeculationActions;
 } = {
-	intentEvents: ["mouseenter", "touchstart", "focus"],
+	moderateEvents: ["mouseenter", "touchstart", "focus"],
 	fallbackTriggerSupport: ["visible", "moderate"],
 	fallbackTrigger: "moderate",
 	fallbackAction: "prefetch",
 };
 
+let initialised = false;
 const prefetched = new Set<string>();
 const speculationSupport = HTMLScriptElement.supports("speculationrules");
+const prefetchSupport = document
+	.createElement("link")
+	.relList?.supports?.("prefetch");
 let observer: IntersectionObserver;
+
+// ---------------------------------------------------------
+// Events
 
 /**
  * Unobserves and deregisters the target anchor element
@@ -28,7 +35,7 @@ const unobserve = (target: HTMLAnchorElement) => {
  * Handles registering event listeners for the given moderate trigger elements
  */
 const addEventListeners = (element: HTMLAnchorElement) => {
-	for (const event of C.intentEvents) {
+	for (const event of C.moderateEvents) {
 		element.addEventListener(event, intentEvent, { passive: true });
 	}
 };
@@ -37,7 +44,7 @@ const addEventListeners = (element: HTMLAnchorElement) => {
  * Handles unregistering event listeners for the given moderate trigger elements
  */
 const removeEventListeners = (element: HTMLAnchorElement) => {
-	for (const event of C.intentEvents) {
+	for (const event of C.moderateEvents) {
 		element.removeEventListener(event, intentEvent);
 	}
 };
@@ -58,12 +65,13 @@ const triggerAction = (
 	target: HTMLAnchorElement,
 	config: [SpeculationActions, SpeculationTriggers],
 ) => {
-	// check href
-	if (!shouldPreload({ href: target.href, target: target.target }))
+	if (!shouldPreload({ href: target.href, target: target.target })) {
 		return unobserve(target);
+	}
 
 	if (speculationSupport) addSpeculationRules(target.href, config);
-	else addLinkPrefetch(target.href);
+	else if (prefetchSupport) addLinkPrefetch(target.href);
+	else fetch(target.href, { priority: "low" });
 
 	prefetched.add(target.href);
 	unobserve(target);
@@ -79,15 +87,23 @@ const addSpeculationRules = (
 	try {
 		const specScript = document.createElement("script");
 		specScript.type = "speculationrules";
-		specScript.textContent = JSON.stringify({
-			[config[0]]: [
-				{
-					source: "list",
-					urls: [href],
-					eagerness: config[1] === "visible" ? undefined : config[1],
-				},
-			],
-		});
+		const item = [
+			{
+				source: "list",
+				urls: [href],
+				eagerness: config[1] === "visible" ? undefined : config[1],
+			},
+		];
+		specScript.textContent =
+			config[0] === "prefetch"
+				? JSON.stringify({
+						prefetch: item,
+					})
+				: JSON.stringify({
+						// prefetch is used as a fallback when prerender fails
+						prerender: item,
+						prefetch: item,
+					});
 		document.head.appendChild(specScript);
 	} catch (e) {
 		console.error(e);
@@ -101,6 +117,7 @@ const addLinkPrefetch = (href: string) => {
 	const link = document.createElement("link");
 	link.rel = "prefetch";
 	link.href = href;
+	link.as = "document";
 	document.head.appendChild(link);
 };
 
@@ -140,16 +157,15 @@ const shouldPreload = (props: {
 	target: string;
 }): boolean => {
 	try {
-		const { href, target } = props;
-		if (target === "_blank") return false;
-		if (href.includes("mailto:")) return false;
-		if (href.includes("tel:")) return false;
-		if (href.includes("#")) return false;
+		props.href = props.href.replace(/#.*/, "");
+		if (props.target === "_blank") return false;
+		if (props.href.includes("mailto:")) return false;
+		if (props.href.includes("tel:")) return false;
 
-		const url = new URL(href);
+		const url = new URL(props.href);
 		if (url.origin !== window.location.origin) return false;
 		if (url.pathname === window.location.pathname) return false;
-		if (prefetched.has(href)) return false;
+		if (prefetched.has(props.href)) return false;
 
 		return true;
 	} catch (_) {
@@ -162,19 +178,19 @@ const shouldPreload = (props: {
  */
 const checkConnection = () => {
 	if (!navigator.onLine) {
-		console.error("The device is offline, speculate library not initialised.");
+		console.warn("The device is offline, speculate library not initialised.");
 		return;
 	}
 	if ("connection" in navigator) {
 		const connection = navigator.connection;
 		// @ts-expect-error
 		if (connection?.saveData) {
-			console.error("Save-Data is enabled, speculate library not initialised.");
+			console.warn("Save-Data is enabled, speculate library not initialised.");
 			return;
 		}
 		// @ts-expect-error
 		if (/(2|3)g/.test(connection?.effectiveType)) {
-			console.error(
+			console.warn(
 				"2G or 3G connection is detected, speculate library not initialised.",
 			);
 			return;
@@ -189,6 +205,9 @@ const checkConnection = () => {
  * Initialises the speculation library
  */
 const speculateLinks = async () => {
+	if (initialised) return;
+	initialised = true;
+
 	checkConnection();
 
 	// setup observer
