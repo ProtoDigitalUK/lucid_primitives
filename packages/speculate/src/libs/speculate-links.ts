@@ -20,9 +20,6 @@ const prefetchSupport = document
 	.relList?.supports?.("prefetch");
 let observer: IntersectionObserver;
 
-// ---------------------------------------------------------
-// Events
-
 /**
  * Unobserves and deregisters the target anchor element
  */
@@ -57,9 +54,6 @@ const intentEvent = (e: Event) => {
 	if (!target) return;
 	triggerAction(target, parseLinkRel(target.rel));
 };
-
-// ---------------------------------------------------------
-// Trigger Handling
 
 const triggerAction = (
 	target: HTMLAnchorElement,
@@ -120,9 +114,6 @@ const addLinkPrefetch = (href: string) => {
 	link.as = "document";
 	document.head.appendChild(link);
 };
-
-// ---------------------------------------------------------
-// Utils
 
 /**
  * Parses the link rel attribute and determines the correct action and trigger based on support
@@ -198,13 +189,10 @@ const checkConnection = () => {
 	}
 };
 
-// ---------------------------------------------------------
-// Main
-
 /**
  * Initialises the speculation library
  */
-const speculateLinks = async () => {
+const speculationLinks = async () => {
 	if (initialised) return;
 	initialised = true;
 
@@ -245,4 +233,12 @@ const speculateLinks = async () => {
 	}
 };
 
-export default speculateLinks;
+/**
+ * Initialises the speculation library using requestIdleCallback if available
+ */
+const init = () =>
+	typeof requestIdleCallback !== "undefined"
+		? requestIdleCallback(speculationLinks)
+		: setTimeout(speculationLinks, 0);
+
+export default init;
