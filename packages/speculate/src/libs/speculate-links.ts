@@ -192,7 +192,7 @@ const checkConnection = () => {
 /**
  * Initialises the speculation library
  */
-const speculationLinks = async () => {
+const speculationLinks = () => {
 	if (initialised) return;
 	initialised = true;
 

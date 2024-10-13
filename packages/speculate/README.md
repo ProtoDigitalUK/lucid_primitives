@@ -1,12 +1,12 @@
 # Lucid Speculate 
 
-A streamlined library designed to enhance anchor elements to support prefetching and prerendering. By default this uses the new experimental [Speculation Rules](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/speculationrules) API, but falls back to `<link rel="prefetch">` when not supported. Additionally, the library features a `PrefetchData` class, enabling asynchronous data fetching based on user interactions with specified targets.
+A simple library designed to enhance anchor elements by adding support for prefetching and prerendering. By default this uses the new experimental [Speculation Rules](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/speculationrules) API, but falls back to `<link rel="prefetch">` or `fetch` when not supported. Additionally, the library features a `PrefetchData` class, enabling asynchronous data fetching based on user interactions with specified targets.
 
 ## Features
 
-- Prefetch or PreRender documents using Speculation Rules or `<link rel="prefetch">` as a fallback
-- Supports `visible`, `immediate`, `eager`, `moderate` and `conservative` triggers
-- Prefetch data on use intent (hover, touch, focus)
+- Prefetch or prerender documents using Speculation Rules, `<link rel="prefetch">` or `fetch` as a fallback.
+- Support for `visible`, `immediate`, `eager`, `moderate` and `conservative` triggers.
+- PrefetchData class for asynchronous data fetching based on user intent.
 
 ## Getting Started
 
@@ -38,9 +38,23 @@ Define the actions and triggers for your links using the `rel` attribute. For ea
 <a href="/page-4" rel="prerender:moderate">I will prerender when a user interacts with me</a>
 ```
 
-Aside from the `visible` trigger, other triggers use the [Speculation Rule Eagerness](https://developer.chrome.com/docs/web-platform/prerender-pages#eagerness) attributes. The only exception is the `moderate` trigger, which uses the `<link rel="prefetch">` fallback when the browser does not support Speculation Rules.
+Aside from the `visible` trigger, the others are based on the [Speculation Rule Eagerness](https://developer.chrome.com/docs/web-platform/prerender-pages#eagerness) values and are used only when Speculation Rules are supported. 
 
-When Speculation Rules are not supported, the only valid triggers are `visible` and `moderate`. The `moderate` trigger is the fallback. The `prerender` action is ONLY supported with Speculation Rules. When Speculation Rules are not supported, they will fallback to `<link rel="prefetch">`.
+When Speculation Rules are not supported, the only valid triggers are `visible` and `moderate`. The `moderate` trigger being a fallback for the remaining triggers. The `prerender` action is ONLY supported with Speculation Rules and will fallback to the `prefetch` action when not supported.
+
+### Browser Support
+
+#### Chrome
+
+Chrome supports Speculation Rules, allowing for both prefetching and prerendering as intended. Chrome will always use the Speculation Rules API.
+
+#### Firefox
+
+Firefox does not support the Speculations API, but does support `<link rel="prefetch">`, however this requires proper cache headers (such as Cache-Control, Expires, or ETag) to function properly.
+
+#### Safari
+
+Safari doesn't support either the Speculation Rules API or `<link rel="prefetch">`. Instead, it uses a low-priority fetch, which requires cache headers (such as Cache-Control, Expires, or ETag) to function properly.
 
 ### Prefetch Data Usage
 
@@ -69,8 +83,3 @@ new PrefetchData({
     Load Data
 </button>
 ```
-
-## Notes
-
-- Speculation Rules are experimental and currently only supported in Chromium-based browsers. See [Can I Use](https://caniuse.com/mdn-html_elements_script_type_speculationrules) for more information.
-- This library makes use of the `<link rel="prefetch">` as a fallback, this is not supported by Safari or iOS Safari.
