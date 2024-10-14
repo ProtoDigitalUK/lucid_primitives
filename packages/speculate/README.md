@@ -50,7 +50,7 @@ Chrome supports Speculation Rules, allowing for both prefetching and prerenderin
 
 #### Firefox
 
-Firefox does not support the Speculations API, but does support `<link rel="prefetch">`, however this requires proper cache headers (such as Cache-Control, Expires, or ETag) to function properly.
+Firefox does not support the Speculations API, but does support `<link rel="prefetch">`, however this requires cache headers (such as Cache-Control, Expires, or ETag) to function properly.
 
 #### Safari
 

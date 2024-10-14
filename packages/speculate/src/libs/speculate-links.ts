@@ -5,11 +5,15 @@ const C: {
 	fallbackTriggerSupport: Array<SpeculationTriggers>;
 	fallbackTrigger: SpeculationTriggers;
 	fallbackAction: SpeculationActions;
+	validActions: SpeculationActions[];
+	validTriggers: SpeculationTriggers[];
 } = {
 	moderateEvents: ["mouseenter", "touchstart", "focus"],
 	fallbackTriggerSupport: ["visible", "moderate"],
 	fallbackTrigger: "moderate",
 	fallbackAction: "prefetch",
+	validActions: ["prefetch", "prerender"],
+	validTriggers: ["visible", "immediate", "eager", "moderate", "conservative"],
 };
 
 let initialised = false;
@@ -123,7 +127,15 @@ const addLinkPrefetch = (href: string) => {
 const parseLinkRel = (
 	rel: string,
 ): [SpeculationActions, SpeculationTriggers] => {
-	let [action, trigger] = rel.split(":");
+	let action: string | undefined;
+	let trigger: string | undefined;
+
+	for (const part of rel.split(" ")) {
+		if (part.startsWith("prefetch:") || part.startsWith("prerender:")) {
+			[action, trigger] = part.split(":");
+			break;
+		}
+	}
 
 	if (!action) action = C.fallbackAction;
 	if (!trigger) trigger = C.fallbackTrigger;
@@ -136,7 +148,11 @@ const parseLinkRel = (
 			trigger = C.fallbackTrigger;
 	}
 
-	// TODO: validation
+	if (!C.validActions.includes(action as SpeculationActions))
+		action = C.fallbackAction;
+	if (!C.validTriggers.includes(trigger as SpeculationTriggers))
+		trigger = C.fallbackTrigger;
+
 	return [action, trigger] as [SpeculationActions, SpeculationTriggers];
 };
 
@@ -215,7 +231,7 @@ const speculationLinks = () => {
 
 	// setup link config, observers and events
 	const targetLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll(
-		'a[rel^="prefetch:"], a[rel^="prerender:"]',
+		'a[rel*="prefetch:"], a[rel*="prerender:"]',
 	);
 
 	for (const l of targetLinks) {

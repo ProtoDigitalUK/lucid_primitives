@@ -1,5 +1,12 @@
 # @lucidclient/speculate
 
+## v0.2.1
+
+### Patch Changes
+
+- Fixed a bug where rel attributes with multiple values would not be parsed correctly.
+- Added validation for the rel speculation actions and triggers.
+
 ## v0.2.0
 
 ### Minor Changes
