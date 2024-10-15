@@ -1,3 +1,7 @@
+import start from "./start.js";
+import register from "./register.js";
+
 export default {
-	hello: "world",
+	start,
+	register,
 };

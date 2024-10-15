@@ -26,10 +26,17 @@ const { title } = Astro.props;
         <CookieController />
 
         <script>
+            import Elements from "@lucidclient/elements";
             import {
                 speculateLinks,
                 PrefetchData,
             } from "@lucidclient/speculate";
+
+            Elements.register("eventHandlers");
+            Elements.register("intersectionHandlers");
+            Elements.register("domHandlers");
+
+            Elements.start();
 
             speculateLinks();
             new PrefetchData({

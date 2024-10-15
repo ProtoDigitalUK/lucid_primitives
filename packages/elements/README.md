@@ -24,7 +24,7 @@ Elements.start();
 ```html
 <div
     <!-- Link to store -->
-    $store="elementStore"
+    elements="elementStore"
     
     <!-- State variables -->
     $disabled="false"
@@ -63,11 +63,11 @@ Elements.start();
 </div>
 ```
 
+> The top level div is marked as `elements="elementStore"`, this tells elements to link this to the given store. Use the `elements` attribute by itself to denote that the element is the root element.
+
 ### State Bindings `$`
 
 These indicate a variable that exists in the store. These are reactive and available to the element and child elements.
-
-The $store variable is a reserved keyword for linking a store to the element. This is where you define functions and where complexity should be handled.
 
 ### Handlers `@`
 

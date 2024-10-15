@@ -32,5 +32,8 @@
 	"license": "ISC",
 	"volta": {
 		"node": "20.18.0"
+	},
+	"dependencies": {
+		"solid-js": "^1.9.2"
 	}
 }
