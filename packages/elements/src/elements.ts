@@ -1,5 +1,6 @@
 export type Elements = {
 	started: boolean;
+	debug: boolean;
 	plugins: string[];
 	stores: WeakMap<HTMLElement, unknown>;
 };
@@ -9,6 +10,7 @@ export type Elements = {
  */
 const Elements: Elements = {
 	started: false,
+	debug: false,
 	plugins: [],
 	stores: new WeakMap(),
 };

@@ -36,7 +36,9 @@ const { title } = Astro.props;
             Elements.register("intersectionHandlers");
             Elements.register("domHandlers");
 
-            Elements.start();
+            Elements.start({
+                debug: true,
+            });
 
             speculateLinks();
             new PrefetchData({
