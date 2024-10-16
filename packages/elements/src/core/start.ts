@@ -1,6 +1,8 @@
 import Elements from "./elements.js";
 import C from "./constants.js";
-import log from "./utils/log.js";
+import log from "../utils/log.js";
+
+import elementSelectors from "../utils/element-selectors.js";
 
 /**
  * Sets up and starts the Elements library
@@ -17,6 +19,11 @@ const start = (options?: {
 
 	Elements.started = true;
 	Elements.debug = options?.debug ?? C.defaults.debug;
+
+	const elements = elementSelectors.getAllElements();
+	for (const element of elements) {
+		console.log(elementSelectors.getElementAttributes(element));
+	}
 
 	log.debug("library started.");
 };

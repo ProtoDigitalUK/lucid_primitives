@@ -26,7 +26,7 @@ Elements.start();
     <!-- Link to store -->
     elements="elementStore"
     
-    <!-- State variables -->
+    <!-- State bindings -->
     $disabled="false"
     $expanded="false"
     

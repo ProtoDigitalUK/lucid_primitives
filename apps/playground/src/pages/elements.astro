@@ -1,0 +1,25 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Lucid Primitives Playground">
+    <h1 class="text-2xl font-bold">
+        <a href="/" rel="prefetch:moderate">{"<-"} Home</a>
+        - Elements Playground
+    </h1>
+    <div class="w-full mt-2.5">
+        <div
+            data-element="elementStore"
+            data-state-disabled="false"
+            :disabled="disabled"
+            class="data-[state-disabled=true]:bg-red-500"
+        >
+            <button
+                @on:click="handleClick"
+                @dom:innerText="$expanded ? 'Hide Content' : 'Show Content'"
+            >
+                Show Content
+            </button>
+        </div>
+    </div>
+</Layout>

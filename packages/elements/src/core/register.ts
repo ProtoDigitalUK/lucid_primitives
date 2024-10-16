@@ -1,5 +1,5 @@
 import Elements from "./elements.js";
-import log from "./utils/log.js";
+import log from "../utils/log.js";
 
 /**
  * Registers plugins to Elements

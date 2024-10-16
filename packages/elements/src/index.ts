@@ -1,5 +1,5 @@
-import start from "./start.js";
-import register from "./register.js";
+import start from "./core/start.js";
+import register from "./core/register.js";
 
 export default {
 	start,
