@@ -10,13 +10,15 @@ import Layout from "../layouts/Layout.astro";
     <div class="w-full mt-2.5">
         <div
             data-element="elementStore"
-            data-state-disabled="false"
-            :disabled="disabled"
+            data-state--disabled="false"
+            data-bind--disabled="disabled"
+            data-handler--on.click="handleClick"
+            data-handler--on.scroll="handleClick"
             class="data-[state-disabled=true]:bg-red-500"
         >
             <button
-                @on:click="handleClick"
-                @dom:innerText="$expanded ? 'Hide Content' : 'Show Content'"
+                data-handler--on-click="handleClick"
+                data-handler--dom-innerText="$expanded ? 'Hide Content' : 'Show Content'"
             >
                 Show Content
             </button>

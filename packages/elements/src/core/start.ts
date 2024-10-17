@@ -9,6 +9,7 @@ import elementSelectors from "../utils/element-selectors.js";
  */
 const start = (options?: {
 	debug?: boolean;
+	attributePrefix?: string;
 }) => {
 	if (Elements.started) {
 		log.warn(
@@ -17,8 +18,11 @@ const start = (options?: {
 		return;
 	}
 
+	Elements.options = {
+		debug: options?.debug ?? C.defaults.debug,
+		attributePrefix: options?.attributePrefix ?? C.defaults.attributePrefix,
+	};
 	Elements.started = true;
-	Elements.debug = options?.debug ?? C.defaults.debug;
 
 	const elements = elementSelectors.getAllElements();
 	for (const element of elements) {

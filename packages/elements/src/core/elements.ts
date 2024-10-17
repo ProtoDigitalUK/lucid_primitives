@@ -1,6 +1,9 @@
 export type Elements = {
+	options: {
+		debug: boolean;
+		attributePrefix: string;
+	};
 	started: boolean;
-	debug: boolean;
 	plugins: string[];
 	stores: WeakMap<HTMLElement, unknown>;
 };
@@ -9,8 +12,11 @@ export type Elements = {
  * Stores the state of the Elements library
  */
 const Elements: Elements = {
+	options: {
+		debug: false,
+		attributePrefix: "data-",
+	},
 	started: false,
-	debug: false,
 	plugins: [],
 	stores: new WeakMap(),
 };

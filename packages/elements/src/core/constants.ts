@@ -2,12 +2,13 @@ const C = {
 	prefix: "[Elements]",
 	defaults: {
 		debug: false,
+		attributePrefix: "data-",
 	},
 	attributes: {
-		entry: "elements",
-		stateBinding: "$",
-		attributeBinding: ":",
-		handlers: "@",
+		entry: "element",
+		stateBinding: "state--",
+		attributeBinding: "bind--",
+		handler: "handler--",
 	},
 };
 
