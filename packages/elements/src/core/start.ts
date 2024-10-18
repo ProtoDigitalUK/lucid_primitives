@@ -1,9 +1,10 @@
+import { createRoot } from "solid-js";
 import Elements from "./elements.js";
 import C from "./constants.js";
 import log from "../utils/log.js";
 
 import elementSelectors from "../utils/element-selectors.js";
-import attr from "../utils/attr.js";
+import initialiseStore from "./store/initialise-store.js";
 
 /**
  * Sets up and starts the Elements library
@@ -19,18 +20,19 @@ const start = (options?: {
 		return;
 	}
 
+	// set options
 	Elements.options = {
 		debug: options?.debug ?? C.defaults.debug,
 		attributePrefix: options?.attributePrefix ?? C.defaults.attributePrefix,
 	};
 	Elements.started = true;
 
+	// initialise elements stores
 	const elements = elementSelectors.getAllElements();
-	for (const element of elements) {
-		console.log(attr.extractElementBindings(element));
-	}
+	for (const item of elements) void initialiseStore(item[0], item[1]);
 
 	log.debug("library started.");
 };
 
-export default start;
+// TODO: read into createRoot
+export default createRoot((dispose) => start);

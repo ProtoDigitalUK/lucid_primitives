@@ -1,24 +1,16 @@
-export type Elements = {
-	options: {
-		debug: boolean;
-		attributePrefix: string;
-	};
-	started: boolean;
-	plugins: string[];
-	stores: WeakMap<HTMLElement, unknown>;
-};
+import type { ElementsInstance } from "../types/index.js";
 
 /**
  * Stores the state of the Elements library
  */
-const Elements: Elements = {
+const Elements: ElementsInstance = {
 	options: {
 		debug: false,
 		attributePrefix: "data-",
 	},
 	started: false,
 	plugins: [],
-	stores: new WeakMap(),
+	stores: new Map(),
 };
 
 export default Elements;

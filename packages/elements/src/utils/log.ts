@@ -5,7 +5,7 @@ import C from "../core/constants.js";
  * Debug logging - this is only enabled if the library is started with debug: true
  */
 const debug = (msg: string) =>
-	Elements.debug ? console.debug(`${C.prefix} ${msg}`) : undefined;
+	Elements.options.debug ? console.debug(`${C.prefix} ${msg}`) : undefined;
 
 /**
  * Warn logging
