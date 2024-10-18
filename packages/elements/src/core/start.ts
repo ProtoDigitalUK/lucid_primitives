@@ -3,6 +3,7 @@ import C from "./constants.js";
 import log from "../utils/log.js";
 
 import elementSelectors from "../utils/element-selectors.js";
+import attr from "../utils/attr.js";
 
 /**
  * Sets up and starts the Elements library
@@ -26,7 +27,7 @@ const start = (options?: {
 
 	const elements = elementSelectors.getAllElements();
 	for (const element of elements) {
-		console.log(elementSelectors.getElementAttributes(element));
+		console.log(attr.extractElementBindings(element));
 	}
 
 	log.debug("library started.");

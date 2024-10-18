@@ -6,9 +6,9 @@ const C = {
 	},
 	attributes: {
 		entry: "element",
-		stateBinding: "state--",
-		attributeBinding: "bind--",
-		handler: "handler--",
+		statePrefix: "state--",
+		attributePrefix: "bind--",
+		handlerPrefix: "handler--",
 	},
 };
 
