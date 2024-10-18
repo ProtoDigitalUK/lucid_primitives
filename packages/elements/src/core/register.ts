@@ -1,5 +1,5 @@
 import Elements from "./elements.js";
-import log from "../utils/log.js";
+import utils from "../utils/index.js";
 
 /**
  * Registers plugins to Elements
@@ -7,7 +7,7 @@ import log from "../utils/log.js";
 const register = (plugin: string) => {
 	Elements.plugins.push(plugin);
 
-	log.debug(`plugin ${plugin} registered.`);
+	utils.log.debug(`plugin ${plugin} registered.`);
 };
 
 export default register;

@@ -1,0 +1,47 @@
+import store from "./store/index.js";
+import Elements from "./elements.js";
+import C from "./constants.js";
+import utils from "../utils/index.js";
+
+/**
+ * Sets up a mutation observer on the body element
+ * - Handles removal of elements from the DOM by removing their store and disposing the SolidJS createRoot
+ */
+const registerBodyObserver = () => {
+	const observer = new MutationObserver((mutations) => {
+		for (const mutation of mutations) {
+			for (const node of mutation.removedNodes) {
+				if (node instanceof HTMLElement) void removeElement(node);
+			}
+		}
+	});
+
+	observer.observe(document.body, {
+		childList: true,
+		subtree: true,
+	});
+
+	return observer;
+};
+
+/**
+ * Removes the store and disposes the SolidJS createRoot for the given element
+ */
+const removeElement = (element: HTMLElement) => {
+	const storeKey = element.getAttribute(
+		utils.helpers.buildAttribute(C.attributes.entry),
+	);
+	if (!storeKey) return;
+
+	const store = Elements.stores.get(storeKey);
+	if (!store) return;
+
+	void store[0].dispose();
+	void Elements.stores.delete(storeKey);
+
+	utils.log.debug(
+		`Store removed for element "${element.id || element.tagName}" with key "${storeKey}"`,
+	);
+};
+
+export default registerBodyObserver;

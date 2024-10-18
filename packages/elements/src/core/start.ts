@@ -1,10 +1,7 @@
-import { createRoot } from "solid-js";
 import Elements from "./elements.js";
 import C from "./constants.js";
-import log from "../utils/log.js";
-
-import elementSelectors from "../utils/element-selectors.js";
-import initialiseStore from "./store/initialise-store.js";
+import store from "./store/index.js";
+import utils from "../utils/index.js";
 
 /**
  * Sets up and starts the Elements library
@@ -14,7 +11,7 @@ const start = (options?: {
 	attributePrefix?: string;
 }) => {
 	if (Elements.started) {
-		log.warn(
+		utils.log.warn(
 			"The library has already been started. Please don't call start() more than once.",
 		);
 		return;
@@ -28,11 +25,10 @@ const start = (options?: {
 	Elements.started = true;
 
 	// initialise elements stores
-	const elements = elementSelectors.getAllElements();
-	for (const item of elements) void initialiseStore(item[0], item[1]);
+	const elements = utils.elementSelectors.getAllElements();
+	for (const item of elements) void store.initialiseStore(item[0], item[1]);
 
-	log.debug("library started.");
+	utils.log.debug("library started.");
 };
 
-// TODO: read into createRoot
-export default createRoot((dispose) => start);
+export default start;

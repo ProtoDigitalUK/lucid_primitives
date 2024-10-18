@@ -12,6 +12,7 @@ export type ElementsStoreData = {
 		attribute: BindAttributesMap;
 		handler: HandlerAttributesMap;
 	};
+	dispose: () => void;
 };
 export type ElementsStore = [
 	get: ElementsStoreData,

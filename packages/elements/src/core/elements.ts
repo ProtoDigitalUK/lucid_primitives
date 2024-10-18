@@ -1,3 +1,4 @@
+import mutationBodyObserver from "./mutation-body-observer.js";
 import type { ElementsInstance } from "../types/index.js";
 
 /**
@@ -11,6 +12,8 @@ const Elements: ElementsInstance = {
 	started: false,
 	plugins: [],
 	stores: new Map(),
+	trackedElements: new Set(),
+	bodyObserver: mutationBodyObserver(),
 };
 
 export default Elements;
