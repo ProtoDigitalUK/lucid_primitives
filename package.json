@@ -12,7 +12,6 @@
 	"devDependencies": {
 		"@biomejs/biome": "1.9.3",
 		"@repo/config": "*",
-		"@repo/eslint-config": "*",
 		"prettier": "^3.3.3",
 		"turbo": "latest"
 	},

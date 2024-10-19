@@ -15,20 +15,21 @@ Elements.register(DOMHandlers);
 
 // if you're using typescript you can pass a generic type to the store
 Elements.store<{
-	disabled: Signal<boolean>;
-	customState: Signal<string>;
-}>('elementStore', (state) => {
-	// append custom state that isnt added via the data-state-- attribute
-	state: {
-		customState: createSignal('hello world')
+  disabled: boolean;
+  customState: string;
+}>('exampleStore', (instance) => ({
+  state:
+  	customState: createSignal('hello world')
 	},
-	actions: {
-		handleClick: () => {
-			const [_, setDisabled] = state.disabled;
-			setDisabled(true);
-		}
-	}
-});
+  actions: {
+    handleClick: () => {
+      const [_, setDisabled] = instance.state.disabled;
+
+      setDisabled(true);
+    }
+  }
+}));
+
 
 // start the library
 Elements.start({
