@@ -1,11 +1,11 @@
-import log from "./log.js";
 import C from "../core/constants.js";
-import helpers from "./helpers.js";
 import type {
-	StateAttribtuesMap,
 	BindAttributesMap,
 	HandlerAttributesMap,
+	StateAttribtuesMap,
 } from "../types/index.js";
+import helpers from "./helpers.js";
+import log from "./log.js";
 
 /**
  * Recursively build all attribute maps for a given element

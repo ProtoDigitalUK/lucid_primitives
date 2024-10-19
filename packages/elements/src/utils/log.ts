@@ -1,5 +1,5 @@
-import Elements from "../core/elements.js";
 import C from "../core/constants.js";
+import Elements from "../core/elements.js";
 
 /**
  * Debug logging - this is only enabled if the library is started with debug: true

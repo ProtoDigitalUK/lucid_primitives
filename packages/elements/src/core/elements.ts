@@ -1,5 +1,5 @@
-import mutationBodyObserver from "./mutation-body-observer.js";
 import type { ElementsInstance } from "../types/index.js";
+import mutationBodyObserver from "./mutation-body-observer.js";
 
 /**
  * Stores the state of the Elements library

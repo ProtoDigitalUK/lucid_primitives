@@ -1,8 +1,8 @@
 import type { SetStoreFunction } from "solid-js/store";
 import type {
-	StateAttribtuesMap,
 	BindAttributesMap,
 	HandlerAttributesMap,
+	StateAttribtuesMap,
 } from "./index.js";
 
 export type ElementsStoreData = {

@@ -1,5 +1,5 @@
-import Elements from "./elements.js";
 import utils from "../utils/index.js";
+import Elements from "./elements.js";
 
 /**
  * Registers plugins to Elements

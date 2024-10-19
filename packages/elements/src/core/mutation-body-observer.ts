@@ -1,7 +1,6 @@
-import store from "./store/index.js";
-import Elements from "./elements.js";
-import C from "./constants.js";
 import utils from "../utils/index.js";
+import C from "./constants.js";
+import Elements from "./elements.js";
 
 /**
  * Sets up a mutation observer on the body element
