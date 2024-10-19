@@ -10,7 +10,7 @@ const registerBodyObserver = () => {
 	const observer = new MutationObserver((mutations) => {
 		for (const mutation of mutations) {
 			for (const node of mutation.removedNodes) {
-				if (node instanceof HTMLElement) void removeElement(node);
+				if (node instanceof HTMLElement) removeElement(node);
 			}
 		}
 	});
@@ -35,8 +35,8 @@ const removeElement = (element: HTMLElement) => {
 	const store = Elements.stores.get(storeKey);
 	if (!store) return;
 
-	void store[0].dispose();
-	void Elements.stores.delete(storeKey);
+	store[0].dispose();
+	Elements.stores.delete(storeKey);
 
 	utils.log.debug(
 		`Store removed for element "${element.id || element.tagName}" with key "${storeKey}"`,

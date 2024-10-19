@@ -26,7 +26,7 @@ const start = (options?: {
 
 	// initialise elements stores
 	const elements = utils.elementSelectors.getAllElements();
-	for (const item of elements) void store.initialiseStore(item[0], item[1]);
+	for (const item of elements) store.initialiseStore(item[0], item[1]);
 
 	utils.log.debug("library started.");
 };

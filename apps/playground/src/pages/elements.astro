@@ -10,14 +10,14 @@ import Layout from "../layouts/Layout.astro";
     <div class="w-full mt-2.5">
         <div
             data-element="elementStore"
-            data-state--isDisabled="false"
-            data-bind--disabled="isDisabled"
+            data-state--isdisabled="false"
+            data-bind--disabled="isdisabled"
             data-handler--on.click="handleClick"
             data-handler--on.scroll="handleClick"
-            class="data-[state-isDisabled=true]:bg-red-500"
+            class="data-[state--isdisabled=true]:bg-red-500"
         >
             <button
-                data-bind--disabled="testing"
+                data-bind--disabled="isdisabled"
                 data-handler--on.click="handleClick"
                 data-handler--dom.innerText="$expanded ? 'Hide Content' : 'Show Content'"
             >

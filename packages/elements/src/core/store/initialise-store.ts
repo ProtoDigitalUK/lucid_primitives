@@ -1,8 +1,8 @@
-import { createEffect, createRoot } from "solid-js";
-import { createStore, produce } from "solid-js/store";
+import { createRoot, Signal } from "solid-js";
+import { createStore } from "solid-js/store";
 import type { ElementsStore, ElementsStoreData } from "../../types/store.js";
 import utils from "../../utils/index.js";
-import store from "./index.js";
+import state from "../state/index.js";
 import C from "../constants.js";
 import Elements from "../elements.js";
 
@@ -17,12 +17,13 @@ type StoreState = Record<string, unknown>;
  */
 const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 	let key = storeKey ?? utils.helpers.uuid();
-	let eleStore: ElementsStore<StoreState>;
+	let store: ElementsStore<StoreState>;
 
 	createRoot((dispose) => {
+		// -----------------
 		// set or get store
 		if (storeKey !== null && Elements.stores.has(storeKey)) {
-			eleStore = Elements.stores.get(storeKey) as ElementsStore<StoreState>;
+			store = Elements.stores.get(storeKey) as ElementsStore<StoreState>;
 		} else {
 			// if store doesnt exist, but a storeKey was provided, warn and create a new store
 			if (storeKey !== null) {
@@ -32,44 +33,39 @@ const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 				);
 			}
 
-			eleStore = createStore<ElementsStoreData<StoreState>>({
-				initialised: false,
+			store = createStore<ElementsStoreData<StoreState>>({
+				initialised: false, // TODO: these will likely need to be removed depending on how user given stores are handler
 				dispose: dispose,
 				state: {},
 			}) satisfies ElementsStore<StoreState>;
 		}
 
-		// set attribute data
-		const [_, setStore] = eleStore;
-		setStore("attributeMaps", utils.attr.buildAttributeMaps(element));
-
 		// -----------------
-		// Testing reactivity TODO: remove
-		setTimeout(() => {
-			setStore(
-				produce((state) => {
-					const signal = state.state.isdisabled;
-					if (!signal) return;
-					const [getIsDisabled, setIsDisabled] = signal;
-
-					setIsDisabled("true");
-				}),
-			);
-		}, 10000);
-		// -----------------
-
-		// create state from attribtues
-		store.createState(element, eleStore);
-		// create bind attributes and set values
-		// pass handler namespsaces to correct plugins for them to register events / do what they need to do
-
-		// update attribute key, add store to Elements instance and track element
+		// set data
 		element.setAttribute(utils.helpers.buildAttribute(C.attributes.entry), key);
-		Elements.stores.set(key, eleStore);
+		store[1]("attributeMaps", utils.attributes.buildStoreMap(element));
+
+		// -----------------
+		// handle state, attribute bindings and handlers
+		state.createState(store);
+		state.watchState(element, store);
+		// state effects
+		// attribute bindings
+		// handlers
+
+		// TODO: temp testing
+		setTimeout(() => {
+			if (!store[0].state.isdisabled) return;
+			const [_, setIsDisabled] = store[0].state.isdisabled;
+			setIsDisabled("true");
+		}, 4000);
+
+		// -----------------
+		// update Elements instance
+		Elements.stores.set(key, store);
 		Elements.trackedElements.add(element);
 
-		// finished initialising
-		setStore("initialised", true);
+		store[1]("initialised", true);
 
 		utils.log.debug(
 			`Store initialised for element "${element.id || element.tagName}" with key "${key}"`,

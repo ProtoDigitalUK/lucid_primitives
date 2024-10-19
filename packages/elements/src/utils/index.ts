@@ -1,10 +1,10 @@
-import attr from "./attr.js";
+import attributes from "./attributes.js";
 import elementSelectors from "./element-selectors.js";
 import helpers from "./helpers.js";
 import log from "./log.js";
 
 const utils = {
-	attr,
+	attributes,
 	elementSelectors,
 	helpers,
 	log,

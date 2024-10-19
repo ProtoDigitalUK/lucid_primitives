@@ -27,18 +27,18 @@ Elements.start({
 ```html
 <div
     data-element="elementStore"
-    
+
     data-state--disabled="false"
     data-state--expanded="false"
-    
+
     data-handler--on.click="handleClick"
     data-handler--on.mouseover="handleMouseover"
     data-handler--on.mouseout="handleMouseout"
-    
+
     data-handler--intersect.enter="enteredViewport"
     data-handler--intersect.leave="leftViewport"
     data-handler--intersect.center="centeredViewport"
-    
+
     data-bind--disabled="disabled"
     data-bind--aria-expanded="expanded"
     data-bind--data-custom-attribute-name="disabled"
@@ -51,7 +51,7 @@ Elements.start({
     >
         <p>Hello World</p>
     </div>
-    <button 
+    <button
         data-handler--on.click="handleClick"
         data-handler--dom.innerText="$expanded ? 'Hide Content' : 'Show Content'"
     >
@@ -64,7 +64,9 @@ Elements.start({
 
 ### State Bindings `data-state--`
 
-These indicate a variable that exists in the store. These are reactive and available to the element and child elements.
+These indicate a variable that exists in the store. These are reactive and available to the element and child elements through handlers and attribute bindings.
+
+Please keep in mind that the browser will normalise the attribute name to lowercase, so `data-state--isDisabled` is turned into `data-state--isdisabled`. This lowercase attribute name is whats used as the state key and so when referencing it in attribute bindings, you must use the lowercase version.
 
 ### Handlers `data-handler--`
 

@@ -9,7 +9,7 @@ import utils from "./index.js";
 /**
  * Recursively build all attribute maps for a given element
  */
-const buildAttributeMaps = (
+const buildStoreMap = (
 	element: HTMLElement,
 ): {
 	state: StateAttribtuesMap;
@@ -31,7 +31,7 @@ const buildAttributeMaps = (
 		};
 	}
 
-	const attributes = deepCollectAttributes(element);
+	const attributes = deepCollectAttr(element);
 
 	const statePrefix = utils.helpers.buildAttribute(C.attributes.statePrefix); //* 'data-state--'
 	const bindPrefix = utils.helpers.buildAttribute(C.attributes.attributePrefix); //* 'data-bind--'
@@ -51,9 +51,9 @@ const buildAttributeMaps = (
 		else if (name.startsWith(bindPrefix)) {
 			const bindName = name.slice(bindPrefix.length).toLowerCase();
 			if (attributeBindings.has(bindName)) {
-				attributeBindings.get(bindName)?.push(value);
+				attributeBindings.get(bindName)?.push(value.toLowerCase());
 			} else {
-				attributeBindings.set(bindName, [value]);
+				attributeBindings.set(bindName, [value.toLowerCase()]);
 			}
 		}
 		//* for handlers
@@ -88,7 +88,7 @@ const buildAttributeMaps = (
 /**
  * From a given element, get all of its and its childrens attributes recursively
  */
-const deepCollectAttributes = (element: HTMLElement): Attr[] => {
+const deepCollectAttr = (element: HTMLElement): Attr[] => {
 	const result: Attr[] = [];
 
 	function traverse(el: HTMLElement) {
@@ -107,26 +107,64 @@ const deepCollectAttributes = (element: HTMLElement): Attr[] => {
 /**
  * Updates the state attribute for the given element and its children where theere exists a `data-state--{key}` attribute
  */
-const updateState = (parent: HTMLElement, key: string, value: unknown) => {
+const updateState = (
+	parent: HTMLElement,
+	state: {
+		key: string;
+		value: unknown;
+	},
+) => {
 	const { attribute, elements } = utils.elementSelectors.getStateElements(
 		parent,
-		key,
+		state.key,
 	);
+	const valueString = state.value as string; // TODO: replace as string with util to convert value to string
 
-	for (const element of elements) {
-		element.setAttribute(attribute, value as string);
-	}
 	if (parent.hasAttribute(attribute))
-		parent.setAttribute(attribute, value as string);
+		parent.setAttribute(attribute, valueString);
+	for (const element of elements) {
+		element.setAttribute(attribute, valueString);
+	}
+};
+
+/**
+ * Updates the attribute bindings for state. Updates the target element and all children. `data-bind--*="{stateKey}"`
+ */
+const updateBind = (
+	parent: HTMLElement,
+	state: {
+		key: string;
+		value: unknown;
+	},
+	bindAttributeMap: BindAttributesMap,
+) => {
+	const bindPrefix = utils.helpers.buildAttribute(C.attributes.attributePrefix);
+	const valueString = state.value as string; // TODO: replace as string with util to convert value to string
+
+	for (const [targetKey, values] of bindAttributeMap) {
+		if (!values.includes(state.key)) continue;
+
+		const attribute = `${bindPrefix}${targetKey}`;
+		const selector = `[${attribute}="${state.key}"]`;
+
+		if (parent.matches(selector)) {
+			parent.setAttribute(targetKey, valueString);
+		}
+
+		for (const element of parent.querySelectorAll(selector)) {
+			element.setAttribute(targetKey, valueString);
+		}
+	}
 };
 
 /**
  * Attribute utils
  */
-const attr = {
-	buildAttributeMaps,
-	deepCollectAttributes,
+const attributes = {
+	buildStoreMap,
+	deepCollectAttr,
 	updateState,
+	updateBind,
 };
 
-export default attr;
+export default attributes;

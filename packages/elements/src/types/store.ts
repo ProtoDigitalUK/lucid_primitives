@@ -6,14 +6,16 @@ import type {
 	StateAttribtuesMap,
 } from "./index.js";
 
+export type AttributeMaps = {
+	state: StateAttribtuesMap;
+	attribute: BindAttributesMap;
+	handler: HandlerAttributesMap;
+};
+
 export type ElementsStoreData<T extends Record<string, unknown>> = {
 	initialised: boolean;
 	dispose: () => void;
-	attributeMaps?: {
-		state: StateAttribtuesMap;
-		attribute: BindAttributesMap;
-		handler: HandlerAttributesMap;
-	};
+	attributeMaps?: AttributeMaps;
 	state: { [K in keyof T]: Signal<T[K]> };
 };
 
