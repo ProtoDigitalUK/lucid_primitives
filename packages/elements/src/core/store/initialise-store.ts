@@ -1,9 +1,15 @@
-import { createRoot } from "solid-js";
-import { createStore } from "solid-js/store";
+import { createEffect, createRoot } from "solid-js";
+import { createStore, produce } from "solid-js/store";
 import type { ElementsStore, ElementsStoreData } from "../../types/store.js";
 import utils from "../../utils/index.js";
+import store from "./index.js";
 import C from "../constants.js";
 import Elements from "../elements.js";
+
+// TODO: might be able to do type generation for this based on attribute maps and infered value type?
+// - Doesnt strictly matter here as its internal, but for the public API for creating a store this would be nice for having the correct at least
+//   for the state attributes
+type StoreState = Record<string, unknown>;
 
 /**
  * Creates a store for the given element if one hasnt already been specified.
@@ -11,12 +17,12 @@ import Elements from "../elements.js";
  */
 const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 	let key = storeKey ?? utils.helpers.uuid();
-	let store: ElementsStore;
+	let eleStore: ElementsStore<StoreState>;
 
 	createRoot((dispose) => {
 		// set or get store
 		if (storeKey !== null && Elements.stores.has(storeKey)) {
-			store = Elements.stores.get(storeKey) as ElementsStore;
+			eleStore = Elements.stores.get(storeKey) as ElementsStore<StoreState>;
 		} else {
 			// if store doesnt exist, but a storeKey was provided, warn and create a new store
 			if (storeKey !== null) {
@@ -26,23 +32,40 @@ const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 				);
 			}
 
-			store = createStore<ElementsStoreData>({
+			eleStore = createStore<ElementsStoreData<StoreState>>({
 				initialised: false,
 				dispose: dispose,
-			}) satisfies ElementsStore;
+				state: {},
+			}) satisfies ElementsStore<StoreState>;
 		}
 
 		// set attribute data
-		const [_, setStore] = store;
-		setStore("attributeMaps", utils.attr.extractElementBindings(element));
+		const [_, setStore] = eleStore;
+		setStore("attributeMaps", utils.attr.buildAttributeMaps(element));
+
+		// -----------------
+		// Testing reactivity TODO: remove
+		setTimeout(() => {
+			setStore(
+				produce((state) => {
+					const signal = state.state.isdisabled;
+					if (!signal) return;
+					const [getIsDisabled, setIsDisabled] = signal;
+
+					setIsDisabled("true");
+				}),
+			);
+		}, 10000);
+		// -----------------
 
 		// create state from attribtues
+		store.createState(element, eleStore);
 		// create bind attributes and set values
 		// pass handler namespsaces to correct plugins for them to register events / do what they need to do
 
 		// update attribute key, add store to Elements instance and track element
 		element.setAttribute(utils.helpers.buildAttribute(C.attributes.entry), key);
-		Elements.stores.set(key, store);
+		Elements.stores.set(key, eleStore);
 		Elements.trackedElements.add(element);
 
 		// finished initialising

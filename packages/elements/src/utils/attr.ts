@@ -4,51 +4,52 @@ import type {
 	HandlerAttributesMap,
 	StateAttribtuesMap,
 } from "../types/index.js";
-import helpers from "./helpers.js";
-import log from "./log.js";
+import utils from "./index.js";
 
 /**
  * Recursively build all attribute maps for a given element
  */
-const extractElementBindings = (
+const buildAttributeMaps = (
 	element: HTMLElement,
 ): {
 	state: StateAttribtuesMap;
 	attribute: BindAttributesMap;
 	handler: HandlerAttributesMap;
 } => {
-	if (!element.hasAttribute(helpers.buildAttribute(C.attributes.entry))) {
-		log.warn(
-			`The element has no "${helpers.buildAttribute(C.attributes.entry)}" attribute.`,
-		);
-		return {
-			state: new Map(),
-			attribute: new Map(),
-			handler: new Map(),
-		};
-	}
-
-	const attributes = collectionRecursive(element);
-
 	const stateAttributes: StateAttribtuesMap = new Map();
 	const attributeBindings: BindAttributesMap = new Map();
 	const handlerAttributes: HandlerAttributesMap = new Map();
 
-	const statePrefix = helpers.buildAttribute(C.attributes.statePrefix); //* 'data-state--'
-	const bindPrefix = helpers.buildAttribute(C.attributes.attributePrefix); //* 'data-bind--'
-	const handlerPrefix = helpers.buildAttribute(C.attributes.handlerPrefix); //* 'data-handler--'
+	if (!element.hasAttribute(utils.helpers.buildAttribute(C.attributes.entry))) {
+		utils.log.warn(
+			`The element has no "${utils.helpers.buildAttribute(C.attributes.entry)}" attribute.`,
+		);
+		return {
+			state: stateAttributes,
+			attribute: attributeBindings,
+			handler: handlerAttributes,
+		};
+	}
+
+	const attributes = deepCollectAttributes(element);
+
+	const statePrefix = utils.helpers.buildAttribute(C.attributes.statePrefix); //* 'data-state--'
+	const bindPrefix = utils.helpers.buildAttribute(C.attributes.attributePrefix); //* 'data-bind--'
+	const handlerPrefix = utils.helpers.buildAttribute(
+		C.attributes.handlerPrefix,
+	); //* 'data-handler--'
 
 	for (const attr of attributes) {
 		const { name, value } = attr;
 
 		//* for state bindings
 		if (name.startsWith(statePrefix)) {
-			const stateName = name.slice(statePrefix.length);
+			const stateName = name.slice(statePrefix.length).toLowerCase();
 			stateAttributes.set(stateName, value);
 		}
 		//* for attribute bindings
 		else if (name.startsWith(bindPrefix)) {
-			const bindName = name.slice(bindPrefix.length);
+			const bindName = name.slice(bindPrefix.length).toLowerCase();
 			if (attributeBindings.has(bindName)) {
 				attributeBindings.get(bindName)?.push(value);
 			} else {
@@ -87,7 +88,7 @@ const extractElementBindings = (
 /**
  * From a given element, get all of its and its childrens attributes recursively
  */
-const collectionRecursive = (element: HTMLElement): Attr[] => {
+const deepCollectAttributes = (element: HTMLElement): Attr[] => {
 	const result: Attr[] = [];
 
 	function traverse(el: HTMLElement) {
@@ -104,11 +105,28 @@ const collectionRecursive = (element: HTMLElement): Attr[] => {
 };
 
 /**
+ * Updates the state attribute for the given element and its children where theere exists a `data-state--{key}` attribute
+ */
+const updateState = (parent: HTMLElement, key: string, value: unknown) => {
+	const { attribute, elements } = utils.elementSelectors.getStateElements(
+		parent,
+		key,
+	);
+
+	for (const element of elements) {
+		element.setAttribute(attribute, value as string);
+	}
+	if (parent.hasAttribute(attribute))
+		parent.setAttribute(attribute, value as string);
+};
+
+/**
  * Attribute utils
  */
 const attr = {
-	extractElementBindings,
-	collectionRecursive,
+	buildAttributeMaps,
+	deepCollectAttributes,
+	updateState,
 };
 
 export default attr;

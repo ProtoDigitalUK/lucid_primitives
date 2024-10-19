@@ -7,7 +7,7 @@ export type ElementsInstance = {
 	};
 	started: boolean;
 	plugins: string[];
-	stores: Map<string, ElementsStore>;
+	stores: Map<string, ElementsStore<Record<string, unknown>>>;
 	trackedElements: WeakSet<HTMLElement>;
 	bodyObserver: MutationObserver;
 };
