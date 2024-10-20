@@ -25,13 +25,19 @@ const registerStateEffect = (
 	key: string,
 	signal: Signal<unknown>,
 ) => {
-	createEffect(() => {
-		console.log("effect ran");
-		utils.attributes.updateState(element, {
-			key: key,
-			value: signal[0](),
-		});
-	});
+	createEffect(
+		() => {
+			console.log("effect ran");
+			utils.attributes.updateState(element, {
+				key: key,
+				value: signal[0](),
+			});
+		},
+		undefined,
+		{
+			name: `State key: ${key} effect`,
+		},
+	);
 };
 
 export default watchState;

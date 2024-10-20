@@ -18,7 +18,6 @@ const stateObserver = (
 	//       which job is to update the state attribute that this mutation observer is watching.
 
 	const [get] = store;
-
 	const statePrefix = utils.helpers.buildAttribute(C.attributes.statePrefix);
 
 	const observer = new MutationObserver((mutations) => {

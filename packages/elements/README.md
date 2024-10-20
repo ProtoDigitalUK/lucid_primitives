@@ -142,6 +142,7 @@ When a store is initialised, it always attempts to call the `init` action on the
 ## TODO:
 
 - Add object and array state support.
+- For object/array state types, dont bother update the state attributes at all. The only reason these are kept in sync with state is for CSS attribute selector support, but I dont suspect devs even using these data types for this, it makes sense that should be reserved for booleans, numbers and strings only.
 - Add `data-ref="name"` support. If suffixed with a `[]`, push the element to an array.
 - Disabled nested stores.
 - Implement solution for plugins and registering handlers.

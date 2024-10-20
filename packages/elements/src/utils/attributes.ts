@@ -121,9 +121,16 @@ const updateState = (
 	);
 	const value = helpers.stringifyState(state.value);
 
-	if (parent.hasAttribute(attribute)) parent.setAttribute(attribute, value);
+	if (parent.hasAttribute(attribute)) {
+		if (parent.getAttribute(attribute) !== value) {
+			parent.setAttribute(attribute, value);
+		}
+	}
+
 	for (const element of elements) {
-		element.setAttribute(attribute, value);
+		if (element.getAttribute(attribute) !== value) {
+			element.setAttribute(attribute, value);
+		}
 	}
 };
 
