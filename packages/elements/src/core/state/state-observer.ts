@@ -52,7 +52,7 @@ const stateObserver = (
 	observer.observe(element, {
 		attributes: true,
 		attributeFilter: stateAttributes,
-		subtree: true,
+		subtree: true, // TODO: if we disable registering state on children this can be set false
 	});
 
 	return observer;

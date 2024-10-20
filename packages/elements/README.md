@@ -120,3 +120,13 @@ These call user defined actions that are set against the store. In the future th
 ## Notes
 
 - Children elements to the data-element can only use `data-bind--` and `data-handler--` attributes and not create their own state. // TODO: this isnt true anymore - though maybe it should be?
+
+
+## TODO:
+
+- Parse state attribute values, convert to string, number, boolean, etc.
+- Stringify state values when updating attribute bindings.
+- Test how nested stores work in relation to state attributes.
+- Potentially disable registering state on children elements.
+- Implement solution for plugins and registering handlers.
+- On store initialisation, always fire an init action from the store module.
