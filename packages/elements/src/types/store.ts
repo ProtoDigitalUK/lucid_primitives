@@ -12,25 +12,27 @@ export type AttributeMaps = {
 	handler: HandlerAttributesMap;
 };
 
-type StoreActions = Record<string, (...args: unknown[]) => unknown>;
+export type StoreState = Record<string, unknown>;
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export type StoreActions = Record<string, (...args: any[]) => unknown>;
 
-export type StoreData<T extends Record<string, unknown>> = {
+export type StoreData<S extends StoreState, A extends StoreActions> = {
 	initialised: boolean;
 	dispose: () => void;
 	attributeMaps?: AttributeMaps;
 	stateObserver?: MutationObserver;
-	state: { [K in keyof T]: Signal<T[K]> };
-	actions: StoreActions;
+	state: { [K in keyof S]: Signal<S[K]> };
+	actions: A;
 };
 
-export type Store<T extends Record<string, unknown>> = [
-	get: StoreData<T>,
-	set: SetStoreFunction<StoreData<T>>,
+export type Store<S extends StoreState, A extends StoreActions> = [
+	get: StoreData<S, A>,
+	set: SetStoreFunction<StoreData<S, A>>,
 ];
 
-export type StoreModule<T extends Record<string, unknown>> = (
-	store: StoreData<T>,
+export type StoreModule<S extends StoreState, A extends StoreActions> = (
+	store: StoreData<S, A>,
 ) => {
-	state?: Partial<{ [K in keyof T]: Signal<T[K]> }>;
-	actions: StoreActions;
+	state?: Partial<{ [K in keyof S]: Signal<S[K]> }>;
+	actions: A;
 };

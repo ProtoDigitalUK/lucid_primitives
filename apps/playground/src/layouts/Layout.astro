@@ -37,14 +37,23 @@ const { title } = Astro.props;
 			Elements.register("intersectionHandlers");
 			Elements.register("domHandlers");
 
-			Elements.storeModule<{
-				isdisabled: string;
-				customState: string;
-			}>("exampleStore", (store) => ({
+			Elements.storeModule<
+				{
+					isdisabled: string;
+					customState: string;
+				},
+				{
+					init: () => void;
+					handleClick: () => void;
+				}
+			>("exampleStore", (store) => ({
 				state: {
 					customState: createSignal("hello world"),
 				},
 				actions: {
+					init() {
+						store.actions.handleClick(); // or this.handleClick()
+					},
 					handleClick: () => {
 						const [_, setDisabled] = store.state.isdisabled;
 						// const [getCustomState, setCustomState] = store.state.customState;
@@ -53,7 +62,7 @@ const { title } = Astro.props;
 						// 	console.log(getDisabled());
 						// }, 1000);
 
-						setDisabled('true');
+						setDisabled("true");
 					},
 				},
 			}));

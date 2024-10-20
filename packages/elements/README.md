@@ -8,33 +8,40 @@
 import Elements, { createSignal } from "@lucidclient/elements";
 import { EventHandlers, IntersectionHandlers, DOMHandlers } from "@lucidclient/elements/plugins";
 
-// register plugins for handers
 Elements.register(EventHandlers);
 Elements.register(IntersectionHandlers);
 Elements.register(DOMHandlers);
 
-// if you're using typescript you can pass a generic type to the store
-Elements.storeModule<{
-	isdisabled: string;
-	customState: string;
-}>("elementStore", (store) => ({
+Elements.storeModule<
+	{
+		isdisabled: string;
+		customState: string;
+	},
+	{
+		init: () => void;
+		handleClick: () => void;
+	}
+>("exampleStore", (store) => ({
 	state: {
 		customState: createSignal("hello world"),
 	},
 	actions: {
+		init() {
+			store.actions.handleClick(); // or this.handleClick()
+		},
 		handleClick: () => {
 			const [_, setDisabled] = store.state.isdisabled;
 			// const [getCustomState, setCustomState] = store.state.customState;
 
-			setDisabled('true');
+			setDisabled("true");
 		},
 	},
 }));
 
 // start the library
 Elements.start({
-    debug: true, // optional
-    attributePrefix: "data-" // optional
+  debug: true, // optional
+  attributePrefix: "data-" // optional
 });
 ```
 
@@ -109,6 +116,14 @@ The naming is `data-handler--namesapce.specifier="action"`.
 
 These call user defined actions that are set against the store. In the future they may also be able to mutate the state directly, but this will require function constructors meaning you can't use this with the unsafe-eval CSP policy.
 
+## Store Modules
+
+Store modules can be used to extend stores with actions and additional state. They are intended to be used as a layer between your elements and your logic.
+
+Within a store module, any additional state will be added to the store and like state bindings, they will update attribute bindings when their values change.
+
+When a store is initialised, it always attempts to call the `init` action on the store module.
+
 ## Reasons to use
 
 - State Attributes Synced: As the state attributes values always reflect the current value, you can use them in CSS with Attribute selectors. Due to the default values as well it means no layout shifts and flashes of content before the library is initialised.
@@ -121,7 +136,6 @@ These call user defined actions that are set against the store. In the future th
 
 - Children elements to the data-element can only use `data-bind--` and `data-handler--` attributes and not create their own state. // TODO: this isnt true anymore - though maybe it should be?
 
-
 ## TODO:
 
 - Parse state attribute values, convert to string, number, boolean, etc.
@@ -129,4 +143,3 @@ These call user defined actions that are set against the store. In the future th
 - Test how nested stores work in relation to state attributes.
 - Potentially disable registering state on children elements.
 - Implement solution for plugins and registering handlers.
-- On store initialisation, always fire an init action from the store module.

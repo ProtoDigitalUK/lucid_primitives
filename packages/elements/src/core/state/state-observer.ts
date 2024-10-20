@@ -1,4 +1,4 @@
-import type { Store } from "../../types/index.js";
+import type { Store, StoreState, StoreActions } from "../../types/index.js";
 import utils from "../../utils/index.js";
 import C from "../constants.js";
 
@@ -10,7 +10,7 @@ import C from "../constants.js";
  */
 const stateObserver = (
 	element: HTMLElement,
-	store: Store<Record<string, unknown>>,
+	store: Store<StoreState, StoreActions>,
 ): MutationObserver => {
 	const [get] = store;
 

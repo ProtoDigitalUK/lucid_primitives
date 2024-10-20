@@ -1,6 +1,11 @@
 import { createRoot } from "solid-js";
 import { createStore } from "solid-js/store";
-import type { Store, StoreData, StoreModule } from "../../types/store.js";
+import type {
+	Store,
+	StoreData,
+	StoreModule,
+	StoreActions,
+} from "../../types/store.js";
 import utils from "../../utils/index.js";
 import state from "../state/index.js";
 import C from "../constants.js";
@@ -21,18 +26,19 @@ const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 	createRoot((dispose) => {
 		// -----------------
 		// sreate store
-		const store = createStore<StoreData<StoreState>>({
+		const store = createStore<StoreData<StoreState, StoreActions>>({
 			initialised: false,
 			dispose: dispose,
 			state: {},
 			actions: {},
-		}) satisfies Store<StoreState>;
+		}) satisfies Store<StoreState, StoreActions>;
 
 		// get store module and update the store
 		if (storeKey !== null && Elements.storeModules.has(storeKey)) {
-			const storeModuleFn = Elements.storeModules.get(
-				storeKey,
-			) as StoreModule<StoreState>; // wrong generic type - doesnt matter currently
+			const storeModuleFn = Elements.storeModules.get(storeKey) as StoreModule<
+				StoreState,
+				StoreActions
+			>; // wrong generic type - doesnt matter currently
 			const storeModule = storeModuleFn(store[0]);
 
 			utils.log.debug(`Store module found for key "${storeKey}"`);
@@ -62,7 +68,6 @@ const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 		// 	// setIsDisabled("true");
 		// 	store[0].actions.handleClick?.();
 		// }, 10000);
-		// store[0].actions.handleClick?.();
 
 		// -----------------
 		// update Elements instance
@@ -70,6 +75,7 @@ const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 		Elements.trackedElements.add(element);
 
 		store[1]("initialised", true);
+		void store[0].actions.init?.();
 
 		utils.log.debug(
 			`Store initialised for element "${element.id || element.tagName}" with key "${key}"`,

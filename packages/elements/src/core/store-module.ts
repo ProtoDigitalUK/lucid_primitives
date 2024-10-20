@@ -1,13 +1,19 @@
 import Elements from "./elements.js";
-import type { StoreModule } from "../types/index.js";
+import type { Signal } from "solid-js";
+import type {
+	StoreModule,
+	StoreActions,
+	StoreState,
+	StoreData,
+} from "../types/index.js";
 import utils from "../utils/index.js";
 
 /**
  * Register store module for custom state and actions
  */
-const storeModule = <T extends Record<string, unknown>>(
+const storeModule = <S extends StoreState, A extends StoreActions>(
 	key: string,
-	storeModule: StoreModule<T>,
+	storeModule: StoreModule<S, A>,
 ) => {
 	if (Elements.storeModules.has(key)) {
 		utils.log.warn(
@@ -16,8 +22,8 @@ const storeModule = <T extends Record<string, unknown>>(
 		return;
 	}
 
-	// @ts-expect-error
-	Elements.storeModules.set(key, storeModule); // TODO: fix typing
+	// @ts-expect-error - TODO: fix typing
+	Elements.storeModules.set(key, storeModule);
 };
 
 export default storeModule;

@@ -1,4 +1,4 @@
-import type { Store } from "../../types/index.js";
+import type { Store, StoreState, StoreActions } from "../../types/index.js";
 import { createEffect, type Signal } from "solid-js";
 import utils from "../../utils/index.js";
 
@@ -9,7 +9,7 @@ import utils from "../../utils/index.js";
  */
 const watchState = (
 	element: HTMLElement,
-	store: Store<Record<string, unknown>>,
+	store: Store<StoreState, StoreActions>,
 ) => {
 	for (const [key, signal] of Object.entries(store[0].state))
 		registerStateEffect(element, key, signal);
