@@ -28,6 +28,8 @@ const start = (options?: {
 	const elements = utils.elementSelectors.getAllElements();
 	for (const item of elements) store.initialiseStore(item[0], item[1]);
 
+	store.registerStoreObserver();
+
 	utils.log.debug("library started.");
 };
 

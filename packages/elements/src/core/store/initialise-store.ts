@@ -29,7 +29,6 @@ const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 		}) satisfies Store<StoreState>;
 
 		// get store module and update the store
-		console.log(Elements.storeModules);
 		if (storeKey !== null && Elements.storeModules.has(storeKey)) {
 			const storeModuleFn = Elements.storeModules.get(
 				storeKey,
@@ -40,28 +39,30 @@ const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 
 			if (storeModule.state) store[1]("state", storeModule.state);
 			if (storeModule.actions) store[1]("actions", storeModule.actions);
+
+			Elements.storeModules.delete(storeKey);
 		}
 
 		// -----------------
 		// set data
 		element.setAttribute(utils.helpers.buildAttribute(C.attributes.entry), key);
 		store[1]("attributeMaps", utils.attributes.buildStoreMap(element));
+		store[1]("stateObserver", state.stateObserver(element, store));
 
 		// -----------------
 		// handle state, attribute bindings and handlers
 		state.createState(store);
 		state.watchState(element, store);
-		// state effects
-		// attribute bindings
 		// handlers
 
 		// TODO: temp testing
-		setTimeout(() => {
-			// if (!store[0].state.isdisabled) return;
-			// const [_, setIsDisabled] = store[0].state.isdisabled;
-			// setIsDisabled("true");
-			store[0].actions.handleClick?.();
-		}, 4000);
+		// setInterval(() => {
+		// 	// if (!store[0].state.isdisabled) return;
+		// 	// const [_, setIsDisabled] = store[0].state.isdisabled;
+		// 	// setIsDisabled("true");
+		// 	store[0].actions.handleClick?.();
+		// }, 10000);
+		// store[0].actions.handleClick?.();
 
 		// -----------------
 		// update Elements instance

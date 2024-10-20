@@ -18,6 +18,7 @@ export type StoreData<T extends Record<string, unknown>> = {
 	initialised: boolean;
 	dispose: () => void;
 	attributeMaps?: AttributeMaps;
+	stateObserver?: MutationObserver;
 	state: { [K in keyof T]: Signal<T[K]> };
 	actions: StoreActions;
 };

@@ -45,6 +45,7 @@ const buildStoreMap = (
 		//* for state bindings
 		if (name.startsWith(statePrefix)) {
 			const stateName = name.slice(statePrefix.length);
+			// TODO: parse value, not necessarily a string
 			stateAttributes.set(stateName, value);
 		}
 		//* for attribute bindings
@@ -136,8 +137,10 @@ const updateBind = (
 		key: string;
 		value: unknown;
 	},
-	bindAttributeMap: BindAttributesMap,
+	bindAttributeMap: BindAttributesMap | undefined,
 ) => {
+	if (!bindAttributeMap) return;
+
 	const bindPrefix = utils.helpers.buildAttribute(C.attributes.attributePrefix);
 	const valueString = state.value as string; // TODO: replace as string with util to convert value to string
 

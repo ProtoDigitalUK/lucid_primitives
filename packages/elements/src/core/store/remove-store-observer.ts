@@ -1,12 +1,12 @@
-import utils from "../utils/index.js";
-import C from "./constants.js";
-import Elements from "./elements.js";
+import utils from "../../utils/index.js";
+import C from "../constants.js";
+import Elements from "../elements.js";
 
 /**
  * Sets up a mutation observer on the body element
  * - Handles removal of elements from the DOM by removing their store and disposing the SolidJS createRoot
  */
-const registerBodyObserver = () => {
+const registerStoreObserver = () => {
 	const observer = new MutationObserver((mutations) => {
 		for (const mutation of mutations) {
 			for (const node of mutation.removedNodes) {
@@ -35,6 +35,7 @@ const removeElement = (element: HTMLElement) => {
 	const store = Elements.stores.get(storeKey);
 	if (!store) return;
 
+	store[0].stateObserver?.disconnect();
 	store[0].dispose();
 	Elements.stores.delete(storeKey);
 
@@ -43,4 +44,4 @@ const removeElement = (element: HTMLElement) => {
 	);
 };
 
-export default registerBodyObserver;
+export default registerStoreObserver;
