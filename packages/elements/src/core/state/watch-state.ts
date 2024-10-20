@@ -26,6 +26,7 @@ const registerStateEffect = (
 	signal: Signal<unknown>,
 ) => {
 	createEffect(() => {
+		console.log("effect ran");
 		utils.attributes.updateState(element, {
 			key: key,
 			value: signal[0](),

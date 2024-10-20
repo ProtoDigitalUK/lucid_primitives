@@ -4,6 +4,7 @@ import type {
 	HandlerAttributesMap,
 	StateAttribtuesMap,
 } from "../types/index.js";
+import helpers from "./helpers.js";
 import utils from "./index.js";
 
 /**
@@ -45,16 +46,15 @@ const buildStoreMap = (
 		//* for state bindings
 		if (name.startsWith(statePrefix)) {
 			const stateName = name.slice(statePrefix.length);
-			// TODO: parse value, not necessarily a string
-			stateAttributes.set(stateName, value);
+			stateAttributes.set(stateName, helpers.parseStateString(value));
 		}
 		//* for attribute bindings
 		else if (name.startsWith(bindPrefix)) {
 			const bindName = name.slice(bindPrefix.length);
 			if (attributeBindings.has(bindName)) {
-				attributeBindings.get(bindName)?.push(value);
+				attributeBindings.get(bindName)?.add(value);
 			} else {
-				attributeBindings.set(bindName, [value]);
+				attributeBindings.set(bindName, new Set([value]));
 			}
 		}
 		//* for handlers
@@ -119,18 +119,19 @@ const updateState = (
 		parent,
 		state.key,
 	);
-	const valueString = state.value as string; // TODO: replace as string with util to convert value to string
+	const value = helpers.stringifyState(state.value);
 
-	if (parent.hasAttribute(attribute))
-		parent.setAttribute(attribute, valueString);
+	if (parent.hasAttribute(attribute)) parent.setAttribute(attribute, value);
 	for (const element of elements) {
-		element.setAttribute(attribute, valueString);
+		element.setAttribute(attribute, value);
 	}
 };
 
 /**
- * Updates the attribute bindings for state. Updates the target element and all children. `data-bind--*="{stateKey}"`
+ * Updates the attribute bindings for state. Updates the target element and all children.
  */
+
+// TODO: this needs optimising - currently quite heavy
 const updateBind = (
 	parent: HTMLElement,
 	state: {
@@ -140,22 +141,60 @@ const updateBind = (
 	bindAttributeMap: BindAttributesMap | undefined,
 ) => {
 	if (!bindAttributeMap) return;
-
 	const bindPrefix = utils.helpers.buildAttribute(C.attributes.attributePrefix);
-	const valueString = state.value as string; // TODO: replace as string with util to convert value to string
+
+	let stringifyValue = state.value;
+	const valueType = helpers.valueType(state.value);
 
 	for (const [targetKey, values] of bindAttributeMap) {
-		if (!values.includes(state.key)) continue;
+		for (const bindValue of values) {
+			if (!bindValue.startsWith(`${state.key}`)) continue;
 
-		const attribute = `${bindPrefix}${targetKey}`;
-		const selector = `[${attribute}="${state.key}"]`;
+			switch (valueType) {
+				case "object": {
+					const path = bindValue.split(".").slice(1);
+					if (
+						path.length > 0 &&
+						typeof state.value === "object" &&
+						state.value !== null
+					) {
+						stringifyValue = path.reduce<unknown>((acc, curr) => {
+							return acc &&
+								typeof acc === "object" &&
+								acc !== null &&
+								curr in acc
+								? (acc as Record<string, unknown>)[curr]
+								: undefined;
+						}, state.value);
+					}
+					break;
+				}
+				case "array": {
+					const match = bindValue.match(/\[(\d+)\]/);
+					if (match && Array.isArray(state.value)) {
+						if (!match[1]) continue;
+						const index = Number.parseInt(match[1], 10);
+						stringifyValue =
+							index < state.value.length ? state.value[index] : undefined;
+					}
+					break;
+				}
+				default: {
+					stringifyValue = state.value;
+					break;
+				}
+			}
 
-		if (parent.matches(selector)) {
-			parent.setAttribute(targetKey, valueString);
-		}
+			const attribute = `${bindPrefix}${targetKey}`;
+			const selector = `[${attribute}="${bindValue}"]`;
+			const value = helpers.stringifyState(stringifyValue);
 
-		for (const element of parent.querySelectorAll(selector)) {
-			element.setAttribute(targetKey, valueString);
+			if (parent.matches(selector)) {
+				parent.setAttribute(targetKey, value);
+			}
+			for (const element of parent.querySelectorAll(selector)) {
+				element.setAttribute(targetKey, value);
+			}
 		}
 	}
 };

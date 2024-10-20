@@ -39,7 +39,11 @@ const { title } = Astro.props;
 
 			Elements.storeModule<
 				{
-					isdisabled: string;
+					boolean: boolean;
+					number: number;
+					string: string;
+					object: Record<string, string>;
+					array: Array<string>;
 					customState: string;
 				},
 				{
@@ -55,14 +59,25 @@ const { title } = Astro.props;
 						store.actions.handleClick(); // or this.handleClick()
 					},
 					handleClick: () => {
-						const [_, setDisabled] = store.state.isdisabled;
-						// const [getCustomState, setCustomState] = store.state.customState;
+						const [getBoolean, setDisabled] = store.state.boolean;
+						const [getNumber] = store.state.number;
+						const [getString] = store.state.string;
+						const [getObject] = store.state.object;
+						const [getArray] = store.state.array;
+						const [getCustomState] = store.state.customState;
 
 						// setInterval(() => {
 						// 	console.log(getDisabled());
 						// }, 1000);
 
-						setDisabled("true");
+						// console.log(getBoolean());
+						// console.log(getNumber());
+						// console.log(getString());
+						// console.log(getObject());
+						// console.log(getArray());
+						// console.log(getCustomState());
+
+						setDisabled(true);
 					},
 				},
 			}));

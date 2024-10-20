@@ -53,6 +53,8 @@ Elements.start({
 
     data-state--disabled="false"
     data-state--expanded="false"
+    data-state--object='{ "hello": "world" }'
+    data-state--array='["hello", "world"]'
 
     data-handler--on.click="handleClick"
     data-handler--on.mouseover="handleMouseover"
@@ -64,7 +66,8 @@ Elements.start({
 
     data-bind--disabled="disabled"
     data-bind--aria-expanded="expanded"
-    data-bind--data-custom-attribute-name="disabled"
+    data-bind--data-object-hello="object.hello"
+    data-bind--data-array-hello="array[0]"
 
     class="data-[state-disabled=true]:bg-red-500"
 >
@@ -138,8 +141,14 @@ When a store is initialised, it always attempts to call the `init` action on the
 
 ## TODO:
 
+- Add object and array state support.
+- Add `data-ref="name"` support. If suffixed with a `[]`, push the element to an array.
+- Disabled nested stores.
+- Implement solution for plugins and registering handlers.
+- Add support for function constructors on handler actions - this is optional, by default you should use store module actions. Feature opt-in?
 - Parse state attribute values, convert to string, number, boolean, etc.
 - Stringify state values when updating attribute bindings.
-- Test how nested stores work in relation to state attributes.
-- Potentially disable registering state on children elements.
-- Implement solution for plugins and registering handlers.
+- Allow children to register state on the store - works this way currently, just some TODOs to remove and info added to docs needed.
+- Update entire readme to be better structured and more in-depth.
+- Add method for re-creating the stores - would be needed for Astro's full site view transitions.
+- Get createSignal, createEffect and createMemo all exported from the library. Show more advanced examples of how they can be used with the store modules, and outside of it.

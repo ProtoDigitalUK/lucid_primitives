@@ -18,7 +18,7 @@ export type StateAttribtuesMap = Map<StateKey, string>; // TODO: accept string, 
  *
  * Note: Bind attributes can be subscribed to multiple states depending on the element its attached to.
  */
-export type BindAttributesMap = Map<string, Array<StateKey>>;
+export type BindAttributesMap = Map<string, Set<StateKey>>;
 
 // ----------------
 // Handlers

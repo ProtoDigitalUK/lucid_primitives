@@ -1,5 +1,6 @@
 import type { Store, StoreState, StoreActions } from "../../types/index.js";
 import utils from "../../utils/index.js";
+import helpers from "../../utils/helpers.js";
 import C from "../constants.js";
 
 /**
@@ -12,6 +13,9 @@ const stateObserver = (
 	element: HTMLElement,
 	store: Store<StoreState, StoreActions>,
 ): MutationObserver => {
+	// TODO: integration mutation lock for watch-state effect due to object/array signal mutations causing infinite loops
+	// - partially mitigated by the attributeOldValue option, though it still fires once extra when these state types are present
+
 	const [get] = store;
 
 	const statePrefix = utils.helpers.buildAttribute(C.attributes.statePrefix);
@@ -20,13 +24,14 @@ const stateObserver = (
 		for (const mutation of mutations) {
 			if (mutation.type === "attributes" && mutation.target.nodeType === 1) {
 				const target = mutation.target as HTMLElement;
-
 				if (!mutation.attributeName) continue;
 
 				// get state key
 				const key = mutation.attributeName.slice(statePrefix.length);
-				// TODO: parse value, not necessarily a string
-				const value = target.getAttribute(mutation.attributeName);
+				const attributeValue = target.getAttribute(mutation.attributeName);
+				if (attributeValue === mutation.oldValue) continue;
+
+				const value = helpers.parseStateString(attributeValue);
 
 				// update state signal
 				get.state[key]?.[1](value);
@@ -52,6 +57,7 @@ const stateObserver = (
 	observer.observe(element, {
 		attributes: true,
 		attributeFilter: stateAttributes,
+		attributeOldValue: true,
 		subtree: true, // TODO: if we disable registering state on children this can be set false
 	});
 

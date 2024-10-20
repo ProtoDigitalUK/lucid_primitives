@@ -10,17 +10,34 @@ import Layout from "../layouts/Layout.astro";
     <div class="w-full mt-2.5">
         <div
             data-element="exampleStore"
-            data-state--isdisabled="false"
-            data-bind--disabled="isdisabled"
+
+            data-state--boolean="false"
+            data-state--number="1"
+            data-state--string="hello world"
+            data-state--object='{ "hello": "world" }'
+            data-state--array='["hello", "world"]'
+
+            data-bind--data-boolean="boolean"
+            data-bind--data-number="number"
+            data-bind--data-string="string"
+            data-bind--data-object-hello="object.hello"
+            data-bind--data-array-hello="array[0]"
             data-bind--data-custom-state-attribute="customState"
+
             data-handler--on.click="handleClick"
-            data-handler--on.scroll="handleClick"
-            class="data-[state--isdisabled=true]:bg-red-500"
+            data-handler--on.scroll="handleScroll"
+
+            class="data-[state--boolean=true]:bg-red-500"
         >
+        		<span data-bind--data-boolean="boolean"></span>
+        		<span data-bind--data-number="number"></span>
+        		<span data-bind--data-string="string"></span>
+        		<span data-bind--data-object-hello="object.hello"></span>
+        		<span data-bind--data-array-hello="array[0]"></span>
             <button
-                data-bind--disabled="isdisabled"
+                data-bind--disabled="boolean"
                 data-handler--on.click="handleClick"
-                data-handler--dom.innerText="$expanded ? 'Hide Content' : 'Show Content'"
+                data-handler--dom.text="$boolean ? 'Hide Content' : 'Show Content'"
             >
                 Show Content
             </button>
