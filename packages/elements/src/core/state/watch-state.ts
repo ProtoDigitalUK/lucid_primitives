@@ -1,4 +1,4 @@
-import type { ElementsStore } from "../../types/index.js";
+import type { Store } from "../../types/index.js";
 import { createEffect, type Signal } from "solid-js";
 import utils from "../../utils/index.js";
 import type { AttributeMaps } from "../../types/index.js";
@@ -10,7 +10,7 @@ import type { AttributeMaps } from "../../types/index.js";
  */
 const watchState = (
 	element: HTMLElement,
-	store: ElementsStore<Record<string, unknown>>,
+	store: Store<Record<string, unknown>>,
 ) => {
 	const [get] = store;
 	if (!get.attributeMaps) return;

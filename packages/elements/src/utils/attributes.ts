@@ -44,16 +44,16 @@ const buildStoreMap = (
 
 		//* for state bindings
 		if (name.startsWith(statePrefix)) {
-			const stateName = name.slice(statePrefix.length).toLowerCase();
+			const stateName = name.slice(statePrefix.length);
 			stateAttributes.set(stateName, value);
 		}
 		//* for attribute bindings
 		else if (name.startsWith(bindPrefix)) {
-			const bindName = name.slice(bindPrefix.length).toLowerCase();
+			const bindName = name.slice(bindPrefix.length);
 			if (attributeBindings.has(bindName)) {
-				attributeBindings.get(bindName)?.push(value.toLowerCase());
+				attributeBindings.get(bindName)?.push(value);
 			} else {
-				attributeBindings.set(bindName, [value.toLowerCase()]);
+				attributeBindings.set(bindName, [value]);
 			}
 		}
 		//* for handlers

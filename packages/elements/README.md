@@ -14,22 +14,22 @@ Elements.register(IntersectionHandlers);
 Elements.register(DOMHandlers);
 
 // if you're using typescript you can pass a generic type to the store
-Elements.store<{
-  disabled: boolean;
-  customState: string;
-}>('exampleStore', (instance) => ({
-  state:
-  	customState: createSignal('hello world')
+Elements.storeModule<{
+	isdisabled: string;
+	customState: string;
+}>("elementStore", (store) => ({
+	state: {
+		customState: createSignal("hello world"),
 	},
-  actions: {
-    handleClick: () => {
-      const [_, setDisabled] = instance.state.disabled;
+	actions: {
+		handleClick: () => {
+			const [_, setDisabled] = store.state.isdisabled;
+			// const [getCustomState, setCustomState] = store.state.customState;
 
-      setDisabled(true);
-    }
-  }
+			setDisabled('true');
+		},
+	},
 }));
-
 
 // start the library
 Elements.start({

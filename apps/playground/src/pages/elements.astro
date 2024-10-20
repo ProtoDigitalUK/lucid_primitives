@@ -9,9 +9,10 @@ import Layout from "../layouts/Layout.astro";
     </h1>
     <div class="w-full mt-2.5">
         <div
-            data-element="elementStore"
+            data-element="exampleStore"
             data-state--isdisabled="false"
             data-bind--disabled="isdisabled"
+            data-bind--data-custom-state-attribute="customState"
             data-handler--on.click="handleClick"
             data-handler--on.scroll="handleClick"
             class="data-[state--isdisabled=true]:bg-red-500"

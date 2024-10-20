@@ -12,14 +12,24 @@ export type AttributeMaps = {
 	handler: HandlerAttributesMap;
 };
 
-export type ElementsStoreData<T extends Record<string, unknown>> = {
+type StoreActions = Record<string, (...args: unknown[]) => unknown>;
+
+export type StoreData<T extends Record<string, unknown>> = {
 	initialised: boolean;
 	dispose: () => void;
 	attributeMaps?: AttributeMaps;
 	state: { [K in keyof T]: Signal<T[K]> };
+	actions: StoreActions;
 };
 
-export type ElementsStore<T extends Record<string, unknown>> = [
-	get: ElementsStoreData<T>,
-	set: SetStoreFunction<ElementsStoreData<T>>,
+export type Store<T extends Record<string, unknown>> = [
+	get: StoreData<T>,
+	set: SetStoreFunction<StoreData<T>>,
 ];
+
+export type StoreModule<T extends Record<string, unknown>> = (
+	store: StoreData<T>,
+) => {
+	state?: Partial<{ [K in keyof T]: Signal<T[K]> }>;
+	actions: StoreActions;
+};

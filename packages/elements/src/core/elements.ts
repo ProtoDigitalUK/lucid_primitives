@@ -12,6 +12,7 @@ const Elements: ElementsInstance = {
 	started: false,
 	plugins: [],
 	stores: new Map(),
+	storeModules: new Map(),
 	trackedElements: new Set(),
 	bodyObserver: mutationBodyObserver(),
 };

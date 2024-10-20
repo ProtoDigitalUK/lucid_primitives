@@ -1,4 +1,4 @@
-import type { ElementsStore } from "./index.js";
+import type { Store, StoreModule } from "./index.js";
 
 export type ElementsInstance = {
 	options: {
@@ -7,7 +7,8 @@ export type ElementsInstance = {
 	};
 	started: boolean;
 	plugins: string[];
-	stores: Map<string, ElementsStore<Record<string, unknown>>>;
+	storeModules: Map<string, StoreModule<Record<string, unknown>>>;
+	stores: Map<string, Store<Record<string, unknown>>>;
 	trackedElements: WeakSet<HTMLElement>;
 	bodyObserver: MutationObserver;
 };

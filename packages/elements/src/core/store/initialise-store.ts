@@ -1,6 +1,6 @@
-import { createRoot, Signal } from "solid-js";
+import { createRoot } from "solid-js";
 import { createStore } from "solid-js/store";
-import type { ElementsStore, ElementsStoreData } from "../../types/store.js";
+import type { Store, StoreData, StoreModule } from "../../types/store.js";
 import utils from "../../utils/index.js";
 import state from "../state/index.js";
 import C from "../constants.js";
@@ -16,28 +16,30 @@ type StoreState = Record<string, unknown>;
  * - Populates the store with attribute maps.
  */
 const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
-	let key = storeKey ?? utils.helpers.uuid();
-	let store: ElementsStore<StoreState>;
+	const key = storeKey ?? utils.helpers.uuid();
 
 	createRoot((dispose) => {
 		// -----------------
-		// set or get store
-		if (storeKey !== null && Elements.stores.has(storeKey)) {
-			store = Elements.stores.get(storeKey) as ElementsStore<StoreState>;
-		} else {
-			// if store doesnt exist, but a storeKey was provided, warn and create a new store
-			if (storeKey !== null) {
-				key = utils.helpers.uuid();
-				utils.log.warn(
-					`The store with key "${storeKey}" does not exist. A new store will be created instead with the key "${key}".`,
-				);
-			}
+		// sreate store
+		const store = createStore<StoreData<StoreState>>({
+			initialised: false,
+			dispose: dispose,
+			state: {},
+			actions: {},
+		}) satisfies Store<StoreState>;
 
-			store = createStore<ElementsStoreData<StoreState>>({
-				initialised: false, // TODO: these will likely need to be removed depending on how user given stores are handler
-				dispose: dispose,
-				state: {},
-			}) satisfies ElementsStore<StoreState>;
+		// get store module and update the store
+		console.log(Elements.storeModules);
+		if (storeKey !== null && Elements.storeModules.has(storeKey)) {
+			const storeModuleFn = Elements.storeModules.get(
+				storeKey,
+			) as StoreModule<StoreState>; // wrong generic type - doesnt matter currently
+			const storeModule = storeModuleFn(store[0]);
+
+			utils.log.debug(`Store module found for key "${storeKey}"`);
+
+			if (storeModule.state) store[1]("state", storeModule.state);
+			if (storeModule.actions) store[1]("actions", storeModule.actions);
 		}
 
 		// -----------------
@@ -55,9 +57,10 @@ const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 
 		// TODO: temp testing
 		setTimeout(() => {
-			if (!store[0].state.isdisabled) return;
-			const [_, setIsDisabled] = store[0].state.isdisabled;
-			setIsDisabled("true");
+			// if (!store[0].state.isdisabled) return;
+			// const [_, setIsDisabled] = store[0].state.isdisabled;
+			// setIsDisabled("true");
+			store[0].actions.handleClick?.();
 		}, 4000);
 
 		// -----------------

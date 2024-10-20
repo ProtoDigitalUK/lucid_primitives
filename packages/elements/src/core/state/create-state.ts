@@ -1,12 +1,12 @@
 import { createSignal, type Signal } from "solid-js";
 import { produce } from "solid-js/store";
-import type { ElementsStore } from "../../types/index.js";
+import type { Store } from "../../types/index.js";
 
 /**
  * Creates a state object for the store
  * - For each state attribute in the attribute map, create a signal and add it to the state object
  */
-const createState = (store: ElementsStore<Record<string, unknown>>) => {
+const createState = (store: Store<Record<string, unknown>>) => {
 	const [storeGet, storeSet] = store;
 	const stateMap = storeGet.attributeMaps?.state;
 
