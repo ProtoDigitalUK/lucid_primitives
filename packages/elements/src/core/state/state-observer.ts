@@ -13,8 +13,9 @@ const stateObserver = (
 	element: HTMLElement,
 	store: Store<StoreState, StoreActions>,
 ): MutationObserver => {
-	// TODO: integration mutation lock for watch-state effect due to object/array signal mutations causing infinite loops
-	// - partially mitigated by the attributeOldValue option, though it still fires once extra when these state types are present
+	// TODO: attributeOldValue causing initial attirbute bindings to not update
+	// TODO: object/array signal mutations causing infinite loop with createEffect in watch-state
+	//       which job is to update the state attribute that this mutation observer is watching.
 
 	const [get] = store;
 
