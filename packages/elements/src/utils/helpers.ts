@@ -69,6 +69,26 @@ const valueType = (value: unknown) => {
 };
 
 /**
+ * Works out the state key from an attribute value
+ * - If the attribute value is a dot notation, return the first part
+ * - If the attribute value is a bracket notation, return the first part
+ */
+const stateFromAttrValue = (value: string): string => {
+	const dotIndex = value.indexOf(".");
+	const bracketIndex = value.indexOf("[");
+
+	if (dotIndex === -1 && bracketIndex === -1) return value;
+
+	// dot notation first - or only present. key.test[0], key.test
+	if (bracketIndex === -1 || (dotIndex !== -1 && dotIndex < bracketIndex)) {
+		return value.split(".")[0] ?? value;
+	}
+
+	// bracket notation first / only present. key[0].test, key[0]
+	return value.split("[")[0] ?? value;
+};
+
+/**
  * Helpers
  */
 const helpers = {
@@ -77,6 +97,7 @@ const helpers = {
 	parseStateString,
 	stringifyState,
 	valueType,
+	stateFromAttrValue,
 };
 
 export default helpers;

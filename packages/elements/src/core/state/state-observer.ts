@@ -25,7 +25,7 @@ const handleMutation = (
 	utils.attributes.updateBind(
 		target,
 		{ key, value },
-		get.attributeMaps?.attribute,
+		get.attributeMaps?.stateBindAttributes,
 	);
 };
 

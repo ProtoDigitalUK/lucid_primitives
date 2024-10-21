@@ -1,6 +1,7 @@
 import C from "../core/constants.js";
 import type {
 	BindAttributesMap,
+	StateBindAttributesMap,
 	HandlerAttributesMap,
 	StateAttribtuesMap,
 } from "../types/index.js";
@@ -14,10 +15,12 @@ const buildStoreMap = (
 	element: HTMLElement,
 ): {
 	state: StateAttribtuesMap;
+	stateBindAttributes: StateBindAttributesMap;
 	attribute: BindAttributesMap;
 	handler: HandlerAttributesMap;
 } => {
 	const stateAttributes: StateAttribtuesMap = new Map();
+	const stateBindAttributes: StateBindAttributesMap = new Map();
 	const attributeBindings: BindAttributesMap = new Map();
 	const handlerAttributes: HandlerAttributesMap = new Map();
 
@@ -27,6 +30,7 @@ const buildStoreMap = (
 		);
 		return {
 			state: stateAttributes,
+			stateBindAttributes: stateBindAttributes,
 			attribute: attributeBindings,
 			handler: handlerAttributes,
 		};
@@ -53,11 +57,17 @@ const buildStoreMap = (
 		//* for attribute bindings
 		if (name.startsWith(bindPrefix)) {
 			const bindName = name.slice(bindPrefix.length);
-			if (attributeBindings.has(bindName)) {
-				attributeBindings.get(bindName)?.add(value);
-			} else {
-				attributeBindings.set(bindName, new Set([value]));
+			if (!attributeBindings.has(bindName)) {
+				attributeBindings.set(bindName, new Set());
 			}
+			attributeBindings.get(bindName)?.add(value);
+
+			// Update stateBindAttributes
+			const stateKey = helpers.stateFromAttrValue(value);
+			if (!stateBindAttributes.has(stateKey)) {
+				stateBindAttributes.set(stateKey, new Set());
+			}
+			stateBindAttributes.get(stateKey)?.add(bindName);
 		}
 		//* for handlers
 		else if (name.startsWith(handlerPrefix)) {
@@ -83,6 +93,7 @@ const buildStoreMap = (
 
 	return {
 		state: stateAttributes,
+		stateBindAttributes: stateBindAttributes,
 		attribute: attributeBindings,
 		handler: handlerAttributes,
 	};
@@ -140,70 +151,77 @@ const updateState = (
  * Updates the attribute bindings for state. Updates the target element and all children.
  */
 
-// TODO: this needs optimising - currently quite heavy
+// TODO: tidy up this fn and optimise	``
 const updateBind = (
 	parent: HTMLElement,
 	state: {
 		key: string;
 		value: unknown;
 	},
-	bindAttributeMap: BindAttributesMap | undefined,
+	stateBindAttributeMap: StateBindAttributesMap | undefined,
 ) => {
-	if (!bindAttributeMap) return;
+	if (!stateBindAttributeMap) return;
+
+	const affectedAttributes = stateBindAttributeMap.get(state.key);
+	if (!affectedAttributes) return;
+
 	const bindPrefix = utils.helpers.buildAttribute(C.attributes.attributePrefix);
-
-	let stringifyValue = state.value;
 	const valueType = helpers.valueType(state.value);
+	const valueCache = new Map<string, string>();
 
-	for (const [targetKey, values] of bindAttributeMap) {
-		for (const bindValue of values) {
-			if (!bindValue.startsWith(`${state.key}`)) continue;
+	for (const targetKey of affectedAttributes) {
+		const attribute = `${bindPrefix}${targetKey}`;
+		const selector = `[${attribute}^="${state.key}"]`;
+		// TODO: optimise this
+		const elements = [
+			...(parent.matches(selector) ? [parent] : []),
+			...parent.querySelectorAll(selector),
+		];
 
-			switch (valueType) {
-				case "object": {
-					const path = bindValue.split(".").slice(1);
-					if (
-						path.length > 0 &&
-						typeof state.value === "object" &&
-						state.value !== null
-					) {
-						stringifyValue = path.reduce<unknown>((acc, curr) => {
-							return acc &&
-								typeof acc === "object" &&
-								acc !== null &&
-								curr in acc
-								? (acc as Record<string, unknown>)[curr]
-								: undefined;
-						}, state.value);
+		for (const element of elements) {
+			const bindValue = element.getAttribute(attribute);
+			if (!bindValue) continue;
+
+			let value: string;
+
+			if (valueCache.has(bindValue)) {
+				value = valueCache.get(bindValue) as string;
+			} else {
+				let stringifyValue: unknown;
+				switch (valueType) {
+					// TODO: extract this
+					case "object": {
+						const path = bindValue.split(".").slice(1);
+						stringifyValue = path.reduce<unknown>(
+							(acc, curr) =>
+								acc && typeof acc === "object" && acc !== null && curr in acc
+									? (acc as Record<string, unknown>)[curr]
+									: undefined,
+							state.value,
+						);
+						break;
 					}
-					break;
-				}
-				case "array": {
-					const match = bindValue.match(/\[(\d+)\]/);
-					if (match && Array.isArray(state.value)) {
-						if (!match[1]) continue;
-						const index = Number.parseInt(match[1], 10);
-						stringifyValue =
-							index < state.value.length ? state.value[index] : undefined;
+					// TODO: extract this
+					case "array": {
+						const match = bindValue.match(/\[(\d+)\]/);
+						if (match && Array.isArray(state.value)) {
+							if (match[1] === undefined) continue;
+							const index = Number.parseInt(match[1], 10);
+							stringifyValue =
+								index < state.value.length ? state.value[index] : undefined;
+						}
+						break;
 					}
-					break;
+					default: {
+						stringifyValue = state.value;
+						break;
+					}
 				}
-				default: {
-					stringifyValue = state.value;
-					break;
-				}
+				value = helpers.stringifyState(stringifyValue);
+				valueCache.set(bindValue, value);
 			}
 
-			const attribute = `${bindPrefix}${targetKey}`;
-			const selector = `[${attribute}="${bindValue}"]`;
-			const value = helpers.stringifyState(stringifyValue);
-
-			if (parent.matches(selector)) {
-				parent.setAttribute(targetKey, value);
-			}
-			for (const element of parent.querySelectorAll(selector)) {
-				element.setAttribute(targetKey, value);
-			}
+			element.setAttribute(targetKey, value);
 		}
 	}
 };
