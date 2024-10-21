@@ -97,7 +97,9 @@ These are reactive, meaning on change they will:
 
 1. Update the state attribute on the element
 2. Update any attribute bindings that references the state key
-3. Update any handlers that reference the state key (this is not yet implemented)
+3. Update any handlers that reference the state key, though this is dependent on the handler implementation.
+
+Array and object state types do not have their state attributes updated when they're mutated, however they do still update attribute bindings, and if you update the state attribute programmatically, that state will be sitll be kept in sync.
 
 These are two way binded, meaning if the attribute value is changed outside of the Elements library, Elements will keep it in sync still.
 
@@ -141,15 +143,16 @@ When a store is initialised, it always attempts to call the `init` action on the
 
 ## TODO:
 
-- Add object and array state support.
-- For object/array state types, dont bother update the state attributes at all. The only reason these are kept in sync with state is for CSS attribute selector support, but I dont suspect devs even using these data types for this, it makes sense that should be reserved for booleans, numbers and strings only.
+- [x] Add object and array state support.
+- [x] For object/array state types, dont bother update the state attributes at all. The only reason these are kept in sync with state is for CSS attribute selector support, but I dont suspect devs even using these data types for this, it makes sense that should be reserved for booleans, numbers and strings only.
+- [x] Parse state attribute values, convert to string, number, boolean, etc.
+- [x] Stringify state values when updating attribute bindings.
+- [x] Disable state registration on children.
+- Optimise the updateBind function - may need attribute map bindings type updated.
 - Add `data-ref="name"` support. If suffixed with a `[]`, push the element to an array.
 - Disabled nested stores.
 - Implement solution for plugins and registering handlers.
 - Add support for function constructors on handler actions - this is optional, by default you should use store module actions. Feature opt-in?
-- Parse state attribute values, convert to string, number, boolean, etc.
-- Stringify state values when updating attribute bindings.
-- Allow children to register state on the store - works this way currently, just some TODOs to remove and info added to docs needed.
 - Update entire readme to be better structured and more in-depth.
 - Add method for re-creating the stores - would be needed for Astro's full site view transitions.
 - Get createSignal, createEffect and createMemo all exported from the library. Show more advanced examples of how they can be used with the store modules, and outside of it.

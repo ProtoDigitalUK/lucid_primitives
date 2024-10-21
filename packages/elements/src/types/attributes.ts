@@ -7,7 +7,10 @@ type StateKey = string;
  * Stores the name and value of a state attribute. \
  * Ie: `data-state--disabled="false"` would be stored as `['disabled', 'false']`
  */
-export type StateAttribtuesMap = Map<StateKey, string>; // TODO: accept string, numbers, booleans, etc
+export type StateAttribtuesMap = Map<
+	StateKey,
+	string | number | boolean | null | undefined | object | Array<unknown>
+>;
 
 // ----------------
 // Attribute Bindings

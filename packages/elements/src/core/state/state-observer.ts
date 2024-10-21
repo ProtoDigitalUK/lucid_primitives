@@ -4,6 +4,32 @@ import helpers from "../../utils/helpers.js";
 import C from "../constants.js";
 
 /**
+ * Handles a mutation on a state attribute
+ * - Updates the state
+ * - Updates the attribute bindings
+ */
+const handleMutation = (
+	target: HTMLElement,
+	attribute: string,
+	oldValue: string | null,
+	get: Store<StoreState, StoreActions>[0],
+	statePrefix: string,
+) => {
+	const key = attribute.slice(statePrefix.length);
+	const attributeValue = target.getAttribute(attribute);
+	if (attributeValue === oldValue) return;
+	const value = helpers.parseStateString(attributeValue);
+
+	get.state[key]?.[1](value);
+
+	utils.attributes.updateBind(
+		target,
+		{ key, value },
+		get.attributeMaps?.attribute,
+	);
+};
+
+/**
  * Registers a mutation observer for all of the stores state attributes
  * - Updates all attribute bindings
  *
@@ -13,52 +39,41 @@ const stateObserver = (
 	element: HTMLElement,
 	store: Store<StoreState, StoreActions>,
 ): MutationObserver => {
-	// TODO: attributeOldValue causing initial attirbute bindings to not update
-	// TODO: object/array signal mutations causing infinite loop with createEffect in watch-state
-	//       which job is to update the state attribute that this mutation observer is watching.
-
 	const [get] = store;
 	const statePrefix = utils.helpers.buildAttribute(C.attributes.statePrefix);
+	const stateAttributes = Array.from(get.attributeMaps?.state.keys() ?? []).map(
+		(key) => `${statePrefix}${key}`,
+	);
 
+	// sync initial state to bind attributes
+	for (const attribute of stateAttributes) {
+		handleMutation(element, attribute, null, get, statePrefix);
+	}
+
+	// register mutation observer
 	const observer = new MutationObserver((mutations) => {
 		for (const mutation of mutations) {
 			if (mutation.type === "attributes" && mutation.target.nodeType === 1) {
 				const target = mutation.target as HTMLElement;
 				if (!mutation.attributeName) continue;
 
-				// get state key
-				const key = mutation.attributeName.slice(statePrefix.length);
-				const attributeValue = target.getAttribute(mutation.attributeName);
-				if (attributeValue === mutation.oldValue) continue;
-
-				const value = helpers.parseStateString(attributeValue);
-
-				// update state signal
-				get.state[key]?.[1](value);
-
-				// update attribute bindings
-				utils.attributes.updateBind(
+				handleMutation(
 					target,
-					{
-						key: key,
-						value: value,
-					},
-					get.attributeMaps?.attribute,
+					mutation.attributeName,
+					mutation.oldValue,
+					get,
+					statePrefix,
 				);
 			}
 		}
 	});
 
-	const stateAttributes: string[] = [];
-	get.attributeMaps?.state.forEach((value, key) => {
-		return stateAttributes.push(`data-state--${key}`);
-	});
-
+	// configure the observer
 	observer.observe(element, {
 		attributes: true,
 		attributeFilter: stateAttributes,
 		attributeOldValue: true,
-		subtree: true, // TODO: if we disable registering state on children this can be set false
+		// subtree: true, //* state cannot be registered on children
 	});
 
 	return observer;

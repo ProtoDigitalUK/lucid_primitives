@@ -14,7 +14,7 @@ const uuid = () => Math.random().toString(36).slice(2);
 /**
  * Parses a state attribute value and returns an inferred type
  */
-const parseStateString = (value: string | null): unknown => {
+const parseStateString = (value: string | null) => {
 	if (!value) return null;
 
 	if (value === "true") return true;

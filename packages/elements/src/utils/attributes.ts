@@ -32,24 +32,26 @@ const buildStoreMap = (
 		};
 	}
 
-	const attributes = deepCollectAttr(element);
-
 	const statePrefix = utils.helpers.buildAttribute(C.attributes.statePrefix); //* 'data-state--'
 	const bindPrefix = utils.helpers.buildAttribute(C.attributes.attributePrefix); //* 'data-bind--'
 	const handlerPrefix = utils.helpers.buildAttribute(
 		C.attributes.handlerPrefix,
 	); //* 'data-handler--'
 
-	for (const attr of attributes) {
+	//* for state bindings - state can only be defined on the parent
+	for (const attr of element.attributes) {
 		const { name, value } = attr;
-
-		//* for state bindings
 		if (name.startsWith(statePrefix)) {
 			const stateName = name.slice(statePrefix.length);
 			stateAttributes.set(stateName, helpers.parseStateString(value));
 		}
+	}
+
+	for (const attr of deepCollectAttr(element)) {
+		const { name, value } = attr;
+
 		//* for attribute bindings
-		else if (name.startsWith(bindPrefix)) {
+		if (name.startsWith(bindPrefix)) {
 			const bindName = name.slice(bindPrefix.length);
 			if (attributeBindings.has(bindName)) {
 				attributeBindings.get(bindName)?.add(value);
