@@ -1,12 +1,6 @@
-import Elements from "./elements.js";
-import type { Signal } from "solid-js";
-import type {
-	StoreModule,
-	StoreActions,
-	StoreState,
-	StoreData,
-} from "../types/index.js";
+import type { StoreActions, StoreModule, StoreState } from "../types/index.js";
 import utils from "../utils/index.js";
+import Elements from "./elements.js";
 
 /**
  * Register store module for custom state and actions

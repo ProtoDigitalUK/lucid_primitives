@@ -5,16 +5,12 @@ import type {
 	StoreData,
 	StoreModule,
 	StoreActions,
+	StoreState,
 } from "../../types/store.js";
 import utils from "../../utils/index.js";
 import state from "../state/index.js";
 import C from "../constants.js";
 import Elements from "../elements.js";
-
-// TODO: might be able to do type generation for this based on attribute maps and infered value type?
-// - Doesnt strictly matter here as its internal, but for the public API for creating a store this would be nice for having the correct at least
-//   for the state attributes
-type StoreState = Record<string, unknown>;
 
 /**
  * Creates a store for the given element if one hasnt already been specified.
@@ -60,14 +56,6 @@ const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 		state.createState(store);
 		state.watchState(element, store);
 		// handlers
-
-		// TODO: temp testing
-		// setInterval(() => {
-		// 	// if (!store[0].state.isdisabled) return;
-		// 	// const [_, setIsDisabled] = store[0].state.isdisabled;
-		// 	// setIsDisabled("true");
-		// 	store[0].actions.handleClick?.();
-		// }, 10000);
 
 		// -----------------
 		// update Elements instance

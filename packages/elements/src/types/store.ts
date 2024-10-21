@@ -2,17 +2,13 @@ import type { SetStoreFunction } from "solid-js/store";
 import type { Signal } from "solid-js";
 import type {
 	BindAttributesMap,
-	StateBindAttributesMap,
 	HandlerAttributesMap,
 	StateAttribtuesMap,
 } from "./index.js";
 
-// TODO: update naming of these, especially attribute/bindAttributes as naming is confusing
 export type AttributeMaps = {
 	state: StateAttribtuesMap;
-	stateBindAttributes: StateBindAttributesMap;
-	// TODO: remove attribute? - not used
-	attribute: BindAttributesMap;
+	bind: BindAttributesMap;
 	handler: HandlerAttributesMap;
 };
 

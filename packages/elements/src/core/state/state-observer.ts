@@ -18,15 +18,11 @@ const handleMutation = (
 	const key = attribute.slice(statePrefix.length);
 	const attributeValue = target.getAttribute(attribute);
 	if (attributeValue === oldValue) return;
+
 	const value = helpers.parseStateString(attributeValue);
 
 	get.state[key]?.[1](value);
-
-	utils.attributes.updateBind(
-		target,
-		{ key, value },
-		get.attributeMaps?.stateBindAttributes,
-	);
+	utils.attributes.updateBind(target, { key, value }, get.attributeMaps?.bind);
 };
 
 /**
@@ -53,12 +49,13 @@ const stateObserver = (
 	// register mutation observer
 	const observer = new MutationObserver((mutations) => {
 		for (const mutation of mutations) {
-			if (mutation.type === "attributes" && mutation.target.nodeType === 1) {
-				const target = mutation.target as HTMLElement;
-				if (!mutation.attributeName) continue;
-
+			if (
+				mutation.type === "attributes" &&
+				mutation.target instanceof HTMLElement &&
+				mutation.attributeName
+			) {
 				handleMutation(
-					target,
+					mutation.target,
 					mutation.attributeName,
 					mutation.oldValue,
 					get,

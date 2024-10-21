@@ -7,7 +7,7 @@ const C = {
 	attributes: {
 		entry: "element",
 		statePrefix: "state--",
-		attributePrefix: "bind--",
+		bindPrefix: "bind--",
 		handlerPrefix: "handler--",
 	},
 };

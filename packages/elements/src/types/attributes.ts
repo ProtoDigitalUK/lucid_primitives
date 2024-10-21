@@ -1,5 +1,5 @@
 // ----------------
-// State Bindings
+// State Attributes
 
 type StateKey = string;
 
@@ -13,31 +13,28 @@ export type StateAttribtuesMap = Map<
 >;
 
 // ----------------
-// Attribute Bindings
+// Bind Attributes
 
-/**
- * Stores the name and value of an attribute binding. \
- * Ie: `data-bind--disabled="disabled"` would be stored as `['disabled', 'disabled']`
- *
- * Note: Bind attributes can be subscribed to multiple states depending on the element its attached to.
- */
+// the name of the attribute the bind creates and maps to
 type AttributeName = string;
 
-export type BindAttributesMap = Map<AttributeName, Set<StateKey>>;
-export type StateBindAttributesMap = Map<StateKey, Set<AttributeName>>;
+/**
+ * Stores a map of state keys and all of their bind attributes. \
+ */
+export type BindAttributesMap = Map<StateKey, Set<AttributeName>>;
 
 // ----------------
-// Handlers
+// Handlers Attributes
 
-type Namespace = string;
-type Specifier = string;
-type HandlerValue = string;
+type HandlerNamespace = string;
+type HandlerSpecifier = string;
+type HandlerAction = string;
 
 /**
  * Stores a Map of namespaces, their specifiers and all handlers functions \
- * `data-handler--namesapce.specifier="handler"`
+ * `data-handler--namesapce.specifier="action"`
  */
 export type HandlerAttributesMap = Map<
-	Namespace,
-	Map<Specifier, Array<HandlerValue>>
+	HandlerNamespace,
+	Map<HandlerSpecifier, Array<HandlerAction>>
 >;

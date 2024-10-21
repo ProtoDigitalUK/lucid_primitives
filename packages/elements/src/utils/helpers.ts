@@ -55,6 +55,9 @@ const stringifyState = (value: unknown): string => {
 	}
 };
 
+/**
+ * Returns the inferred type of the given value
+ */
 const valueType = (value: unknown) => {
 	if (typeof value === "string") return "string";
 	if (value === null) return "null";

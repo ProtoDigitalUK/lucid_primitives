@@ -2,17 +2,19 @@
 
 > This is currently an R&D library, and is not recommended for production use as it may not go anywhere. Syntax, APIs and functionality is subject to change.
 
+The missing layer between your HTML and your JS. Elements is a light weight library that levels up your HTML with reactive state attributes, attribute bindings and handlers for event handling, intersection and DOM manipulation.
+
 ## Getting Started
 
 ```typescript
-import Elements, { createSignal } from "@lucidclient/elements";
+import Elements, { storeModule, registerHandler, createSignal } from "@lucidclient/elements";
 import { EventHandlers, IntersectionHandlers, DOMHandlers } from "@lucidclient/elements/plugins";
 
-Elements.register(EventHandlers);
-Elements.register(IntersectionHandlers);
-Elements.register(DOMHandlers);
+registerHandler(EventHandlers);
+registerHandler(IntersectionHandlers);
+registerHandler(DOMHandlers);
 
-Elements.storeModule<
+storeModule<
 	{
 		isdisabled: string;
 		customState: string;
@@ -38,7 +40,6 @@ Elements.storeModule<
 	},
 }));
 
-// start the library
 Elements.start({
   debug: true, // optional
   attributePrefix: "data-" // optional
@@ -148,11 +149,15 @@ When a store is initialised, it always attempts to call the `init` action on the
 - [x] Parse state attribute values, convert to string, number, boolean, etc.
 - [x] Stringify state values when updating attribute bindings.
 - [x] Disable state registration on children.
-- Optimise the updateBind function - may need attribute map bindings type updated.
-- Add `data-ref="name"` support. If suffixed with a `[]`, push the element to an array.
-- Disabled nested stores.
-- Implement solution for plugins and registering handlers.
-- Add support for function constructors on handler actions - this is optional, by default you should use store module actions. Feature opt-in?
-- Update entire readme to be better structured and more in-depth.
-- Add method for re-creating the stores - would be needed for Astro's full site view transitions.
-- Get createSignal, createEffect and createMemo all exported from the library. Show more advanced examples of how they can be used with the store modules, and outside of it.
+- [x] Optimise the updateBind function - may need attribute map bindings type updated.
+- [x] Export SolidJS createSignal, createEffect and createMemo from the library.
+- [x] Made storeModule and registerHandler exports instead of the default import for better tree shaking.
+- [] Go through project and address all TODOs.
+- [] Add `data-ref="name"` support. If suffixed with a `[]`, push the element to an array.
+- [] Disabled nested stores.
+- [] Implement solution for plugins and registering handlers.
+- [] Add support for function constructors on handler actions - this is optional, by default you should use store module actions. Feature opt-in?
+- [] New project name? Elements doesnt quite work with the pitch of being the missing layer between HTML and JS.
+- [] Update entire readme to be better structured and more in-depth.
+- [] Add method for re-creating the stores - would be needed for Astro's full site view transitions.
+- [] Create some examples of how to use the library and make use of the createSignal, createEffect and createMemo functions.

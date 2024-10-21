@@ -1,9 +1,8 @@
-import register from "./core/register.js";
 import start from "./core/start.js";
-import storeModule from "./core/store-module.js";
+export { default as storeModule } from "./core/store-module.js";
+export { default as registerHandler } from "./core/register-handler.js";
+export { createSignal, createEffect, createMemo } from "solid-js";
 
 export default {
 	start,
-	register,
-	storeModule,
 };

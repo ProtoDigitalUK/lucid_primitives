@@ -16,30 +16,10 @@ const getAllElements = (): Array<[HTMLElement, string | null]> => {
 };
 
 /**
- * Returns a list of all elements with the given state attribute
- */
-const getStateElements = (
-	element: HTMLElement,
-	key: string,
-): {
-	attribute: string;
-	elements: NodeListOf<HTMLElement>;
-} => {
-	const statePrefix = utils.helpers.buildAttribute(C.attributes.statePrefix); //* 'data-state--'
-	const attribute = statePrefix + key;
-
-	return {
-		attribute: attribute,
-		elements: element.querySelectorAll(`[${attribute}]`),
-	};
-};
-
-/**
  * The Element attribute selectors
  */
 const elementSelectors = {
 	getAllElements,
-	getStateElements,
 };
 
 export default elementSelectors;

@@ -2,12 +2,12 @@ import utils from "../utils/index.js";
 import Elements from "./elements.js";
 
 /**
- * Registers plugins to Elements
+ * Registerss handlers for Elements
  */
-const register = (plugin: string) => {
+const registerHandler = (plugin: string) => {
 	Elements.plugins.push(plugin);
 
 	utils.log.debug(`plugin ${plugin} registered.`);
 };
 
-export default register;
+export default registerHandler;

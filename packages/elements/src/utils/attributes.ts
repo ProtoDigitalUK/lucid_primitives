@@ -1,7 +1,6 @@
 import C from "../core/constants.js";
 import type {
 	BindAttributesMap,
-	StateBindAttributesMap,
 	HandlerAttributesMap,
 	StateAttribtuesMap,
 } from "../types/index.js";
@@ -15,13 +14,11 @@ const buildStoreMap = (
 	element: HTMLElement,
 ): {
 	state: StateAttribtuesMap;
-	stateBindAttributes: StateBindAttributesMap;
-	attribute: BindAttributesMap;
+	bind: BindAttributesMap;
 	handler: HandlerAttributesMap;
 } => {
 	const stateAttributes: StateAttribtuesMap = new Map();
-	const stateBindAttributes: StateBindAttributesMap = new Map();
-	const attributeBindings: BindAttributesMap = new Map();
+	const bindAttributes: BindAttributesMap = new Map();
 	const handlerAttributes: HandlerAttributesMap = new Map();
 
 	if (!element.hasAttribute(utils.helpers.buildAttribute(C.attributes.entry))) {
@@ -30,14 +27,13 @@ const buildStoreMap = (
 		);
 		return {
 			state: stateAttributes,
-			stateBindAttributes: stateBindAttributes,
-			attribute: attributeBindings,
+			bind: bindAttributes,
 			handler: handlerAttributes,
 		};
 	}
 
 	const statePrefix = utils.helpers.buildAttribute(C.attributes.statePrefix); //* 'data-state--'
-	const bindPrefix = utils.helpers.buildAttribute(C.attributes.attributePrefix); //* 'data-bind--'
+	const bindPrefix = utils.helpers.buildAttribute(C.attributes.bindPrefix); //* 'data-bind--'
 	const handlerPrefix = utils.helpers.buildAttribute(
 		C.attributes.handlerPrefix,
 	); //* 'data-handler--'
@@ -57,17 +53,12 @@ const buildStoreMap = (
 		//* for attribute bindings
 		if (name.startsWith(bindPrefix)) {
 			const bindName = name.slice(bindPrefix.length);
-			if (!attributeBindings.has(bindName)) {
-				attributeBindings.set(bindName, new Set());
-			}
-			attributeBindings.get(bindName)?.add(value);
 
-			// Update stateBindAttributes
 			const stateKey = helpers.stateFromAttrValue(value);
-			if (!stateBindAttributes.has(stateKey)) {
-				stateBindAttributes.set(stateKey, new Set());
+			if (!bindAttributes.has(stateKey)) {
+				bindAttributes.set(stateKey, new Set());
 			}
-			stateBindAttributes.get(stateKey)?.add(bindName);
+			bindAttributes.get(stateKey)?.add(bindName);
 		}
 		//* for handlers
 		else if (name.startsWith(handlerPrefix)) {
@@ -93,8 +84,7 @@ const buildStoreMap = (
 
 	return {
 		state: stateAttributes,
-		stateBindAttributes: stateBindAttributes,
-		attribute: attributeBindings,
+		bind: bindAttributes,
 		handler: handlerAttributes,
 	};
 };
@@ -119,28 +109,21 @@ const deepCollectAttr = (element: HTMLElement): Attr[] => {
 };
 
 /**
- * Updates the state attribute for the given element and its children where theere exists a `data-state--{key}` attribute
+ * Updates the state attribute for the given element if the value has changed
  */
 const updateState = (
-	parent: HTMLElement,
+	element: HTMLElement,
 	state: {
 		key: string;
 		value: unknown;
 	},
 ) => {
-	const { attribute, elements } = utils.elementSelectors.getStateElements(
-		parent,
-		state.key,
-	);
+	const statePrefix = utils.helpers.buildAttribute(C.attributes.statePrefix); //* 'data-state--'
+
+	const attribute = statePrefix + state.key;
 	const value = helpers.stringifyState(state.value);
 
-	if (parent.hasAttribute(attribute)) {
-		if (parent.getAttribute(attribute) !== value) {
-			parent.setAttribute(attribute, value);
-		}
-	}
-
-	for (const element of elements) {
+	if (element.hasAttribute(attribute)) {
 		if (element.getAttribute(attribute) !== value) {
 			element.setAttribute(attribute, value);
 		}
@@ -150,22 +133,20 @@ const updateState = (
 /**
  * Updates the attribute bindings for state. Updates the target element and all children.
  */
-
-// TODO: tidy up this fn and optimise	``
 const updateBind = (
 	parent: HTMLElement,
 	state: {
 		key: string;
 		value: unknown;
 	},
-	stateBindAttributeMap: StateBindAttributesMap | undefined,
+	stateBindAttributeMap: BindAttributesMap | undefined,
 ) => {
 	if (!stateBindAttributeMap) return;
 
 	const affectedAttributes = stateBindAttributeMap.get(state.key);
 	if (!affectedAttributes) return;
 
-	const bindPrefix = utils.helpers.buildAttribute(C.attributes.attributePrefix);
+	const bindPrefix = utils.helpers.buildAttribute(C.attributes.bindPrefix);
 	const valueType = helpers.valueType(state.value);
 	const valueCache = new Map<string, string>();
 
