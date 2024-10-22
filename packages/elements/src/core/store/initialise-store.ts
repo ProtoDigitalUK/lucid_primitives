@@ -9,6 +9,7 @@ import type {
 } from "../../types/store.js";
 import utils from "../../utils/index.js";
 import state from "../state/index.js";
+import createAttributesMap from "./create-attributes-map.js";
 import C from "../constants.js";
 import Elements from "../elements.js";
 
@@ -48,7 +49,7 @@ const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 		// -----------------
 		// set data
 		element.setAttribute(utils.helpers.buildAttribute(C.attributes.entry), key);
-		store[1]("attributeMaps", utils.attributes.buildStoreMap(element));
+		store[1]("attributeMaps", createAttributesMap(element));
 		store[1]("stateObserver", state.stateObserver(element, store));
 
 		// -----------------

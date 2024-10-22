@@ -1,7 +1,7 @@
 import type { Store, StoreState, StoreActions } from "../../types/index.js";
 import { createEffect, type Signal } from "solid-js";
+import state from "./index.js";
 import utils from "../../utils/index.js";
-import helpers from "../../utils/helpers.js";
 
 /**
  * Registers effect for each state signal
@@ -28,12 +28,12 @@ const registerStateEffect = (
 	key: string,
 	signal: Signal<unknown>,
 ) => {
-	const type = helpers.valueType(signal[0]());
+	const type = utils.helpers.valueType(signal[0]());
 	if (type === "object" || type === "array") return;
 
 	createEffect(
 		() => {
-			utils.attributes.updateState(element, {
+			state.updateAttributes(element, {
 				key: key,
 				value: signal[0](),
 			});

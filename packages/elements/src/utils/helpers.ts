@@ -92,6 +92,61 @@ const stateFromAttrValue = (value: string): string => {
 };
 
 /**
+ * Evaluates a path value from an object or array
+ */
+const evaluatePathValue = (
+	value: Record<string, unknown> | Array<unknown>,
+	path: string,
+) => {
+	if (!value || !path) {
+		return undefined;
+	}
+
+	const parts = path
+		.split(".")
+		.reduce((acc: string[], part: string) => {
+			const matches = part.match(/([^\[\]]+)|\[(\d+)\]/g);
+			if (matches) {
+				acc.push(...matches.map((m) => m.replace(/[\[\]]/g, "")));
+			}
+			return acc;
+		}, [])
+		.slice(1);
+
+	return parts.reduce<unknown>((currentValue, part) => {
+		if (currentValue === null || currentValue === undefined) {
+			return undefined;
+		}
+
+		if (typeof currentValue === "object") {
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+			return (currentValue as any)[part];
+		}
+
+		return undefined;
+	}, value);
+};
+
+/**
+ * From a given element, get all of its and its childrens attributes recursively
+ */
+const deepCollectAttr = (element: HTMLElement): Attr[] => {
+	const result: Attr[] = [];
+
+	function traverse(el: HTMLElement) {
+		result.push(...Array.from(el.attributes));
+		for (const child of el.children) {
+			if (child instanceof HTMLElement) {
+				traverse(child);
+			}
+		}
+	}
+	traverse(element);
+
+	return result;
+};
+
+/**
  * Helpers
  */
 const helpers = {
@@ -101,6 +156,8 @@ const helpers = {
 	stringifyState,
 	valueType,
 	stateFromAttrValue,
+	evaluatePathValue,
+	deepCollectAttr,
 };
 
 export default helpers;

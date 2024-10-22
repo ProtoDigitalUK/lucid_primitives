@@ -1,6 +1,7 @@
 import type { Store, StoreState, StoreActions } from "../../types/index.js";
 import utils from "../../utils/index.js";
 import helpers from "../../utils/helpers.js";
+import bind from "../bind/index.js";
 import C from "../constants.js";
 
 /**
@@ -22,7 +23,7 @@ const handleMutation = (
 	const value = helpers.parseStateString(attributeValue);
 
 	get.state[key]?.[1](value);
-	utils.attributes.updateBind(target, { key, value }, get.attributeMaps?.bind);
+	bind.updateAttributes(target, { key, value }, get.attributeMaps?.bind);
 };
 
 /**

@@ -152,7 +152,7 @@ When a store is initialised, it always attempts to call the `init` action on the
 - [x] Optimise the updateBind function - may need attribute map bindings type updated.
 - [x] Export SolidJS createSignal, createEffect and createMemo from the library.
 - [x] Made storeModule and registerHandler exports instead of the default import for better tree shaking.
-- [] Go through project and address all TODOs.
+- [x] Go through project and address all TODOs.
 - [] Add `data-ref="name"` support. If suffixed with a `[]`, push the element to an array.
 - [] Disabled nested stores.
 - [] Implement solution for plugins and registering handlers.
