@@ -50,40 +50,43 @@ Elements.start({
 
 ```html
 <div
-    data-element="elementStore"
+  data-element="elementStore"
 
-    data-state--disabled="false"
-    data-state--expanded="false"
-    data-state--object='{ "hello": "world" }'
-    data-state--array='["hello", "world"]'
+  data-state--disabled="false"
+  data-state--expanded="false"
+  data-state--object='{ "hello": "world" }'
+  data-state--array='["hello", "world"]'
 
-    data-handler--on.click="handleClick"
-    data-handler--on.mouseover="handleMouseover"
-    data-handler--on.mouseout="handleMouseout"
+  data-handler--on.click="handleClick"
+  data-handler--on.mouseover="handleMouseover"
+  data-handler--on.mouseout="handleMouseout"
 
-    data-handler--intersect.enter="enteredViewport"
-    data-handler--intersect.leave="leftViewport"
-    data-handler--intersect.center="centeredViewport"
+  data-handler--intersect.enter="enteredViewport"
+  data-handler--intersect.leave="leftViewport"
+  data-handler--intersect.center="centeredViewport"
 
-    data-bind--disabled="disabled"
-    data-bind--aria-expanded="expanded"
-    data-bind--data-object-hello="object.hello"
-    data-bind--data-array-hello="array[0]"
+  data-bind--disabled="disabled"
+  data-bind--aria-expanded="expanded"
+  data-bind--data-object-hello="object.hello"
+  data-bind--data-array-hello="array[0]"
 
-    class="data-[state-disabled=true]:bg-red-500"
+  class="data-[state-disabled=true]:bg-red-500"
 >
-    <div
-        data-bind--data-expanded
-        class="data-[expanded=true]:h-full"
-    >
-        <p>Hello World</p>
-    </div>
-    <button
-        data-handler--on.click="handleClick"
-        data-handler--dom.innerText="$expanded ? 'Hide Content' : 'Show Content'"
-    >
-        Show Content
-    </button>
+  <div
+  	data-ref="content"
+    data-bind--data-expanded
+    class="data-[expanded=true]:h-full"
+  >
+  	<p data-ref="paragraph[]">Hello World 1</p>
+    <p data-ref="paragraph[]">Hello World 2</p>
+  </div>
+  <button
+   	data-ref="button"
+    data-handler--on.click="handleClick"
+    data-handler--dom.innerText="$expanded ? 'Hide Content' : 'Show Content'"
+  >
+    Show Content
+  </button>
 </div>
 ```
 To indicate to the Elements library that an element should have a store created, use the `data-element` attribute.
@@ -154,10 +157,9 @@ When a store is initialised, it always attempts to call the `init` action on the
 - [x] Made storeModule and registerHandler exports instead of the default import for better tree shaking.
 - [x] Go through project and address all TODOs.
 - [] Add `data-ref="name"` support. If suffixed with a `[]`, push the element to an array.
-- [] Disabled nested stores.
+- [] Disabled nested stores - unless there is a good way to scope attribtues and handlers to the correct store.
 - [] Implement solution for plugins and registering handlers.
 - [] Add support for function constructors on handler actions - this is optional, by default you should use store module actions. Feature opt-in?
-- [] New project name? Elements doesnt quite work with the pitch of being the missing layer between HTML and JS.
 - [] Update entire readme to be better structured and more in-depth.
 - [] Add method for re-creating the stores - would be needed for Astro's full site view transitions.
 - [] Create some examples of how to use the library and make use of the createSignal, createEffect and createMemo functions.
