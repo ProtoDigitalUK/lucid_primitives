@@ -125,6 +125,12 @@ The naming is `data-handler--namesapce.specifier="action"`.
 
 These call user defined actions that are set against the store. In the future they may also be able to mutate the state directly, but this will require function constructors meaning you can't use this with the unsafe-eval CSP policy.
 
+### Refs `data-ref="name"`
+
+Refs are used to select elements and store them so you can easily access them from within you store module. These are stored as a Map against the store, with the key being the attribute value and the value being the element of type Element or ELement[].
+
+Any attributes that are suffixed with `[]` will be stored as an array of elements with the same name.
+
 ## Store Modules
 
 Store modules can be used to extend stores with actions and additional state. They are intended to be used as a layer between your elements and your logic.
