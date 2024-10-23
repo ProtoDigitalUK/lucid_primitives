@@ -165,7 +165,8 @@ When a store is initialised, it always attempts to call the `init` action on the
 - [x] Go through project and address all TODOs.
 - [x] Add `data-ref="name"` support. If suffixed with a `[]`, push the element to an array.
 - [x] Add interface to use for the store module instead of passing the store in.
-- [] Disabled nested stores - unless there is a good way to scope attribtues and handlers to the correct store.
+- [] Add scoping support to attribute values? So elements store can define a scope via `data-scope="name"` and then bind, refs and handles can prefix values with `scopename:`. A bind for example, would look like `data-bind--disabled="scopename:statekey"`.
+- [] Constant attributes prefixes need to be configurable via the Elements.start method.
 - [] Implement solution for plugins and registering handlers.
 - [] Add support for function constructors on handler actions - this is optional, by default you should use store module actions. Feature opt-in?
 - [] Update entire readme to be better structured and more in-depth.

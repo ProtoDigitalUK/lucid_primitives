@@ -10,6 +10,7 @@ const C = {
 		bindPrefix: "bind--",
 		handlerPrefix: "handler--",
 		refPrefix: "ref",
+		scopePrefix: "scope",
 	},
 };
 

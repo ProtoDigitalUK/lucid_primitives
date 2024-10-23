@@ -130,16 +130,12 @@ const evaluatePathValue = (
 /**
  * From a given element, get all of its and its childrens attributes recursively
  */
-const deepCollectAttr = (element: HTMLElement): Attr[] => {
+const deepCollectAttr = (element: Element): Attr[] => {
 	const result: Attr[] = [];
 
-	function traverse(el: HTMLElement) {
-		result.push(...Array.from(el.attributes));
-		for (const child of el.children) {
-			if (child instanceof HTMLElement) {
-				traverse(child);
-			}
-		}
+	function traverse(el: Element) {
+		for (const attr of el.attributes) result.push(attr);
+		for (const child of el.children) traverse(child);
 	}
 	traverse(element);
 

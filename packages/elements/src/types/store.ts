@@ -7,6 +7,7 @@ import type {
 } from "./index.js";
 
 export type AttributeMaps = {
+	scope: string | null;
 	state: StateAttribtuesMap;
 	bind: BindAttributesMap;
 	handler: HandlerAttributesMap;

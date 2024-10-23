@@ -10,6 +10,7 @@ import Layout from "../layouts/Layout.astro";
     <div class="w-full mt-2.5">
         <div
             data-element="exampleStore"
+            data-scope="example"
 
             data-state--boolean="false"
             data-state--number="1"
@@ -17,28 +18,28 @@ import Layout from "../layouts/Layout.astro";
             data-state--object='{"hello":"world"}'
             data-state--array='["hello","world"]'
 
-            data-bind--data-boolean="boolean"
-            data-bind--data-number="number"
-            data-bind--data-string="string"
-            data-bind--data-object-hello="object.hello"
-            data-bind--data-array-hello="array[0]"
-            data-bind--data-custom-state-attribute="customState"
+            data-bind--data-boolean="example:boolean"
+            data-bind--data-number="example:number"
+            data-bind--data-string="example:string"
+            data-bind--data-object-hello="example:object.hello"
+            data-bind--data-array-hello="example:array[0]"
+            data-bind--data-custom-state-attribute="example:customState"
 
-            data-handler--on.click="handleClick"
-            data-handler--on.scroll="handleScroll"
+            data-handler--on.click="example:handleClick"
+            data-handler--on.scroll="example:handleScroll"
 
             class="data-[state--boolean=true]:bg-red-500"
         >
-        		<span data-bind--data-boolean="boolean" data-ref="span[]"></span>
-        		<span data-bind--data-number="number" data-ref="span[]"></span>
-        		<span data-bind--data-string="string" data-ref="span[]"></span>
-        		<span data-bind--data-object-hello="object.hello" data-ref="span[]"></span>
-        		<span data-bind--data-array-hello="array[0]" data-ref="span[]"></span>
+        		<span data-bind--data-boolean="example:boolean" data-ref="example:span[]"></span>
+        		<span data-bind--data-number="example:number" data-ref="example:span[]"></span>
+        		<span data-bind--data-string="example:string" data-ref="example:span[]"></span>
+        		<span data-bind--data-object-hello="example:object.hello" data-ref="example:span[]"></span>
+        		<span data-bind--data-array-hello="example:array[0]" data-ref="example:span[]"></span>
             <button
-                data-bind--disabled="boolean"
-                data-handler--on.click="handleClick"
-                data-handler--dom.text="$boolean ? 'Hide Content' : 'Show Content'"
-                data-ref="button"
+                data-bind--disabled="example:boolean"
+                data-handler--on.click="example:handleClick"
+                data-handler--dom.text="$example:boolean ? 'Hide Content' : 'Show Content'"
+                data-ref="example:button"
             >
                 Show Content
             </button>

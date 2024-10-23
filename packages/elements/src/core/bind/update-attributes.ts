@@ -1,5 +1,5 @@
 import C from "../constants.js";
-import type { BindAttributesMap } from "../../types/index.js";
+import type { AttributeMaps } from "../../types/index.js";
 import utils from "../../utils/index.js";
 
 /**
@@ -24,26 +24,16 @@ const resolveBindingValue = (
 		value = valueCache.get(bindValue) as string;
 	} else {
 		let stringifyValue: unknown;
-		switch (valueType) {
-			case "object": {
-				stringifyValue = utils.helpers.evaluatePathValue(
-					state.value as Record<string, unknown>,
-					bindValue,
-				);
-				break;
-			}
-			case "array": {
-				stringifyValue = utils.helpers.evaluatePathValue(
-					state.value as Array<unknown>,
-					bindValue,
-				);
-				break;
-			}
-			default: {
-				stringifyValue = state.value;
-				break;
-			}
+
+		if (valueType === "object" || valueType === "array") {
+			stringifyValue = utils.helpers.evaluatePathValue(
+				state.value as Record<string, unknown> | Array<unknown>,
+				bindValue,
+			);
+		} else {
+			stringifyValue = state.value;
 		}
+
 		value = utils.helpers.stringifyState(stringifyValue);
 		valueCache.set(bindValue, value);
 	}
@@ -59,10 +49,16 @@ const updateAttributes = (
 		key: string;
 		value: unknown;
 	},
-	stateBindAttributeMap: BindAttributesMap | undefined,
+	attributeMaps: AttributeMaps | undefined,
 ) => {
-	if (!stateBindAttributeMap) return;
-	const affectedAttributes = stateBindAttributeMap.get(state.key);
+	if (!attributeMaps?.bind) return;
+
+	// TODO: add helper to combine these
+	const stateKey = attributeMaps.scope
+		? `${attributeMaps.scope}:${state.key}`
+		: state.key;
+
+	const affectedAttributes = attributeMaps.bind.get(stateKey);
 	if (!affectedAttributes) return;
 
 	const bindPrefix = utils.helpers.buildAttribute(C.attributes.bindPrefix);
@@ -71,7 +67,9 @@ const updateAttributes = (
 
 	for (const targetKey of affectedAttributes) {
 		const attribute = `${bindPrefix}${targetKey}`;
-		const selector = `[${attribute}^="${state.key}"]`;
+		// TODO: strip scope prefix
+		console.log(attribute, stateKey);
+		const selector = `[${attribute}^="${stateKey}"]`;
 
 		if (parent.matches(selector)) {
 			resolveBindingValue(

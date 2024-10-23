@@ -12,10 +12,15 @@ import utils from "../../utils/index.js";
 const createAttributesMap = (
 	element: HTMLElement,
 ): {
+	scope: string | null;
 	state: StateAttribtuesMap;
 	bind: BindAttributesMap;
 	handler: HandlerAttributesMap;
 } => {
+	const scope =
+		element.getAttribute(
+			utils.helpers.buildAttribute(C.attributes.scopePrefix),
+		) ?? null;
 	const stateAttributes: StateAttribtuesMap = new Map();
 	const bindAttributes: BindAttributesMap = new Map();
 	const handlerAttributes: HandlerAttributesMap = new Map();
@@ -25,6 +30,7 @@ const createAttributesMap = (
 			`The element has no "${utils.helpers.buildAttribute(C.attributes.entry)}" attribute.`,
 		);
 		return {
+			scope: scope,
 			state: stateAttributes,
 			bind: bindAttributes,
 			handler: handlerAttributes,
@@ -46,8 +52,14 @@ const createAttributesMap = (
 		}
 	}
 
+	//* binds and handlers can be defined on the element or its children, these can and should be scoped if scope is defined
 	for (const attr of utils.helpers.deepCollectAttr(element)) {
 		const { name, value } = attr;
+
+		//* dont track the attribute if scope is defined on the parent, but the attribute value isnt scoped:
+		if (scope) {
+			if (!value.startsWith(`${scope}:`)) continue;
+		}
 
 		//* for binds
 		if (name.startsWith(bindPrefix)) {
@@ -82,6 +94,7 @@ const createAttributesMap = (
 	}
 
 	return {
+		scope: scope,
 		state: stateAttributes,
 		bind: bindAttributes,
 		handler: handlerAttributes,
