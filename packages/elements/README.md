@@ -34,6 +34,7 @@ storeModule<
 		handleClick: () => {
 			const [_, setDisabled] = store.state.isdisabled;
 			// const [getCustomState, setCustomState] = store.state.customState;
+			const buttonElement = store.refs.get('button')
 
 			setDisabled("true");
 		},
@@ -163,6 +164,7 @@ When a store is initialised, it always attempts to call the `init` action on the
 - [x] Made storeModule and registerHandler exports instead of the default import for better tree shaking.
 - [x] Go through project and address all TODOs.
 - [x] Add `data-ref="name"` support. If suffixed with a `[]`, push the element to an array.
+- [x] Add interface to use for the store module instead of passing the store in.
 - [] Disabled nested stores - unless there is a good way to scope attribtues and handlers to the correct store.
 - [] Implement solution for plugins and registering handlers.
 - [] Add support for function constructors on handler actions - this is optional, by default you should use store module actions. Feature opt-in?

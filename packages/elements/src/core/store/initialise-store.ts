@@ -11,6 +11,7 @@ import utils from "../../utils/index.js";
 import state from "../state/index.js";
 import ref from "../ref/index.js";
 import createAttributesMap from "./create-attributes-map.js";
+import getStoreInterface from "./get-store-interface.js";
 import C from "../constants.js";
 import Elements from "../elements.js";
 
@@ -38,7 +39,7 @@ const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 				StoreState,
 				StoreActions
 			>; // wrong generic type - doesnt matter currently
-			const storeModule = storeModuleFn(store[0]);
+			const storeModule = storeModuleFn(getStoreInterface(store));
 
 			utils.log.debug(`Store module found for key "${storeKey}"`);
 

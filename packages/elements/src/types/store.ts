@@ -33,8 +33,14 @@ export type Store<S extends StoreState, A extends StoreActions> = [
 	set: SetStoreFunction<StoreData<S, A>>,
 ];
 
+export type StoreInterface<S extends StoreState, A extends StoreActions> = {
+	state: { [K in keyof S]: Signal<S[K]> };
+	actions: A;
+	refs: Refs;
+};
+
 export type StoreModule<S extends StoreState, A extends StoreActions> = (
-	store: StoreData<S, A>,
+	store: StoreInterface<S, A>,
 ) => {
 	state?: Partial<{ [K in keyof S]: Signal<S[K]> }>;
 	actions: A;
