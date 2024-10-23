@@ -58,8 +58,13 @@ const createAttributesMap = (
 
 		//* dont track the attribute if scope is defined on the parent, but the attribute value isnt scoped:
 		if (scope) {
+			// TODO: add helper for scope:
 			if (!value.startsWith(`${scope}:`)) continue;
 		}
+
+		// TODO: for binds and maybe handlers if possible, we should try and determine if they belong to the current store,
+		//       based on the state they reference, or in the case of handlers the action or state they reference.
+		//       THis doesnt affect how any thing works, just reduces the amount of data we need to track.
 
 		//* for binds
 		if (name.startsWith(bindPrefix)) {
