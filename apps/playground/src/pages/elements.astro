@@ -29,15 +29,16 @@ import Layout from "../layouts/Layout.astro";
 
             class="data-[state--boolean=true]:bg-red-500"
         >
-        		<span data-bind--data-boolean="boolean"></span>
-        		<span data-bind--data-number="number"></span>
-        		<span data-bind--data-string="string"></span>
-        		<span data-bind--data-object-hello="object.hello"></span>
-        		<span data-bind--data-array-hello="array[0]"></span>
+        		<span data-bind--data-boolean="boolean" data-ref="span[]"></span>
+        		<span data-bind--data-number="number" data-ref="span[]"></span>
+        		<span data-bind--data-string="string" data-ref="span[]"></span>
+        		<span data-bind--data-object-hello="object.hello" data-ref="span[]"></span>
+        		<span data-bind--data-array-hello="array[0]" data-ref="span[]"></span>
             <button
                 data-bind--disabled="boolean"
                 data-handler--on.click="handleClick"
                 data-handler--dom.text="$boolean ? 'Hide Content' : 'Show Content'"
+                data-ref="button"
             >
                 Show Content
             </button>

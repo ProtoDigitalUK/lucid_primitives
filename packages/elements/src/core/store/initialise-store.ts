@@ -9,6 +9,7 @@ import type {
 } from "../../types/store.js";
 import utils from "../../utils/index.js";
 import state from "../state/index.js";
+import ref from "../ref/index.js";
 import createAttributesMap from "./create-attributes-map.js";
 import C from "../constants.js";
 import Elements from "../elements.js";
@@ -28,6 +29,7 @@ const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 			dispose: dispose,
 			state: {},
 			actions: {},
+			refs: new Map(),
 		}) satisfies Store<StoreState, StoreActions>;
 
 		// get store module and update the store
@@ -56,6 +58,7 @@ const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 		// handle state, attribute bindings and handlers
 		state.createState(store);
 		state.watchState(element, store);
+		ref.createRefs(element, store);
 		// handlers
 
 		// -----------------

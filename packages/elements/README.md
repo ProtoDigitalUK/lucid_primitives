@@ -156,7 +156,7 @@ When a store is initialised, it always attempts to call the `init` action on the
 - [x] Export SolidJS createSignal, createEffect and createMemo from the library.
 - [x] Made storeModule and registerHandler exports instead of the default import for better tree shaking.
 - [x] Go through project and address all TODOs.
-- [] Add `data-ref="name"` support. If suffixed with a `[]`, push the element to an array.
+- [x] Add `data-ref="name"` support. If suffixed with a `[]`, push the element to an array.
 - [] Disabled nested stores - unless there is a good way to scope attribtues and handlers to the correct store.
 - [] Implement solution for plugins and registering handlers.
 - [] Add support for function constructors on handler actions - this is optional, by default you should use store module actions. Feature opt-in?

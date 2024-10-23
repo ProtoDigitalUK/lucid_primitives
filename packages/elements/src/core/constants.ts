@@ -9,6 +9,7 @@ const C = {
 		statePrefix: "state--",
 		bindPrefix: "bind--",
 		handlerPrefix: "handler--",
+		refPrefix: "ref",
 	},
 };
 

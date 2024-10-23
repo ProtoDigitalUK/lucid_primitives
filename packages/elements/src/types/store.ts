@@ -12,6 +12,8 @@ export type AttributeMaps = {
 	handler: HandlerAttributesMap;
 };
 
+export type Refs = Map<string, Element | Element[]>;
+
 export type StoreState = Record<string, unknown>;
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export type StoreActions = Record<string, (...args: any[]) => unknown>;
@@ -23,6 +25,7 @@ export type StoreData<S extends StoreState, A extends StoreActions> = {
 	stateObserver?: MutationObserver;
 	state: { [K in keyof S]: Signal<S[K]> };
 	actions: A;
+	refs: Refs;
 };
 
 export type Store<S extends StoreState, A extends StoreActions> = [
