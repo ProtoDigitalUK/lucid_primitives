@@ -43,6 +43,25 @@ import Layout from "../layouts/Layout.astro";
             >
                 Show Content
             </button>
+            Parent Element (scoped)
+            <!-- Sub Element -->
+            <div
+            	data-element="nestedStore"
+            	data-state--name="I am nested!"
+              data-ref="example:div"
+              data-bind--name="name"
+              data-bind--boolean="example:boolean"
+            >
+            	Single Nested (not scoped)
+            	<div
+             		data-element="doubleNestedStore"
+               	data-state--name="I am double nested!"
+                data-bind--name="name"
+                data-bind--boolean="example:boolean"
+              >
+             		Double Nested (not scoped)
+             	</div>
+            </div>
         </div>
     </div>
 </Layout>

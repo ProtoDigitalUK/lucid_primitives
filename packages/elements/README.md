@@ -132,6 +132,12 @@ Refs are used to select elements and store them so you can easily access them fr
 
 Any attributes that are suffixed with `[]` will be stored as an array of elements with the same name.
 
+### Scope `data-scope="name"`
+
+Scopes are allow you to better support nested Elements and avoid conflicts with binds and handlers. If you add a `data-scope="name"` attribute to the Element, whenever you want to reference state for it you must prefix the state value with `name:`.
+
+Without scoping, we still support nested store though its on you to ensure state values are unique as to avoid unintended behaviour.
+
 ## Store Modules
 
 Store modules can be used to extend stores with actions and additional state. They are intended to be used as a layer between your elements and your logic.
@@ -165,8 +171,8 @@ When a store is initialised, it always attempts to call the `init` action on the
 - [x] Go through project and address all TODOs.
 - [x] Add `data-ref="name"` support. If suffixed with a `[]`, push the element to an array.
 - [x] Add interface to use for the store module instead of passing the store in.
-- [] Add scoping support to attribute values? So elements store can define a scope via `data-scope="name"` and then bind, refs and handles can prefix values with `scopename:`. A bind for example, would look like `data-bind--disabled="scopename:statekey"`.
-- [] Constant attributes prefixes need to be configurable via the Elements.start method.
+- [x] Add scoping support to attribute values? So elements store can define a scope via `data-scope="name"` and then bind, refs and handles can prefix values with `scopename:`. A bind for example, would look like `data-bind--disabled="scopename:statekey"`.
+- [] Constant attributes prefixes need to be configurable via the Elements.start method. Smae with seperators config.
 - [] Implement solution for plugins and registering handlers.
 - [] Add support for function constructors on handler actions - this is optional, by default you should use store module actions. Feature opt-in?
 - [] Update entire readme to be better structured and more in-depth.
