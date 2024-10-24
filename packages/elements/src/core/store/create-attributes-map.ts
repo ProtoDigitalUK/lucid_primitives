@@ -4,6 +4,7 @@ import type {
 	HandlerAttributesMap,
 	StateAttribtuesMap,
 } from "../../types/index.js";
+import s from "../scope/index.js";
 import utils from "../../utils/index.js";
 
 /**
@@ -57,10 +58,7 @@ const createAttributesMap = (
 		const { name, value } = attr;
 
 		//* dont track the attribute if scope is defined on the parent, but the attribute value isnt scoped:
-		if (scope) {
-			// TODO: add helper for scope:
-			if (!value.startsWith(`${scope}:`)) continue;
-		}
+		if (scope && !s.valueIsScoped(scope, value)) continue;
 
 		// TODO: for binds and maybe handlers if possible, we should try and determine if they belong to the current store,
 		//       based on the state they reference, or in the case of handlers the action or state they reference.

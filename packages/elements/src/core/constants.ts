@@ -12,6 +12,10 @@ const C = {
 		refPrefix: "ref",
 		scopePrefix: "scope",
 	},
+	seperators: {
+		scope: ":",
+		handler: ".",
+	},
 };
 
 export default C;

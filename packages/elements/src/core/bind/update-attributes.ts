@@ -1,5 +1,6 @@
 import C from "../constants.js";
 import type { AttributeMaps } from "../../types/index.js";
+import scope from "../scope/index.js";
 import utils from "../../utils/index.js";
 
 /**
@@ -53,9 +54,8 @@ const updateAttributes = (
 ) => {
 	if (!attributeMaps?.bind) return;
 
-	// TODO: add helper to combine these
 	const stateKey = attributeMaps.scope
-		? `${attributeMaps.scope}:${state.key}`
+		? scope.scopeValue(attributeMaps.scope, state.key)
 		: state.key;
 
 	const affectedAttributes = attributeMaps.bind.get(stateKey);
@@ -67,8 +67,6 @@ const updateAttributes = (
 
 	for (const targetKey of affectedAttributes) {
 		const attribute = `${bindPrefix}${targetKey}`;
-		// TODO: strip scope prefix
-		console.log(attribute, stateKey);
 		const selector = `[${attribute}^="${stateKey}"]`;
 
 		if (parent.matches(selector)) {

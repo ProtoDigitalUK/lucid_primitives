@@ -5,6 +5,7 @@ import type {
 	Refs,
 } from "../../types/index.js";
 import C from "../constants.js";
+import s from "../scope/index.js";
 import utils from "../../utils/index.js";
 
 /**
@@ -26,10 +27,7 @@ const createRefs = (
 		const refName = ref.getAttribute(refPrefix);
 		if (!refName) continue;
 
-		// TODO: add helper for scope:
-		if (scope) {
-			if (!refName.startsWith(`${scope}:`)) continue;
-		}
+		if (scope && !s.valueIsScoped(scope, refName)) continue;
 		const name = scope ? refName.split(":")[1] : refName;
 		if (!name) continue;
 
