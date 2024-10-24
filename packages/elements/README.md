@@ -42,8 +42,23 @@ storeModule<
 }));
 
 Elements.start({
-  debug: true, // optional
-  attributePrefix: "data-" // optional
+	// all optional \/
+  debug: true,
+  attributes: {
+    prefix: "data-",
+    selectors: {
+      element: "element",
+      state: "state--",
+      bind: "bind--",
+      handler: "handler--",
+      ref: "ref",
+      scope: "scope",
+    },
+    seperators: {
+      scope: ":",
+      handler: ".",
+    }
+  }
 });
 ```
 
@@ -172,9 +187,14 @@ When a store is initialised, it always attempts to call the `init` action on the
 - [x] Add `data-ref="name"` support. If suffixed with a `[]`, push the element to an array.
 - [x] Add interface to use for the store module instead of passing the store in.
 - [x] Add scoping support to attribute values? So elements store can define a scope via `data-scope="name"` and then bind, refs and handles can prefix values with `scopename:`. A bind for example, would look like `data-bind--disabled="scopename:statekey"`.
-- [] Constant attributes prefixes need to be configurable via the Elements.start method. Smae with seperators config.
+- [x] Constant attributes prefixes need to be configurable via the Elements.start method. Smae with seperators config.
 - [] Implement solution for plugins and registering handlers.
 - [] Add support for function constructors on handler actions - this is optional, by default you should use store module actions. Feature opt-in?
+- [] Create Events handler plugin.
+- [] Create Intersection handler plugin.
+- [] Create DOM handler plugin.
+- [] Create Focus Trap handler plugin.
+- [] Go through lib and add debug logs where appropriate.
 - [] Update entire readme to be better structured and more in-depth.
 - [] Add method for re-creating the stores - would be needed for Astro's full site view transitions.
 - [] Create some examples of how to use the library and make use of the createSignal, createEffect and createMemo functions.

@@ -2,7 +2,7 @@ import type { Store, StoreState, StoreActions } from "../../types/index.js";
 import utils from "../../utils/index.js";
 import helpers from "../../utils/helpers.js";
 import bind from "../bind/index.js";
-import C from "../constants.js";
+import Elements from "../elements.js";
 
 /**
  * Handles a mutation on a state attribute
@@ -37,7 +37,9 @@ const stateObserver = (
 	store: Store<StoreState, StoreActions>,
 ): MutationObserver => {
 	const [get] = store;
-	const statePrefix = utils.helpers.buildAttribute(C.attributes.statePrefix);
+	const statePrefix = utils.helpers.buildAttribute(
+		Elements.options.attributes.selectors.state,
+	);
 	const stateAttributes = Array.from(get.attributeMaps?.state.keys() ?? []).map(
 		(key) => `${statePrefix}${key}`,
 	);

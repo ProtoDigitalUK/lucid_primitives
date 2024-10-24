@@ -1,4 +1,4 @@
-import C from "../constants.js";
+import Elements from "../elements.js";
 import utils from "../../utils/index.js";
 
 /**
@@ -11,7 +11,9 @@ const updateAttributes = (
 		value: unknown;
 	},
 ) => {
-	const statePrefix = utils.helpers.buildAttribute(C.attributes.statePrefix); //* 'data-state--'
+	const statePrefix = utils.helpers.buildAttribute(
+		Elements.options.attributes.selectors.state,
+	); //* 'data-state--'
 
 	const attribute = statePrefix + state.key;
 	const value = utils.helpers.stringifyState(state.value);

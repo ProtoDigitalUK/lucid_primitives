@@ -8,7 +8,21 @@ import store from "./store/index.js";
  */
 const start = (options?: {
 	debug?: boolean;
-	attributePrefix?: string;
+	attributes?: {
+		prefix?: string;
+		selectors?: {
+			element?: string;
+			state?: string;
+			bind?: string;
+			handler?: string;
+			ref?: string;
+			scope?: string;
+		};
+		seperators?: {
+			scope?: string;
+			handler?: string;
+		};
+	};
 }) => {
 	if (Elements.started) {
 		utils.log.warn(
@@ -20,7 +34,37 @@ const start = (options?: {
 	// set options
 	Elements.options = {
 		debug: options?.debug ?? C.defaults.debug,
-		attributePrefix: options?.attributePrefix ?? C.defaults.attributePrefix,
+		attributes: {
+			prefix: options?.attributes?.prefix ?? C.defaults.attributes.prefix,
+			selectors: {
+				element:
+					options?.attributes?.selectors?.element ??
+					C.defaults.attributes.selectors.element,
+				state:
+					options?.attributes?.selectors?.state ??
+					C.defaults.attributes.selectors.state,
+				bind:
+					options?.attributes?.selectors?.bind ??
+					C.defaults.attributes.selectors.bind,
+				handler:
+					options?.attributes?.selectors?.handler ??
+					C.defaults.attributes.selectors.handler,
+				ref:
+					options?.attributes?.selectors?.ref ??
+					C.defaults.attributes.selectors.ref,
+				scope:
+					options?.attributes?.selectors?.scope ??
+					C.defaults.attributes.selectors.scope,
+			},
+			seperators: {
+				scope:
+					options?.attributes?.seperators?.scope ??
+					C.defaults.attributes.seperators.scope,
+				handler:
+					options?.attributes?.seperators?.handler ??
+					C.defaults.attributes.seperators.handler,
+			},
+		},
 	};
 	Elements.started = true;
 

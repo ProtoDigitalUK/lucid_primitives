@@ -4,8 +4,8 @@ import type {
 	StoreActions,
 	Refs,
 } from "../../types/index.js";
-import C from "../constants.js";
 import s from "../scope/index.js";
+import Elements from "../elements.js";
 import utils from "../../utils/index.js";
 
 /**
@@ -17,7 +17,9 @@ const createRefs = (
 	element: HTMLElement,
 	store: Store<StoreState, StoreActions>,
 ) => {
-	const refPrefix = utils.helpers.buildAttribute(C.attributes.refPrefix);
+	const refPrefix = utils.helpers.buildAttribute(
+		Elements.options.attributes.selectors.ref,
+	);
 	const scope = store[0].attributeMaps?.scope;
 	const refElements = element.querySelectorAll(`[${refPrefix}]`);
 

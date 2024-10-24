@@ -1,5 +1,5 @@
-import C from "../constants.js";
 import type { AttributeMaps } from "../../types/index.js";
+import Elements from "../elements.js";
 import scope from "../scope/index.js";
 import utils from "../../utils/index.js";
 
@@ -61,7 +61,9 @@ const updateAttributes = (
 	const affectedAttributes = attributeMaps.bind.get(stateKey);
 	if (!affectedAttributes) return;
 
-	const bindPrefix = utils.helpers.buildAttribute(C.attributes.bindPrefix);
+	const bindPrefix = utils.helpers.buildAttribute(
+		Elements.options.attributes.selectors.bind,
+	);
 	const valueType = utils.helpers.valueType(state.value);
 	const valueCache = new Map<string, string>();
 

@@ -10,10 +10,9 @@ import type {
 import utils from "../../utils/index.js";
 import state from "../state/index.js";
 import ref from "../ref/index.js";
+import Elements from "../elements.js";
 import createAttributesMap from "./create-attributes-map.js";
 import getStoreInterface from "./get-store-interface.js";
-import C from "../constants.js";
-import Elements from "../elements.js";
 
 /**
  * Creates a store for the given element if one hasnt already been specified.
@@ -51,7 +50,12 @@ const initialiseStore = (element: HTMLElement, storeKey: string | null) => {
 
 		// -----------------
 		// set data
-		element.setAttribute(utils.helpers.buildAttribute(C.attributes.entry), key);
+		element.setAttribute(
+			utils.helpers.buildAttribute(
+				Elements.options.attributes.selectors.element,
+			),
+			key,
+		);
 		store[1]("attributeMaps", createAttributesMap(element));
 		store[1]("stateObserver", state.stateObserver(element, store));
 

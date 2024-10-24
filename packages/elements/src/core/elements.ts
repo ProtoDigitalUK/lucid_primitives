@@ -7,7 +7,7 @@ import C from "./constants.js";
 const Elements: ElementsInstance = {
 	options: {
 		debug: C.defaults.debug,
-		attributePrefix: C.defaults.attributePrefix,
+		attributes: C.defaults.attributes,
 	},
 	started: false,
 	plugins: [],

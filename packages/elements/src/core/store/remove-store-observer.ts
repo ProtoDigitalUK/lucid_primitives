@@ -1,5 +1,4 @@
 import utils from "../../utils/index.js";
-import C from "../constants.js";
 import Elements from "../elements.js";
 
 /**
@@ -28,7 +27,7 @@ const registerStoreObserver = () => {
  */
 const removeElement = (element: HTMLElement) => {
 	const storeKey = element.getAttribute(
-		utils.helpers.buildAttribute(C.attributes.entry),
+		utils.helpers.buildAttribute(Elements.options.attributes.selectors.element),
 	);
 	if (!storeKey) return;
 

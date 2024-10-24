@@ -1,4 +1,4 @@
-import C from "../core/constants.js";
+import Elements from "../core/elements.js";
 import utils from "./index.js";
 
 /**
@@ -6,12 +6,16 @@ import utils from "./index.js";
  */
 const getAllElements = (): Array<[HTMLElement, string | null]> => {
 	const elements: NodeListOf<HTMLElement> = document.querySelectorAll(
-		`[${utils.helpers.buildAttribute(C.attributes.entry)}]`,
+		`[${utils.helpers.buildAttribute(Elements.options.attributes.selectors.element)}]`,
 	);
 
 	return Array.from(elements).map((element) => [
 		element,
-		element.getAttribute(utils.helpers.buildAttribute(C.attributes.entry)),
+		element.getAttribute(
+			utils.helpers.buildAttribute(
+				Elements.options.attributes.selectors.element,
+			),
+		),
 	]);
 };
 

@@ -1,9 +1,9 @@
-import C from "../constants.js";
 import type {
 	BindAttributesMap,
 	HandlerAttributesMap,
 	StateAttribtuesMap,
 } from "../../types/index.js";
+import Elements from "../elements.js";
 import s from "../scope/index.js";
 import utils from "../../utils/index.js";
 
@@ -20,15 +20,21 @@ const createAttributesMap = (
 } => {
 	const scope =
 		element.getAttribute(
-			utils.helpers.buildAttribute(C.attributes.scopePrefix),
+			utils.helpers.buildAttribute(Elements.options.attributes.selectors.scope),
 		) ?? null;
 	const stateAttributes: StateAttribtuesMap = new Map();
 	const bindAttributes: BindAttributesMap = new Map();
 	const handlerAttributes: HandlerAttributesMap = new Map();
 
-	if (!element.hasAttribute(utils.helpers.buildAttribute(C.attributes.entry))) {
+	if (
+		!element.hasAttribute(
+			utils.helpers.buildAttribute(
+				Elements.options.attributes.selectors.element,
+			),
+		)
+	) {
 		utils.log.warn(
-			`The element has no "${utils.helpers.buildAttribute(C.attributes.entry)}" attribute.`,
+			`The element has no "${utils.helpers.buildAttribute(Elements.options.attributes.selectors.element)}" attribute.`,
 		);
 		return {
 			scope: scope,
@@ -38,10 +44,14 @@ const createAttributesMap = (
 		};
 	}
 
-	const statePrefix = utils.helpers.buildAttribute(C.attributes.statePrefix); //* 'data-state--'
-	const bindPrefix = utils.helpers.buildAttribute(C.attributes.bindPrefix); //* 'data-bind--'
+	const statePrefix = utils.helpers.buildAttribute(
+		Elements.options.attributes.selectors.state,
+	); //* 'data-state--'
+	const bindPrefix = utils.helpers.buildAttribute(
+		Elements.options.attributes.selectors.bind,
+	); //* 'data-bind--'
 	const handlerPrefix = utils.helpers.buildAttribute(
-		C.attributes.handlerPrefix,
+		Elements.options.attributes.selectors.handler,
 	); //* 'data-handler--'
 
 	//* for state bindings - state can only be defined on the parent
@@ -76,7 +86,9 @@ const createAttributesMap = (
 		}
 		//* for handlers
 		else if (name.startsWith(handlerPrefix)) {
-			const handlerParts = name.slice(handlerPrefix.length).split(".");
+			const handlerParts = name
+				.slice(handlerPrefix.length)
+				.split(Elements.options.attributes.seperators.handler);
 			if (handlerParts.length === 2) {
 				const [namespace, specifier] = handlerParts;
 				if (!namespace || !specifier) continue;
