@@ -9,6 +9,4 @@ const DEFAULT_OPTIONS = {
 	},
 } as const;
 
-export const LOOP_INDEX = ":index:";
-export const LOOP_INDEX_ONE = ":indexOne:";
 export default DEFAULT_OPTIONS;

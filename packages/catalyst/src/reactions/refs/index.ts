@@ -8,7 +8,13 @@ const refsReaction: Reaction = {
 		const reference = directive.reference;
 		if (!reference || reference.type !== "identifier") {
 			context.warn(
-				`The "${directive.attributeName}" directive requires a scoped ref name.`,
+				`The "${directive.attributeName}" directive requires a #ref name.`,
+			);
+			return;
+		}
+		if (!reference.scope) {
+			context.warn(
+				`Cannot infer a store for the reference "${reference.raw}".`,
 			);
 			return;
 		}

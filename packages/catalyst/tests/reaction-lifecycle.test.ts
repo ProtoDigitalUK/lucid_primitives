@@ -37,8 +37,8 @@ describe("reaction lifecycle", () => {
 		if (!(target instanceof HTMLElement)) throw new Error("Missing target");
 		target.innerHTML = `
 			<button
-				data-bind--title="dynamic:$label"
-				data-events--click="dynamic:@select"
+				data-bind--title="$label"
+				data-events--click="@select"
 			></button>
 		`;
 		Catalyst.sync(target);
@@ -61,8 +61,12 @@ describe("reaction lifecycle", () => {
 	});
 
 	it("passes concrete directive data to custom reactions", () => {
-		document.body.innerHTML = `<div data-inspect--value="scope:$key"></div>`;
-		const element = document.querySelector("div");
+		document.body.innerHTML = `
+			<div data-store="scope">
+				<div data-inspect--value="$key"></div>
+			</div>
+		`;
+		const element = document.querySelector("[data-inspect--value]");
 		const values: string[] = [];
 		let cleanups = 0;
 		const reaction: Reaction = {
@@ -74,6 +78,15 @@ describe("reaction lifecycle", () => {
 				expect(directive.attributeName).toBe("data-inspect--value");
 				expect(directive.specifier).toBe("value");
 				expect(directive.synthetic).toBe(false);
+				if (directive.value === "$key") {
+					expect(directive.reference).toMatchObject({
+						type: "state",
+						scope: "scope",
+						key: "key",
+					});
+				} else {
+					expect(directive.reference).toBeNull();
+				}
 				values.push(directive.value);
 				return () => {
 					cleanups += 1;
@@ -83,12 +96,44 @@ describe("reaction lifecycle", () => {
 
 		registerReaction(reaction);
 		Catalyst.start();
-		expect(values).toEqual(["scope:$key"]);
+		expect(values).toEqual(["$key"]);
 
-		element?.setAttribute("data-inspect--value", "scope:$next");
+		element?.setAttribute("data-inspect--value", "is-active");
 		if (element) Catalyst.sync(element);
-		expect(values).toEqual(["scope:$key", "scope:$next"]);
+		expect(values).toEqual(["$key", "is-active"]);
 		expect(cleanups).toBe(1);
+	});
+
+	it("keeps inferred document actions distinct across stores", () => {
+		document.body.innerHTML = `
+			<div data-store="first">
+				<div data-events--document.catalyst-test="@run"></div>
+			</div>
+			<div data-store="second">
+				<div data-events--document.catalyst-test="@run"></div>
+			</div>
+		`;
+		let firstRuns = 0;
+		let secondRuns = 0;
+		storeModule<Record<string, never>, { run: () => void }>("first", () => ({
+			actions: {
+				run: () => {
+					firstRuns += 1;
+				},
+			},
+		}));
+		storeModule<Record<string, never>, { run: () => void }>("second", () => ({
+			actions: {
+				run: () => {
+					secondRuns += 1;
+				},
+			},
+		}));
+
+		Catalyst.start({ reactions: [events] });
+		document.dispatchEvent(new Event("catalyst-test"));
+		expect(firstRuns).toBe(1);
+		expect(secondRuns).toBe(1);
 	});
 
 	it("can restart without registering reactions or modules again", async () => {
@@ -97,7 +142,7 @@ describe("reaction lifecycle", () => {
 		}));
 		document.body.innerHTML = `
 			<div data-store="restartable">
-				<span data-dom--text="restartable:$label"></span>
+				<span data-dom--text="$label"></span>
 			</div>
 		`;
 
@@ -108,7 +153,7 @@ describe("reaction lifecycle", () => {
 
 		document.body.innerHTML = `
 			<div data-store="restartable">
-				<span data-dom--text="restartable:$label"></span>
+				<span data-dom--text="$label"></span>
 			</div>
 		`;
 		Catalyst.start();

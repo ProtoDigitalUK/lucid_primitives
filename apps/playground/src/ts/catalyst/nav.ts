@@ -47,7 +47,7 @@ const navStore: StoreModule<NavStoreState, NavStoreActions> = (store) => ({
 			const target = store.refs.get("testEleRefresh");
 			if (target instanceof HTMLElement) {
 				target.innerHTML =
-					"<button data-store='testreplace' data-state--example='false' data-events--click='nav:@newClick' data-bind--testing='nav:$open'>after<span data-bind--test='testreplace:$example'>children</span></button>";
+					"<button data-store='testreplace' data-state--example='false' data-events--click='nav:@newClick' data-bind--testing='nav:$open'>after<span data-bind--test='$example'>children</span></button>";
 			}
 			if (target && !Array.isArray(target)) {
 				Catalyst.sync(target);

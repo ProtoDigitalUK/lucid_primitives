@@ -4,6 +4,17 @@ import Catalyst from "./catalyst.js";
 import { warn } from "./log.js";
 
 const resolveReference = (reference: MemberReference, args: unknown[] = []) => {
+	if (reference.type === "loop") {
+		return reference.path.length
+			? evaluatePathValue(reference.value, reference.path)
+			: reference.value;
+	}
+
+	if (!reference.scope) {
+		warn(`Cannot infer a store for the reference "${reference.raw}".`);
+		return undefined;
+	}
+
 	const store = Catalyst.stores.get(reference.scope);
 	if (!store) {
 		warn(`Cannot find a store with the scope "${reference.scope}".`);

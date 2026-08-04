@@ -17,10 +17,31 @@ const context: ReactionContext = {
 	debug,
 };
 
+const referencesMatch = (
+	left: Directive["reference"],
+	right: Directive["reference"],
+) => {
+	if (!left || !right) return left === right;
+	if (
+		left.raw !== right.raw ||
+		left.type !== right.type ||
+		left.scope !== right.scope ||
+		left.key !== right.key ||
+		left.path.join(".") !== right.path.join(".")
+	) {
+		return false;
+	}
+	if (left.type === "loop" && right.type === "loop") {
+		return Object.is(left.value, right.value);
+	}
+	return true;
+};
+
 const directiveMatches = (left: Directive, right: Directive) =>
 	left.reaction === right.reaction &&
 	left.specifier === right.specifier &&
-	left.value === right.value;
+	left.value === right.value &&
+	referencesMatch(left.reference, right.reference);
 
 const initialiseDirective = (directive: Directive) => {
 	const reaction = Catalyst.reactions.get(directive.reaction);

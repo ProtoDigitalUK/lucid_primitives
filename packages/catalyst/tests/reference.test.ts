@@ -12,20 +12,41 @@ describe("parseReference", () => {
 		});
 	});
 
-	it("parses actions and identifiers", () => {
+	it("parses explicitly scoped actions and identifiers", () => {
 		expect(parseReference("nav:@toggle")).toMatchObject({
 			scope: "nav",
 			type: "action",
 			key: "toggle",
 		});
-		expect(parseReference("nav:button[]")).toMatchObject({
+		expect(parseReference("nav:#button[]")).toMatchObject({
 			scope: "nav",
 			type: "identifier",
 			key: "button[]",
 		});
 	});
 
-	it("rejects unscoped values", () => {
-		expect(parseReference("$items")).toBeNull();
+	it("parses local references without assigning a scope", () => {
+		expect(parseReference("$items[0].url")).toMatchObject({
+			scope: null,
+			type: "state",
+			key: "items",
+			path: ["0", "url"],
+		});
+		expect(parseReference("@toggle")).toMatchObject({
+			scope: null,
+			type: "action",
+			key: "toggle",
+		});
+		expect(parseReference("#button[]")).toMatchObject({
+			scope: null,
+			type: "identifier",
+			key: "button[]",
+		});
+	});
+
+	it("leaves bare values as literals", () => {
+		expect(parseReference("button")).toBeNull();
+		expect(parseReference("nav:button")).toBeNull();
+		expect(parseReference(":$items")).toBeNull();
 	});
 });

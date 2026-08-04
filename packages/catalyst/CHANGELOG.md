@@ -12,13 +12,15 @@
   one element-scoped directive format.
 - Simplified reaction attributes to `data-{reaction}--{specifier}`, including
   `data-events--click`, `data-dom--text`, and `data-effects`.
+- Added nearest-store inference for `$state`, `@action`, and `#identifier`
+  references while retaining explicit `scope:$state`, `scope:@action`, and
+  `scope:#identifier` references across store boundaries.
 - Rebuilt dynamic synchronization so reactions are idempotent and are disposed
   with their owning elements.
-- Fixed state bindings inside loop templates, including nested paths such as
-  `data-bind--href="store:$items[:index:].url"` when the array comes from a
-  store-module signal.
-- Added explicit ancestor indexes for nested loops through `:index-1:` and
-  `:indexOne-1:` placeholders.
+- Fixed state bindings inside loop templates, including
+  `data-bind--href="$item.url"` when the array comes from a store-module signal.
+- Replaced textual loop index placeholders with `$item`, `$index`, `$indexOne`,
+  and traversable `$parent` loop contexts.
 - Kept primitive, object, and array state attributes synchronized without using
   state mutations to drive bindings.
 - Added automated coverage for directive reference parsing, loop bindings,

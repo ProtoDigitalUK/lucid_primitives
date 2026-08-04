@@ -2,6 +2,7 @@ import { parseReference } from "../helpers.js";
 import type { Directive, SyncOptions } from "../types/index.js";
 import collectElements from "./collect-elements.js";
 import Catalyst from "./catalyst.js";
+import resolveDirectiveReference from "./resolve-directive-reference.js";
 
 const collectDirectives = (target: Element, options?: SyncOptions) => {
 	const directives: Directive[] = [];
@@ -20,6 +21,10 @@ const collectDirectives = (target: Element, options?: SyncOptions) => {
 					continue;
 				}
 
+				const reference = parseReference(
+					attribute.value,
+					Catalyst.options.attributes.scopeSeparator,
+				);
 				directives.push({
 					element,
 					reaction: reaction.name,
@@ -29,10 +34,7 @@ const collectDirectives = (target: Element, options?: SyncOptions) => {
 							? ""
 							: attribute.name.slice(specifierPrefix.length),
 					value: attribute.value,
-					reference: parseReference(
-						attribute.value,
-						Catalyst.options.attributes.scopeSeparator,
-					),
+					reference: resolveDirectiveReference(reference, element),
 					synthetic: false,
 				});
 				break;

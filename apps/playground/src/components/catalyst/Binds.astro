@@ -1,11 +1,11 @@
 <h2 class="mb-2.5 font-bold text-xl">Bind testing</h2>
 <div data-store="binds" class="mb-4">
     <button
-        data-bind--data-store-count="binds:$storeState"
-        data-events--click="binds:@incrementStoreState"
+        data-bind--data-store-count="$storeState"
+        data-events--click="@incrementStoreState"
         class="px-2.5 py-1 bg-green-100"
     >
-        Increment the count <span data-dom--text="binds:$storeState"
+        Increment the count <span data-dom--text="$storeState"
         ></span>
     </button>
 </div>

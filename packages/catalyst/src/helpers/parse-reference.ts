@@ -15,11 +15,14 @@ const parseReference = (
 	scopeSeparator = ":",
 ): MemberReference | null => {
 	const separatorIndex = value.indexOf(scopeSeparator);
-	if (separatorIndex <= 0) return null;
+	const hasExplicitScope = separatorIndex > 0;
+	if (separatorIndex === 0) return null;
 
-	const scope = value.slice(0, separatorIndex);
-	const member = value.slice(separatorIndex + scopeSeparator.length);
-	if (!scope || !member) return null;
+	const scope = hasExplicitScope ? value.slice(0, separatorIndex) : null;
+	const member = hasExplicitScope
+		? value.slice(separatorIndex + scopeSeparator.length)
+		: value;
+	if (!member) return null;
 
 	if (member.startsWith("$")) {
 		const path = parseStatePath(member.slice(1));
@@ -34,13 +37,13 @@ const parseReference = (
 		return { raw: value, scope, type: "action", key, path: [] };
 	}
 
-	return {
-		raw: value,
-		scope,
-		type: "identifier",
-		key: member,
-		path: [],
-	};
+	if (member.startsWith("#")) {
+		const key = member.slice(1);
+		if (!key) return null;
+		return { raw: value, scope, type: "identifier", key, path: [] };
+	}
+
+	return null;
 };
 
 export default parseReference;

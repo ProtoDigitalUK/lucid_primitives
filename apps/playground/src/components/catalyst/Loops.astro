@@ -5,41 +5,39 @@
     data-state--button-label="I shouldn't show within the template"
 >
     <h3 class="mb-1 font-bold text-lg">Example with $state</h3>
-    <ul data-loop="loops:$items" class="border-b mb-2.5">
+    <ul data-loop="$items" class="border-b mb-2.5">
         <template>
             <li class="border-b py-2">
                 <a
-                    data-bind--href="loops:$items[:index:].url"
-                    data-dom--text="loops:$items[:index:].title"
+                    data-bind--href="$item.url"
+                    data-dom--text="$item.title"
                 ></a>
-                <p data-dom--text="loops:$button-label"></p>
-                <button data-events--click="loops:@childOnClick">
-                    Click me :indexOne:
+                <p data-dom--text="$button-label"></p>
+                <button data-events--click="@childOnClick">
+                    Click me <span data-dom--text="$indexOne"></span>
                 </button>
             </li>
         </template>
     </ul>
 
     <h3 class="mb-1 font-bold text-lg">Example with @action</h3>
-    <ul data-loop="loops:@getItems">
+    <ul data-loop="@getItems">
         <template>
             <li class="border-b py-2">
-                <p data-dom--text="loops:$items[:index:].title"></p>
+                <p data-dom--text="$item.title"></p>
             </li>
         </template>
     </ul>
 
     <h3 class="mb-1 font-bold text-lg">Example of nested loops</h3>
-    <ul data-loop="loops:@getItems">
+    <ul data-loop="@getItems">
         <template>
             <li class="border-b py-2">
-                <p data-dom--text="loops:$items[:index:].title"></p>
-                <ul data-loop="loops:$nested" class="pl-4">
+                <p data-dom--text="$item.title"></p>
+                <ul data-loop="$nested" class="pl-4">
                     <template>
                         <li class="border-b py-2 last:border-b-0 last:pb-0">
-                            <p
-                                data-dom--text="loops:$nested[:index:].title"
-                            >
+                            <p data-dom--text="$item.title">
                             </p>
                         </li>
                     </template>

@@ -7,7 +7,7 @@ const createGlobalEffectDirectives = (stores: Store[]) => {
 	const directives: Directive[] = [];
 	for (const store of stores) {
 		for (const key of Object.keys(store.effects.global)) {
-			const value = `${store.key}${Catalyst.options.attributes.scopeSeparator}${key}`;
+			const value = `${store.key}${Catalyst.options.attributes.scopeSeparator}#${key}`;
 			directives.push({
 				element: store.element,
 				reaction: "effects",

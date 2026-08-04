@@ -32,8 +32,8 @@ Catalyst.start({ reactions: [events, dom] });
 
 ```html
 <div data-store="counter" data-state--count="0">
-    <button data-events--click="counter:@increment">
-        Count: <span data-dom--text="counter:$count"></span>
+    <button data-events--click="@increment">
+        Count: <span data-dom--text="$count"></span>
     </button>
 </div>
 ```
@@ -99,16 +99,25 @@ data-{reaction}
 data-{reaction}--{specifier}
 ```
 
-Directive values use an explicit store scope and member type:
+Directive values use a symbol to identify their member type:
 
 ```text
-store:$state.path
-store:@action
-store:identifier
+$state.path
+@action
+#identifier
 ```
 
-State is denoted by `$`, actions by `@`, and identifiers are used by refs and
-effects.
+The nearest `data-store` scope is inferred. State is denoted by `$`, actions by
+`@`, and named references used by refs and effects are denoted by `#`. Bare
+values remain literal values for custom reactions.
+
+Prefix a reference with a scope when it needs to cross a store boundary:
+
+```text
+profile:$name
+dialog:@open
+form:#submitButton
+```
 
 ### Bindings
 
@@ -116,17 +125,21 @@ effects.
 action response.
 
 ```html
-<a data-bind--href="navigation:$links[0].url">Home</a>
-<button data-bind--aria-expanded="navigation:$open">Menu</button>
+<nav data-store="navigation">
+    <a data-bind--href="$links[0].url">Home</a>
+    <button data-bind--aria-expanded="$open">Menu</button>
+</nav>
 ```
 
 ### DOM
 
 ```html
-<p data-dom--text="profile:$name"></p>
-<div data-dom--html="content:@renderHtml"></div>
-<input data-dom--value="form:$value" />
-<input data-dom--focus="dialog:$open" />
+<section data-store="profile">
+    <p data-dom--text="$name"></p>
+    <div data-dom--html="@renderHtml"></div>
+    <input data-dom--value="$value" />
+    <input data-dom--focus="$open" />
+</section>
 ```
 
 Supported specifiers are `text`, `html`, `value`, `focus`, `blur`, and
@@ -135,9 +148,11 @@ Supported specifiers are `text`, `html`, `value`, `focus`, `blur`, and
 ### Events
 
 ```html
-<button data-events--click="dialog:@open">Open</button>
-<div data-events--document.keydown="dialog:@onKeydown"></div>
-<div data-events--window.resize="layout:@onResize"></div>
+<div data-store="dialog">
+    <button data-events--click="@open">Open</button>
+    <div data-events--document.keydown="@onKeydown"></div>
+    <div data-events--window.resize="@onResize"></div>
+</div>
 ```
 
 Element events receive the `Event` as the action's first argument. Events can
@@ -146,13 +161,15 @@ also target `document`, `body`, `head`, or `window`.
 ### Refs
 
 ```html
-<button data-ref="form:submitButton">Submit</button>
-<li data-ref="list:items[]"></li>
+<form data-store="form">
+    <button data-ref="#submitButton">Submit</button>
+    <input data-ref="#fields[]" />
+</form>
 ```
 
 ```ts
 const button = store.refs.get("submitButton");
-const items = store.refs.get("items");
+const fields = store.refs.get("fields");
 ```
 
 Refs are registered before the store's optional `init` action runs.
@@ -162,7 +179,9 @@ Refs are registered before the store's optional `init` action runs.
 Manual effects are activated with `data-effects`:
 
 ```html
-<div data-effects="dialog:onOpenChange"></div>
+<div data-store="dialog">
+    <div data-effects="#onOpenChange"></div>
+</div>
 ```
 
 ```ts
@@ -193,29 +212,54 @@ references to the same store effect share one reactive effect.
 item.
 
 ```html
-<ul data-loop="navigation:$links">
+<nav data-store="navigation">
+    <ul data-loop="$links">
+        <template>
+            <li>
+                <a
+                    data-bind--href="$item.url"
+                    data-bind--data-index="$index"
+                    data-dom--text="$item.title"
+                ></a>
+            </li>
+        </template>
+    </ul>
+</nav>
+```
+
+Each rendered template receives `$item`, `$index`, and `$indexOne`. Nested loops
+can access their enclosing context through `$parent.item`, `$parent.index`, and
+`$parent.indexOne`. Parent traversal can be repeated for deeper nesting, for
+example `$parent.parent.item`.
+
+```html
+<ul data-loop="$groups">
     <template>
         <li>
-            <a
-                data-bind--href="navigation:$links[:index:].url"
-                data-dom--text="navigation:$links[:index:].title"
-            ></a>
+            <h2 data-dom--text="$item.title"></h2>
+            <ul data-loop="$item.links">
+                <template>
+                    <li>
+                        <a
+                            data-bind--href="$item.url"
+                            data-bind--data-group="$parent.item.title"
+                            data-dom--text="$item.title"
+                        ></a>
+                    </li>
+                </template>
+            </ul>
         </li>
     </template>
 </ul>
 ```
 
-`:index:` is zero-based and `:indexOne:` is one-based. Nested template contents
-retain their own index placeholders until their loop renders. Inside a nested
-template, use `:index-1:` for its parent's zero-based index or `:indexOne-1:`
-for its parent's one-based index. Increase the suffix for each additional
-ancestor, for example `:index-2:`.
-
 ### Focus traps
 
 ```html
-<div data-trap="dialog:$open"></div>
-<div data-trap--both="dialog:$open"></div>
+<div data-store="dialog">
+    <div data-trap="$open"></div>
+    <div data-trap--both="$open"></div>
+</div>
 ```
 
 `both` traps the element while true and makes the target inert while false.
@@ -225,7 +269,7 @@ ancestor, for example `:index-2:`.
 Use `sync` after adding markup outside Catalyst:
 
 ```ts
-target.innerHTML = `<button data-events--click="nav:@select">Select</button>`;
+target.innerHTML = `<button data-events--click="@select">Select</button>`;
 Catalyst.sync(target);
 ```
 
@@ -286,4 +330,6 @@ Catalyst.start();
 <div data-class-list="is-active"></div>
 ```
 
-A reaction can alternatively be passed through `Catalyst.start({ reactions })`.
+Because `is-active` has no `$`, `@`, or `#` prefix, it remains a literal value
+and `directive.reference` is `null`. A reaction can alternatively be passed
+through `Catalyst.start({ reactions })`.

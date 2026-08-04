@@ -12,34 +12,37 @@ describe("effects reaction", () => {
 	it("runs global and deduplicated manual effects", async () => {
 		document.body.innerHTML = `
 			<div data-store="effects" data-state--count="0">
-				<div data-effects="effects:manual"></div>
-				<div data-effects="effects:manual"></div>
+				<div data-effects="#manual"></div>
+				<div data-effects="#manual"></div>
 			</div>
 		`;
 
 		const globalRuns: Array<{ value: number; isInitial: boolean }> = [];
 		const manualRuns: Array<{ value: number; isInitial: boolean }> = [];
-		storeModule<{ count: number }, {}>("effects", (store) => ({
-			actions: {},
-			effects: {
-				global: {
-					global: ({ isInitial }) => {
-						globalRuns.push({
-							value: store.state.count[0](),
-							isInitial,
-						});
+		storeModule<{ count: number }, Record<string, never>>(
+			"effects",
+			(store) => ({
+				actions: {},
+				effects: {
+					global: {
+						global: ({ isInitial }) => {
+							globalRuns.push({
+								value: store.state.count[0](),
+								isInitial,
+							});
+						},
+					},
+					manual: {
+						manual: ({ isInitial }) => {
+							manualRuns.push({
+								value: store.state.count[0](),
+								isInitial,
+							});
+						},
 					},
 				},
-				manual: {
-					manual: ({ isInitial }) => {
-						manualRuns.push({
-							value: store.state.count[0](),
-							isInitial,
-						});
-					},
-				},
-			},
-		}));
+			}),
+		);
 
 		Catalyst.start({ reactions: [effects] });
 		await settle();

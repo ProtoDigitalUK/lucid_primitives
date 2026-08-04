@@ -14,7 +14,7 @@ const createResolvedEffect = (
 ) => {
 	if (!directive.reference) {
 		context.warn(
-			`The "${directive.attributeName}" directive requires a scoped value.`,
+			`The "${directive.attributeName}" directive requires a state or action reference.`,
 		);
 		return;
 	}

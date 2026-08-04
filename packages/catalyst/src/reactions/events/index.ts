@@ -58,6 +58,12 @@ const eventsReaction: Reaction = {
 			);
 			return;
 		}
+		if (!reference.scope) {
+			context.warn(
+				`Cannot infer a store for the reference "${reference.raw}".`,
+			);
+			return;
+		}
 
 		const config = getEventTarget(directive.element, directive.specifier);
 		if (!config) {
@@ -73,7 +79,7 @@ const eventsReaction: Reaction = {
 			eventRegistrations.set(config.target, targetRegistrations);
 		}
 
-		const registrationKey = `${config.eventName}:${reference.raw}`;
+		const registrationKey = `${config.eventName}:${reference.scope}:${reference.key}`;
 		const existing = targetRegistrations.get(registrationKey);
 		if (existing) {
 			existing.count += 1;

@@ -1,45 +1,6 @@
 import type { Reaction } from "../../types/index.js";
-import { LOOP_INDEX, LOOP_INDEX_ONE } from "../../runtime/constants.js";
+import { getLoopContext, setLoopContext } from "../../runtime/loop-context.js";
 import createResolvedEffect from "../utils/create-resolved-effect.js";
-
-const getDepthToken = (token: string, depth: number) =>
-	depth === 0 ? token : `${token.slice(0, -1)}-${depth}:`;
-
-const replaceIndexes = (value: string, index: number, depth: number) =>
-	value
-		.replaceAll(getDepthToken(LOOP_INDEX, depth), String(index))
-		.replaceAll(getDepthToken(LOOP_INDEX_ONE, depth), String(index + 1));
-
-const replaceNodeIndexes = (
-	node: Node,
-	index: number,
-	loopAttribute: string,
-	depth = 0,
-) => {
-	if (node instanceof Text) {
-		node.textContent = replaceIndexes(node.textContent ?? "", index, depth);
-		return;
-	}
-	if (!(node instanceof Element)) return;
-
-	for (const attribute of Array.from(node.attributes)) {
-		const value = replaceIndexes(attribute.value, index, depth);
-		if (value !== attribute.value) node.setAttribute(attribute.name, value);
-	}
-
-	if (node instanceof HTMLTemplateElement) {
-		const templateDepth = node.parentElement?.hasAttribute(loopAttribute)
-			? depth + 1
-			: depth;
-		for (const child of Array.from(node.content.childNodes)) {
-			replaceNodeIndexes(child, index, loopAttribute, templateDepth);
-		}
-		return;
-	}
-	for (const child of Array.from(node.childNodes)) {
-		replaceNodeIndexes(child, index, loopAttribute, depth);
-	}
-};
 
 const getTemplate = (target: Element) =>
 	Array.from(target.children).find(
@@ -84,11 +45,17 @@ const loopReaction: Reaction = {
 			}
 
 			const result = document.createDocumentFragment();
+			const parent = getLoopContext(directive.element);
 			for (let index = 0; index < value.length; index += 1) {
 				const clone = template.content.cloneNode(true) as DocumentFragment;
-				for (const child of Array.from(clone.childNodes)) {
-					replaceNodeIndexes(child, index, directive.attributeName);
-				}
+				const root = clone.firstElementChild;
+				if (!root) continue;
+				setLoopContext(root, {
+					item: value[index],
+					index,
+					indexOne: index + 1,
+					parent,
+				});
 				result.append(clone);
 			}
 			directive.element.append(result);

@@ -18,7 +18,13 @@ const effectsReaction: Reaction = {
 		const reference = directive.reference;
 		if (!reference || reference.type !== "identifier") {
 			context.warn(
-				`The "${directive.attributeName}" directive requires a scoped effect name.`,
+				`The "${directive.attributeName}" directive requires a #effect name.`,
+			);
+			return;
+		}
+		if (!reference.scope) {
+			context.warn(
+				`Cannot infer a store for the reference "${reference.raw}".`,
 			);
 			return;
 		}
