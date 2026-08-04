@@ -1,0 +1,82 @@
+{
+	"name": "@lucidclient/catalyst",
+	"version": "0.6.0",
+	"private": false,
+	"description": "An attribute-driven reactive UI runtime powered by SolidJS.",
+	"type": "module",
+	"types": "./dist/index.d.ts",
+	"main": "dist/index.cjs",
+	"module": "dist/index.js",
+	"files": ["dist"],
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
+		},
+		"./reactions": {
+			"types": "./dist/reactions.d.ts",
+			"import": "./dist/reactions.js",
+			"require": "./dist/reactions.cjs"
+		},
+		"./helpers": {
+			"types": "./dist/helpers.d.ts",
+			"import": "./dist/helpers.js",
+			"require": "./dist/helpers.cjs"
+		},
+		"./types": {
+			"types": "./dist/types/index.d.ts",
+			"require": "./dist/types/index.cjs",
+			"default": "./dist/types/index.js"
+		}
+	},
+	"scripts": {
+		"build": "tsc && tsup",
+		"dev": "tsup --watch",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"format": "biome format ./src",
+		"format:fix": "biome format --write ./src",
+		"lint": "biome lint ./src",
+		"lint:fix": "biome lint --write ./src"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@repo/config": "*",
+		"happy-dom": "^20.11.1",
+		"tsup": "^8.3.6",
+		"typescript": "^5.7.3",
+		"vitest": "^4.1.10"
+	},
+	"author": "Proto Digital",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ProtoDigitalUK/lucid_client",
+		"directory": "packages/catalyst"
+	},
+	"keywords": [
+		"catalyst",
+		"ui-library",
+		"reactive",
+		"solidjs",
+		"html-attributes",
+		"dom-manipulation",
+		"state-management",
+		"two-way-binding",
+		"javascript",
+		"typescript",
+		"frontend",
+		"minimal",
+		"lightweight",
+		"lucid-client",
+		"lucid"
+	],
+	"homepage": "https://lucidjs.build/catalyst",
+	"volta": {
+		"node": "22.13.1"
+	},
+	"dependencies": {
+		"solid-js": "^1.9.4"
+	}
+}

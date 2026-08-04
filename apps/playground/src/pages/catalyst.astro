@@ -1,0 +1,18 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Example from "../components/catalyst/Example.astro";
+import Loops from "../components/catalyst/Loops.astro";
+import Binds from "../components/catalyst/Binds.astro";
+---
+
+<Layout title="Lucid Primitives Playground">
+    <h1 class="text-2xl font-bold">
+        <a href="/" rel="prefetch:moderate">{"<-"} Home</a>
+        - Catalyst Playground
+    </h1>
+    <div class="w-full mt-2.5">
+        <Example />
+        <Binds />
+        <Loops />
+    </div>
+</Layout>

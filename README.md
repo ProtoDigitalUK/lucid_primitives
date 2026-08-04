@@ -9,5 +9,5 @@ Each library is published as a separate package on NPM. Checkout the library REA
 ## Libraries
 
 - [Speculate](https://github.com/ProtoDigitalUK/lucid_client/tree/master/packages/speculate)
-- [Elements](https://github.com/ProtoDigitalUK/lucid_client/tree/master/packages/elements)
+- [Catalyst](https://github.com/ProtoDigitalUK/lucid_client/tree/master/packages/catalyst)
 - [Cookie Controller](https://github.com/ProtoDigitalUK/lucid_client/tree/master/packages/cookie-controller)
