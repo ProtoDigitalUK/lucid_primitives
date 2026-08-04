@@ -1,7 +1,6 @@
 <h2 class="mb-2.5 font-bold text-xl">For Loop Testing</h2>
 <div
     data-store="loops"
-    data-state--items='[{"title": "title one"}, {"title": "title two"}, {"title": "title threee"}]'
     data-state--nested='[{"title": "nested one"}, {"title": "nested two"}, {"title": "nested threee"}]'
     data-state--button-label="I shouldn't show within the template"
 >
@@ -9,9 +8,12 @@
     <ul data-loop="loops:$items" class="border-b mb-2.5">
         <template>
             <li class="border-b py-2">
-                <p data-handler--dom.text="loops:$items[:index:].title"></p>
-                <p data-handler--dom.text="loops:$button-label"></p>
-                <button data-handler--event.click="loops:@childOnClick">
+                <a
+                    data-bind--href="loops:$items[:index:].url"
+                    data-dom--text="loops:$items[:index:].title"
+                ></a>
+                <p data-dom--text="loops:$button-label"></p>
+                <button data-events--click="loops:@childOnClick">
                     Click me :indexOne:
                 </button>
             </li>
@@ -22,7 +24,7 @@
     <ul data-loop="loops:@getItems">
         <template>
             <li class="border-b py-2">
-                <p data-handler--dom.text="loops:$items[:index:].title"></p>
+                <p data-dom--text="loops:$items[:index:].title"></p>
             </li>
         </template>
     </ul>
@@ -31,12 +33,12 @@
     <ul data-loop="loops:@getItems">
         <template>
             <li class="border-b py-2">
-                <p data-handler--dom.text="loops:$items[:index:].title"></p>
+                <p data-dom--text="loops:$items[:index:].title"></p>
                 <ul data-loop="loops:$nested" class="pl-4">
                     <template>
                         <li class="border-b py-2 last:border-b-0 last:pb-0">
                             <p
-                                data-handler--dom.text="loops:$nested[:index:].title"
+                                data-dom--text="loops:$nested[:index:].title"
                             >
                             </p>
                         </li>

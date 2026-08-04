@@ -2,8 +2,8 @@
     data-store="nav"
     data-state--open="false"
     class="h-10 bg-black text-white"
-    data-effect="nav:customEffect"
-    data-handler--event.document.scroll="nav:@documentScroll"
+    data-effects="nav:customEffect"
+    data-events--document.scroll="nav:@documentScroll"
 >
     <div class="flex justify-between items-center">
         <div class="flex items-center">
@@ -11,25 +11,25 @@
             <div data-ref="nav:testEleRefresh" class="ml-2.5">
                 <button
                     data-store="testreplace"
-                    data-handler--event.click="nav:@oldClick"
+                    data-events--click="nav:@oldClick"
                 >
                     before
                 </button>
             </div>
             <button
-                data-handler--event.click="nav:@replaceChild"
+                data-events--click="nav:@replaceChild"
                 class="ml-2.5"
             >
                 Refresh Elements
             </button>
         </div>
         <button
-            data-handler--event.click="nav:@toggle"
+            data-events--click="nav:@toggle"
             data-bind--aria-expanded="nav:$open"
             data-bind--aria-label="nav:$ariaLabel"
             aria-controls="main-nav"
         >
-            <span data-handler--dom.text="nav:@buttonLabel">
+            <span data-dom--text="nav:@buttonLabel">
                 Open Navigation
             </span>
         </button>
@@ -40,7 +40,7 @@
         class="[&[aria-hidden='false']]:translate-x-0 fixed inset-0 top-10 bg-gray-800 z-50 transition-transform duration-200 translate-x-full p-2.5"
         aria-label="Main navigation"
         aria-hidden="true"
-        data-handler--trap.both="nav:$open"
+        data-trap--both="nav:$open"
     >
         <a href="/">Home</a>
         <a href="/about">About</a>
@@ -48,7 +48,7 @@
         <input
             type="text"
             class="focus:ring-4 ring-red-500"
-            data-handler--dom.focus="nav:$open"
+            data-dom--focus="nav:$open"
         />
     </nav>
 </header>

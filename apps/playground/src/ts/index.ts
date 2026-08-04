@@ -1,5 +1,5 @@
-import Elements, { storeModule } from "@lucidclient/elements-old";
-import { events, dom, trap } from "@lucidclient/elements-old/handlers";
+import Elements, { storeModule } from "@lucidclient/elements";
+import { standardHandlers } from "@lucidclient/elements/handlers";
 import { speculateLinks } from "@lucidclient/speculate";
 import "./speculate/speculator";
 
@@ -15,7 +15,7 @@ storeModule("binds", bindsStore);
 
 Elements.start({
 	debug: true,
-	handlers: [events, dom, trap],
+	handlers: standardHandlers,
 });
 
 speculateLinks();

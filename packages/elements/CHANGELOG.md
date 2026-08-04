@@ -1,5 +1,25 @@
 # @lucidclient/elements
 
+## v0.6.0
+
+### Minor Changes
+
+- Reworked all non-store/state behavior into first-party handlers that consume
+  one element-scoped directive format.
+- Simplified handler attributes to `data-{handler}--{specifier}`, including
+  `data-events--click`, `data-dom--text`, and `data-effects`.
+- Rebuilt dynamic synchronization so handlers are idempotent and are disposed
+  with their owning elements.
+- Fixed state bindings inside loop templates, including nested paths such as
+  `data-bind--href="store:$items[:index:].url"` when the array comes from a
+  store-module signal.
+- Added explicit ancestor indexes for nested loops through `:index-1:` and
+  `:indexOne-1:` placeholders.
+- Kept primitive, object, and array state attributes synchronized without using
+  state mutations to drive bindings.
+- Added automated coverage for handler reference parsing, loop bindings,
+  two-way state, and ref initialization order.
+
 ## v0.5.1
 
 ### Patch Changes

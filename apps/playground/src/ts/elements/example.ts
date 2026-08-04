@@ -1,5 +1,5 @@
-import { createSignal } from "@lucidclient/elements-old";
-import type { StoreModule } from "@lucidclient/elements-old/types";
+import { createSignal } from "@lucidclient/elements";
+import type { StoreModule } from "@lucidclient/elements/types";
 
 const exampleStore: StoreModule<
 	{
